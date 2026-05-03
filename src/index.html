@@ -1,14 +1,56 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Jouzu</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Learn Japanese with real examples">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Jouzu</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Learn Japanese with real examples" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <style>
+      html,
+      body {
+        background-color: #fafafa;
+        color: #18181b;
+        color-scheme: light;
+        margin: 0;
+        padding: 0;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        html:not(.light-mode),
+        html:not(.light-mode) body {
+          background-color: #09090b;
+          color: #ffffff;
+          color-scheme: dark;
+        }
+      }
+
+      html.dark-mode,
+      html.dark-mode body {
+        background-color: #09090b;
+        color: #ffffff;
+        color-scheme: dark;
+      }
+    </style>
+
+    <script>
+      (function () {
+        try {
+          const savedTheme = localStorage.getItem("theme-preference");
+          const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+          if (savedTheme === "dark" || (!savedTheme && isSystemDark)) {
+            document.documentElement.classList.add("dark-mode");
+          } else if (savedTheme === "light") {
+            document.documentElement.classList.add("light-mode");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

@@ -7,7 +7,7 @@
     "dev": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "preview": "pnpm build && pnpx serve -s dist/jouzu/browser",
+    "preview": "pnpm build && pnpx serve -s dist/jouzu/browser -p 4200",
     "serve:ssr:jouzu": "node dist/jouzu/server/server.mjs",
     "format": ""
   },

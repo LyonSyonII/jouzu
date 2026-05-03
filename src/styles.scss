@@ -40,38 +40,52 @@
   --app-bg-main: var(--p-surface-50, #fafafa);
 }
 
+:root {
+  color-scheme: light;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light-mode) {
     --app-bg-main: var(--p-surface-950, #09090b);
+    color-scheme: dark;
+  }
+
+  :root:not(.light-mode) body {
+    color: var(--p-text-color, #ffffff);
+  }
+}
+
+
+:root.dark-mode {
+  --app-bg-main: var(--p-surface-950, #09090b);
+  color-scheme: dark;
+
+  body {
+    color: var(--p-text-color, #ffffff);
   }
 }
 
 body {
   background-color: var(--app-bg-main);
   color: var(--app-text-main, #18181b);
-
   margin: 0;
   padding: 0;
   min-height: 100vh;
 
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    color: var(--p-text-color, #ffffff);
+  .theme-transition {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
   }
 }
 
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/noto-sans-jp/400.css';
-@import '@fontsource/noto-sans-jp/600.css';
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/noto-sans-jp/400.css";
+@import "@fontsource/noto-sans-jp/600.css";
 
 :root {
-  --p-font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  --p-font-family: "Inter", "Noto Sans JP", sans-serif;
 }
 
 body {
@@ -80,4 +94,4 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@import 'primeicons/primeicons.css';
+@import "primeicons/primeicons.css";

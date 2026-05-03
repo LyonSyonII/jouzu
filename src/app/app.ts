@@ -20,25 +20,27 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const html = this.document.documentElement;
-      this.darkMode = html.classList.contains("dark-mode");
+      this.darkMode = this.document.documentElement.classList.contains("dark-mode");
+
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        this.applyTheme(e.matches);
+      });
     }
   }
 
   protected toggleDarkMode() {
-    this.document.body.classList.add("theme-transition");
+    this.applyTheme(!this.darkMode);
+  }
 
-    this.darkMode = !this.darkMode;
-    const html = this.document.documentElement;
+  private applyTheme(isDark: boolean) {
+    this.darkMode = isDark;
 
-    if (this.darkMode) {
-      html.classList.add("dark-mode");
-      html.classList.remove("light-mode");
-      localStorage.setItem("theme-preference", "dark");
+    localStorage.setItem("theme-preference", isDark ? "dark" : "light");
+
+    if (isDark) {
+      this.document.documentElement.classList.add("dark-mode");
     } else {
-      html.classList.remove("dark-mode");
-      html.classList.add("light-mode");
-      localStorage.setItem("theme-preference", "light");
+      this.document.documentElement.classList.remove("dark-mode");
     }
   }
 }

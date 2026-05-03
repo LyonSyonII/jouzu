@@ -9,28 +9,28 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
     <style>
+      :root {
+        --app-bg-main: var(--p-surface-50, #fafafa);
+        --app-text-main: var(--p-text-color, #18181b);
+      }
+
+      :root.dark-mode {
+        --app-bg-main: var(--p-surface-950, #09090b);
+        --app-text-main: var(--p-text-color, #ffffff);
+      }
+
       html,
       body {
-        background-color: #fafafa;
-        color: #18181b;
-        color-scheme: light;
+        background-color: var(--app-bg-main);
+        color: var(--app-text-main);
         margin: 0;
         padding: 0;
       }
 
-      @media (prefers-color-scheme: dark) {
-        html:not(.light-mode),
-        html:not(.light-mode) body {
-          background-color: #09090b;
-          color: #ffffff;
-          color-scheme: dark;
-        }
+      html {
+        color-scheme: light;
       }
-
-      html.dark-mode,
-      html.dark-mode body {
-        background-color: #09090b;
-        color: #ffffff;
+      html.dark-mode {
         color-scheme: dark;
       }
     </style>
@@ -38,13 +38,12 @@
     <script>
       (function () {
         try {
-          const savedTheme = localStorage.getItem("theme-preference");
-          const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-          if (savedTheme === "dark" || (!savedTheme && isSystemDark)) {
+          const theme = localStorage.getItem("theme-preference");
+          if (
+            theme === "dark" ||
+            (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
             document.documentElement.classList.add("dark-mode");
-          } else if (savedTheme === "light") {
-            document.documentElement.classList.add("light-mode");
           }
         } catch (e) {}
       })();

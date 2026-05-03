@@ -12,14 +12,15 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "ES2022",
+    "target": "ESNext",
     "module": "preserve"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "compilationMode": "full"
   },
   "files": [],
   "references": [

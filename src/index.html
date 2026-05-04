@@ -14,7 +14,7 @@
         --app-text-main: var(--p-text-color, #18181b);
       }
 
-      :root.dark-mode {
+      :root.dark {
         --app-bg-main: var(--p-surface-950, #09090b);
         --app-text-main: var(--p-text-color, #ffffff);
       }
@@ -30,23 +30,36 @@
       html {
         color-scheme: light;
       }
-      html.dark-mode {
+      html.dark {
         color-scheme: dark;
       }
     </style>
 
     <script>
-      (function () {
-        try {
-          const theme = localStorage.getItem("theme-preference");
-          if (
-            theme === "dark" ||
-            (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            document.documentElement.classList.add("dark-mode");
-          }
-        } catch (e) {}
-      })();
+      if (
+        // check if user had saved dark as their
+        // theme when accessing page before
+        localStorage.theme === "dark" ||
+        // or user's requesting dark color
+        // scheme through operating system
+        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        // then if we have access to the document and the element
+        // we add the dark class to the html element and
+        // store the dark value in the localStorage
+        if (document && document.documentElement) {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        }
+      } else {
+        // else if we have access to the document and the element
+        // we remove the dark class to the html element and
+        // store the value light in the localStorage
+        if (document && document.documentElement) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        }
+      }
     </script>
     <link rel="manifest" href="manifest.webmanifest" />
   </head>

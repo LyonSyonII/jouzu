@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1777914543778,
+  "timestamp": 1777926572617,
   "index": "/jouzu/index.csr.html",
   "assetGroups": [
     {
@@ -14,7 +14,7 @@
         "/jouzu/favicon.ico",
         "/jouzu/index.csr.html",
         "/jouzu/index.html",
-        "/jouzu/main-CBPTDH2K.js",
+        "/jouzu/main-CCMGLYG3.js",
         "/jouzu/manifest.webmanifest",
         "/jouzu/styles-VO643KPD.css"
       ],
@@ -579,9 +579,9 @@
     "/jouzu/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/jouzu/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/jouzu/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/jouzu/index.csr.html": "952f6fbf64374c1d5e068fd338523adcea66e18f",
-    "/jouzu/index.html": "d6df5466743e38ababc248e9a220eec7171d679b",
-    "/jouzu/main-CBPTDH2K.js": "2661eb9ef2b6aec2051c39664ad57e17f58ce98c",
+    "/jouzu/index.csr.html": "2525964233bb07f5ef32d48c390b68cbc71d6f0b",
+    "/jouzu/index.html": "f3b04be446ed22821d52f830b8314d5f7c78e8c7",
+    "/jouzu/main-CCMGLYG3.js": "8d2cac20ff9aca4ccb7582f7c3e19110d84d46a7",
     "/jouzu/manifest.webmanifest": "2abed06b521b09fcc86d4a50b3dc0346199f0a1b",
     "/jouzu/media/inter-cyrillic-400-normal-G4TQJ72A.woff2": "d9401374dbd2ca1030053156ec959746725e6729",
     "/jouzu/media/inter-cyrillic-400-normal-U23O635P.woff": "8afa0dcf9e53dc2623b1119856f23bf15e8783ce",

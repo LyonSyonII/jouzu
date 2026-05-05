@@ -12,12 +12,16 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     providePrimeNG({
-      ripple: true,
+      ripple: false,
       theme: {
         preset: Aura,
         options: {
           prefix: "p",
           darkModeSelector: ".dark",
+          cssLayer: {
+            name: "primeng",
+            order: "theme, base, primeng",
+          },
         },
       },
     }),

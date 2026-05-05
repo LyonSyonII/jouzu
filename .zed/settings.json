@@ -7,8 +7,13 @@
     "Angular": ["html"],
   },
   "languages": {
-    "Angular": {
-      "language_servers": ["angular", "emmet-language-server", "..."],
+    "TypeScript": {
+      "language_servers": ["!typescript-language-server", "!eslint", "angular", "vtsls", "..."],
+    },
+    "HTML": {
+      "colorize_brackets": true,
+      "semantic_tokens": "combined",
+      "language_servers": ["angular", "..."],
       "formatter": {
         "external": {
           "command": "pnpm",
@@ -16,8 +21,17 @@
         },
       },
     },
-    "TypeScript": {
-      "language_servers": ["angular", "..."],
+    "CSS": {
+      "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
+    },
+  },
+  "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "experimental": {
+          "classRegex": ["class=\"([^\"]*)\""],
+        },
+      },
     },
   },
 }

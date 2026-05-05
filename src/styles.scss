@@ -1,5 +1,35 @@
 /* Global styles */
 
+body {
+  min-height: 100vh;
+}
+
+* {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Fonts */
+
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/noto-sans-jp/400.css";
+@import "@fontsource/noto-sans-jp/600.css";
+
+:root {
+  --p-font-family: "Inter", "Noto Sans JP", sans-serif;
+}
+
+body {
+  font-family: var(--p-font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* PrimeNG Classes */
+@import "primeicons/primeicons.css";
+
 :root {
   /* --- Content & Layout Backgrounds --- */
   --app-bg-content: var(--p-content-background);
@@ -24,26 +54,6 @@
   --app-primary-contrast: var(--p-primary-contrast-color);
 }
 
-body {
-  min-height: 100vh;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+.p-tooltip {
+  background: red
 }
-
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/noto-sans-jp/400.css";
-@import "@fontsource/noto-sans-jp/600.css";
-
-:root {
-  --p-font-family: "Inter", "Noto Sans JP", sans-serif;
-}
-
-body {
-  font-family: var(--p-font-family);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-@import "primeicons/primeicons.css";

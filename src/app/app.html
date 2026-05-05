@@ -1,13 +1,26 @@
-<main>
-  <nav>
-    <h1>
-      <ruby>上手<rt>じょうず</rt></ruby>
-    </h1>
-    <b>Current theme: {{ this.themeService.theme() }}</b>
-    <p-button
-      [icon]="this.themeService.isDarkMode() ? PrimeIcons.SUN : PrimeIcons.MOON"
-      severity="contrast"
-      (onClick)="this.themeService.toggleDarkMode()"
-    />
-  </nav>
+<main class="pad">
+  <p-menubar class="pad" [model]="navItems">
+    <ng-template #start>
+      <h1 class="m-0">
+        <ruby>上手<rt>じょうず</rt></ruby>
+      </h1>
+    </ng-template>
+
+    <ng-template #item let-_item let-root="root">
+      @let item = asMenuItem(_item);
+      <button pRipple [pTooltip]="item.tooltip" [tooltipOptions]="item.tooltipOptions" class="px-2 py-2 cursor-pointer">
+        <b>{{ item.label }}</b>
+      </button>
+    </ng-template>
+
+    <ng-template #end>
+      <p-button
+        size="small"
+        [icon]="this.themeService.isDarkMode() ? PrimeIcons.SUN : PrimeIcons.MOON"
+        severity="contrast"
+        (onClick)="this.themeService.toggleDarkMode()"
+      />
+    </ng-template>
+  </p-menubar>
+  <p-card class="w-full"> </p-card>
 </main>

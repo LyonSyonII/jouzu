@@ -1,14 +1,13 @@
-main {
-  padding: 2rem;
+.menuitem > a.menuitem-normal {
+  display: block;
+}
+.menuitem > a.menuitem-hovered {
+  display: none;
 }
 
-nav {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.menuitem:hover > a.menuitem-normal {
+  display: none;
 }
-
-h1 {
-  margin: 0;
+.menuitem:hover > a.menuitem-hovered {
+  display: block;
 }

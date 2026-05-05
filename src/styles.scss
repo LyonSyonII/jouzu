@@ -32,28 +32,30 @@ body {
 
 :root {
   /* --- Content & Layout Backgrounds --- */
-  --app-bg-content: var(--p-content-background);
-  --app-bg-content-hover: var(--p-content-hover-background);
+  --bg-content: var(--p-content-background);
+  --bg-content-hover: var(--p-content-hover-background);
 
   /* --- Form Inputs & Deep Backgrounds --- */
-  --app-bg-input: var(--p-form-field-background);
+  --bg-input: var(--p-form-field-background);
 
   /* --- Typography --- */
-  --app-text-main: var(--p-text-color, #18181b);
-  --app-text-muted: var(--p-text-muted-color);
+  --text-main: var(--p-text-color, #18181b);
+  --text-muted: var(--p-text-muted-color);
 
   /* --- Borders & Dividers --- */
-  --app-border: var(--p-content-border-color);
+  --border-color: var(--p-content-border-color);
+  --border-width: 1px;
+  --border-radius: 12px;
+
+  /* --- Padding and Margin --- */
+  --separation: 2rem;
 
   /* --- Selections & Highlights --- */
-  --app-bg-highlight: var(--p-highlight-background);
-  --app-text-highlight: var(--p-highlight-color);
+  --bg-highlight: var(--p-highlight-background);
+  --text-highlight: var(--p-highlight-color);
+  --shadow: 0 1px 3px 0 rgba(0,0,0,0.1),0 1px 2px -1px rgba(0,0,0,0.1);
 
   /* --- Brand Colors --- */
-  --app-primary: var(--p-primary-color);
-  --app-primary-contrast: var(--p-primary-contrast-color);
-}
-
-.p-tooltip {
-  background: red
+  --primary: var(--p-primary-color);
+  --primary-contrast: var(--p-primary-contrast-color);
 }

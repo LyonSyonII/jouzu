@@ -1,0 +1,21 @@
+:host {
+  display: grid;
+
+  height: fit-content;
+  width: fit-content;
+  min-width: 8rem;
+  padding: var(--separation);
+
+  background-color: var(--bg-content);
+  border-color: transparent;
+  border-width: var(--border-width);
+  border-radius: var(--border-radius);
+
+  box-shadow: var(--shadow);
+
+  h2 {
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

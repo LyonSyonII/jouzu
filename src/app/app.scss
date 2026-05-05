@@ -1,13 +1,45 @@
-.menuitem > a.menuitem-normal {
-  display: block;
-}
-.menuitem > a.menuitem-hovered {
-  display: none;
+main {
+  padding: var(--separation);
 }
 
-.menuitem:hover > a.menuitem-normal {
-  display: none;
+main > nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
 }
-.menuitem:hover > a.menuitem-hovered {
-  display: block;
+
+main > nav > h1 {
+  margin: 0;
 }
+
+main > div {
+  width: 100%;
+  display: grid;
+  justify-content: center;
+}
+
+main > div > x-card {
+  width: 100%;
+  min-width: 32rem;
+}
+
+x-card > div {
+  display: flex;
+  justify-content: space-around;
+
+  section {
+    h3 {
+      margin-top: 0;
+    }
+  }
+}
+
+/* section > x-card:nth-child(odd) {
+  justify-self: right;
+}
+
+section > x-card:nth-child(even) {
+  justify-self: left;
+} */
+

@@ -7,20 +7,26 @@
     <p-button
       size="large"
       [icon]="this.themeService.isDarkMode() ? PrimeIcons.SUN : PrimeIcons.MOON"
-
       (onClick)="this.themeService.toggleDarkMode()"
     />
   </nav>
 
   <div>
-    <x-card header="かな・カナ・kana" divider>
+    <x-card
+      header="かな・カナ"
+      divider
+      [tooltip]="{
+        text: 'kana',
+        options: romanizeTooltip,
+      }"
+    >
       <section>
-        <h3 pTooltip="hiragana">ひらがな・hiragana</h3>
+        <h3 pTooltip="hiragana" [tooltipOptions]="romanizeTooltip">ひらがな</h3>
         <!-- Add hiragana character list -->
       </section>
       <p-divider layout="vertical" />
       <section>
-        <h3>カタカナ・katakana</h3>
+        <h3 pTooltip="katakana" [tooltipOptions]="romanizeTooltip">カタカナ</h3>
       </section>
     </x-card>
   </div>

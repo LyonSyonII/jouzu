@@ -1,4 +1,11 @@
-<h2>{{ header() }}</h2>
+<h2
+  [pTooltip]="tooltip()?.text"
+  [tooltipPosition]="tooltip()?.position"
+  [tooltipOptions]="tooltip()?.options"
+  tooltipStyleClass="tooltip"
+>
+  {{ header() }}
+</h2>
 @if (divider()) {
   <p-divider layout="horizontal" />
 }

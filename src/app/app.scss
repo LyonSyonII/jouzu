@@ -24,18 +24,31 @@ main > div > x-card {
   min-width: 32rem;
 }
 
-:host x-card ::ng-deep > .content {
-  display: flex;
-  justify-content: space-around;
-  /* background: red; */
-
-  section {
-    padding: var(--padding);
-    h3 {
-      margin-top: 0;
+:host ::ng-deep {
+  x-card > .content {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    justify-items: center;
+  
+    section {
+      padding: var(--padding);
+      h3 {
+        margin-top: 0;
+      }
     }
   }
 }
+
+::ng-deep .romanize-tooltip.p-tooltip {
+  font-weight: 900;
+
+  .p-tooltip-text {
+    padding: 0.15rem;
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+  }
+}
+
 
 /* section > x-card:nth-child(odd) {
   justify-self: right;

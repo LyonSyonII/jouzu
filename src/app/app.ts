@@ -1,6 +1,6 @@
 import { Component, inject } from "@angular/core";
 import { ThemeService } from "@services/theme";
-import { PrimeIcons } from "primeng/api";
+import { PrimeIcons, TooltipOptions } from "primeng/api";
 import { CardModule } from "primeng/card";
 import { ButtonModule } from "primeng/button";
 import { PanelModule } from "primeng/panel";
@@ -18,4 +18,9 @@ import { Card } from "@components/card/card";
 export class App {
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly themeService = inject(ThemeService);
+
+  protected readonly romanizeTooltip: TooltipOptions = {
+    tooltipPosition: "bottom",
+    tooltipStyleClass: "romanize-tooltip",
+  };
 }

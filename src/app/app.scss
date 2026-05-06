@@ -24,9 +24,10 @@ main > div > x-card {
   min-width: 32rem;
 }
 
-x-card > div {
+:host x-card ::ng-deep > .content {
   display: flex;
   justify-content: space-around;
+  background: red;
 
   section {
     h3 {

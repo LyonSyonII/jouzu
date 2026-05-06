@@ -16,7 +16,11 @@
     "module": "preserve",
     "baseUrl": "./src",
     "paths": {
-      "@libs/*": ["libs/*"],
+      "@app/*": ["app/*"],
+      "@services/*": ["libs/services/*"],
+      "@components/*": ["components/*"],
+      "@config/*": ["config/*"],
+      "@styles/*": ["styles/*"],
       "@/*": ["*"]
     }
   },
@@ -32,8 +36,5 @@
     {
       "path": "./tsconfig.app.json"
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
   ]
 }

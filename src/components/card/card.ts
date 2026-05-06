@@ -1,11 +1,12 @@
-import { booleanAttribute, Component, input } from "@angular/core";
+import { booleanAttribute, Component, input, ViewEncapsulation } from "@angular/core";
 import { DividerModule } from "primeng/divider";
 
 @Component({
   selector: "x-card",
   imports: [DividerModule],
   templateUrl: "./card.html",
-  styleUrl: "./card.scss"
+  styleUrl: "./card.scss",
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class Card {
   header = input<string>();

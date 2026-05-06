@@ -1,12 +1,12 @@
 import { Component, inject } from "@angular/core";
-import { ThemeService } from "@libs/theme/theme";
+import { ThemeService } from "@services/theme";
 import { PrimeIcons } from "primeng/api";
 import { CardModule } from "primeng/card";
 import { ButtonModule } from "primeng/button";
 import { PanelModule } from "primeng/panel";
 import { TooltipModule } from "primeng/tooltip";
 import { DividerModule } from "primeng/divider";
-import { Card } from "@libs/components/card/card";
+import { Card } from "@components/card/card";
 
 @Component({
   selector: "app-root",

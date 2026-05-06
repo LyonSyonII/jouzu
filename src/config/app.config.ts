@@ -3,7 +3,7 @@ import { provideRouter } from "@angular/router";
 import { providePrimeNG } from "primeng/config";
 import Aura from "@primeuix/themes/aura";
 
-import { routes } from "./app.routes";
+import { routes } from "../app/app.routes";
 import { provideClientHydration, withEventReplay } from "@angular/platform-browser";
 import { provideServiceWorker } from "@angular/service-worker";
 

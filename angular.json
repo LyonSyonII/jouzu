@@ -21,7 +21,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "src/main.ts",
+            "browser": "src/config/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -30,8 +30,8 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
-            "server": "src/main.server.ts",
+            "styles": ["src/styles/styles.scss"],
+            "server": "src/config/main.server.ts",
             "security": {
               "allowedHosts": []
             },

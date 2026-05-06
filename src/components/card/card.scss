@@ -4,14 +4,14 @@
   height: fit-content;
   width: fit-content;
   min-width: 8rem;
-  padding: var(--separation);
+  padding: var(--spacing);
 
-  background-color: var(--bg-content);
-  border-color: transparent;
-  border-width: var(--border-width);
-  border-radius: var(--border-radius);
+  background-color: var(--card);
+  border-color: var(--border);
+  border-width: 1px;
+  border-radius: var(--radius);
 
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
 
   h2 {
     margin: 0;

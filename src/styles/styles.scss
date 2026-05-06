@@ -1,13 +1,252 @@
 /* Global styles */
 
-body {
-  min-height: 100vh;
+:root {
+  /* Baseline Configuration (Light Mode) */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.1450 0 0);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.1450 0 0);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.1450 0 0);
+
+  --primary: oklch(0.2050 0 0);
+  --primary-foreground: oklch(0.9850 0 0);
+
+  --secondary: oklch(0.9700 0 0);
+  --secondary-foreground: oklch(0.2050 0 0);
+
+  --muted: oklch(0.9700 0 0);
+  --muted-foreground: oklch(0.5560 0 0);
+
+  --accent: oklch(0.9700 0 0);
+  --accent-foreground: oklch(0.2050 0 0);
+
+  --destructive: oklch(0.5770 0.2450 27.3250);
+  --destructive-foreground: oklch(1 0 0);
+
+  --border: oklch(0.9220 0 0);
+  --input: oklch(0.9220 0 0);
+  --ring: oklch(0.7080 0 0);
+
+  --chart-1: oklch(0.8100 0.1000 252);
+  --chart-2: oklch(0.6200 0.1900 260);
+  --chart-3: oklch(0.5500 0.2200 263);
+  --chart-4: oklch(0.4900 0.2200 264);
+  --chart-5: oklch(0.4200 0.1800 266);
+
+  --sidebar: oklch(0.9850 0 0);
+  --sidebar-foreground: oklch(0.1450 0 0);
+  --sidebar-primary: oklch(0.2050 0 0);
+  --sidebar-primary-foreground: oklch(0.9850 0 0);
+  --sidebar-accent: oklch(0.9700 0 0);
+  --sidebar-accent-foreground: oklch(0.2050 0 0);
+  --sidebar-border: oklch(0.9220 0 0);
+  --sidebar-ring: oklch(0.7080 0 0);
+
+  /* Typography Configuration */
+  --font-sans: "Inter", "Noto Sans JP", sans-serif;
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --tracking-normal: 0em;
+
+  /* Layout & Sizing Tokens */
+  --spacing: 0.25rem;
+  --padding: 1rem;
+  --radius: 0.625rem;
+
+  /* System Calculations (No Hardcoded Intermediary Values) */
+  --radius-sm: calc(var(--radius) - var(--spacing));
+  --radius-md: calc(var(--radius) - (var(--spacing) / 2));
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + var(--spacing));
+
+  /* Elevation Specs */
+  --shadow-color: 0, 0, 0;
+  --shadow-2xs: 0 1px 3px 0px rgba(var(--shadow-color), 0.05);
+  --shadow-xs: 0 1px 3px 0px rgba(var(--shadow-color), 0.05);
+  --shadow-sm: 0 1px 3px 0px rgba(var(--shadow-color), 0.10), 0 1px 2px -1px rgba(var(--shadow-color), 0.10);
+  --shadow: 0 1px 3px 0px rgba(var(--shadow-color), 0.10), 0 1px 2px -1px rgba(var(--shadow-color), 0.10);
+  --shadow-md: 0 1px 3px 0px rgba(var(--shadow-color), 0.10), 0 2px 4px -1px rgba(var(--shadow-color), 0.10);
+  --shadow-lg: 0 1px 3px 0px rgba(var(--shadow-color), 0.10), 0 4px 6px -1px rgba(var(--shadow-color), 0.10);
+  --shadow-xl: 0 1px 3px 0px rgba(var(--shadow-color), 0.10), 0 8px 10px -1px rgba(var(--shadow-color), 0.10);
+  --shadow-2xl: 0 1px 3px 0px rgba(var(--shadow-color), 0.25);
 }
 
-* {
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+/* Dark Mode Overrides */
+.dark {
+  --background: oklch(0.2100 0.0060 285.8850);
+  --foreground: oklch(0.9850 0 0);
+
+  --card: oklch(0.2410 0.0076 285.8190);
+  --card-foreground: oklch(0.9850 0 0);
+
+  --popover: oklch(0.2367 0.0076 285.8055);
+  --popover-foreground: oklch(0.9850 0 0);
+
+  --primary: oklch(0.9840 0.0030 247.8580);
+  --primary-foreground: oklch(0.2050 0 0);
+
+  --secondary: oklch(0.2740 0.0060 286.0330);
+  --secondary-foreground: oklch(0.9850 0 0);
+
+  --muted: oklch(0.2367 0.0076 285.8055);
+  --muted-foreground: oklch(0.7080 0 0);
+
+  --accent: oklch(0.2740 0.0060 286.0330);
+  --accent-foreground: oklch(0.9850 0 0);
+
+  --destructive: oklch(0.7040 0.1910 22.2160);
+  --destructive-foreground: oklch(0.9850 0 0);
+
+  --border: oklch(0.2750 0 0);
+  --input: oklch(0.3250 0 0);
+  --ring: oklch(0.5560 0 0);
+
+  --sidebar: oklch(0.2367 0.0076 285.8055);
+  --sidebar-foreground: oklch(0.9850 0 0);
+  --sidebar-primary: oklch(0.4880 0.2430 264.3760);
+  --sidebar-primary-foreground: oklch(0.9850 0 0);
+  --sidebar-accent: oklch(0.2740 0.0060 286.0330);
+  --sidebar-accent-foreground: oklch(0.9850 0 0);
+  --sidebar-border: oklch(0.2750 0 0);
+  --sidebar-ring: oklch(0.4390 0 0);
+}
+
+
+/* ==========================================================================
+   BROWSER RESET & PREFLIGHT STYLES RESTORATION
+   ========================================================================== */
+
+/* 1. Global Box-Sizing & Border Reset */
+*, 
+*::before, 
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border-style: solid;
+  border-color: var(--border);
+}
+
+/* 2. Global Baseline Restoration */
+html {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  line-height: inherit;
+  letter-spacing: var(--tracking-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 3. Typography Restoration */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 { font-size: calc(var(--spacing) * 8); }  /* 2rem */
+h2 { font-size: calc(var(--spacing) * 6); }  /* 1.5rem */
+h3 { font-size: calc(var(--spacing) * 5); }  /* 1.25rem */
+h4 { font-size: calc(var(--spacing) * 4); }  /* 1rem */
+
+p {
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+  
+  &:hover {
+    color: var(--ring);
+  }
+}
+
+/* 4. Interactive & Input Elements Theme Mapping */
+button, 
+input, 
+optgroup, 
+select, 
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  background-color: transparent;
+  outline: none;
+}
+
+button, 
+[role="button"] {
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: calc(var(--spacing) * 2.5) calc(var(--spacing) * 5);
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    opacity: 0.9;
+  }
+  
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+  }
+}
+
+/* Global Form Fields Configuration */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  background-color: var(--input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: calc(var(--spacing) * 2.5) calc(var(--spacing) * 4);
+  color: var(--foreground);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  
+  &::placeholder {
+    color: var(--muted-foreground);
+    opacity: 0.75;
+  }
+  
+  &:focus {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 1px var(--ring);
+  }
+}
+
+/* UI Layout Blocks Restoration */
+.card {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: calc(var(--spacing) * 6);
+  box-shadow: var(--shadow);
 }
 
 /* Fonts */
@@ -29,33 +268,3 @@ body {
 
 /* PrimeNG Classes */
 @import "primeicons/primeicons.css";
-
-:root {
-  /* --- Content & Layout Backgrounds --- */
-  --bg-content: var(--p-content-background);
-  --bg-content-hover: var(--p-content-hover-background);
-
-  /* --- Form Inputs & Deep Backgrounds --- */
-  --bg-input: var(--p-form-field-background);
-
-  /* --- Typography --- */
-  --text-main: var(--p-text-color, #18181b);
-  --text-muted: var(--p-text-muted-color);
-
-  /* --- Borders & Dividers --- */
-  --border-color: var(--p-content-border-color);
-  --border-width: 1px;
-  --border-radius: 12px;
-
-  /* --- Padding and Margin --- */
-  --separation: 2rem;
-
-  /* --- Selections & Highlights --- */
-  --bg-highlight: var(--p-highlight-background);
-  --text-highlight: var(--p-highlight-color);
-  --shadow: 0 1px 3px 0 rgba(0,0,0,0.1),0 1px 2px -1px rgba(0,0,0,0.1);
-
-  /* --- Brand Colors --- */
-  --primary: var(--p-primary-color);
-  --primary-contrast: var(--p-primary-contrast-color);
-}

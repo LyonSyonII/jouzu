@@ -6,11 +6,12 @@ import { ButtonModule } from "primeng/button";
 import { PanelModule } from "primeng/panel";
 import { TooltipModule } from "primeng/tooltip";
 import { DividerModule } from "primeng/divider";
+import { ToastModule } from "primeng/toast";
 import { Card } from "@components/card/card";
 
 @Component({
   selector: "app-root",
-  imports: [Card, DividerModule, PanelModule, TooltipModule, PanelModule, ButtonModule, CardModule],
+  imports: [Card, DividerModule, PanelModule, TooltipModule, PanelModule, ButtonModule, CardModule, ToastModule],
   templateUrl: "./app.html",
   styleUrl: "./app.scss",
 })

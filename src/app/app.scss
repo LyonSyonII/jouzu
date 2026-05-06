@@ -1,5 +1,5 @@
 main {
-  padding: var(--separation);
+  padding: var(--padding);
 }
 
 main > nav {
@@ -27,7 +27,7 @@ main > div > x-card {
 :host x-card ::ng-deep > .content {
   display: flex;
   justify-content: space-around;
-  background: red;
+  /* background: red; */
 
   section {
     h3 {

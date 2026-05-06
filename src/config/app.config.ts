@@ -1,11 +1,12 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from "@angular/core";
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode, importProvidersFrom } from "@angular/core";
 import { provideRouter } from "@angular/router";
 import { providePrimeNG } from "primeng/config";
+import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
-
-import { routes } from "../app/app.routes";
+import { routes } from "@app/app.routes";
 import { provideClientHydration, withEventReplay } from "@angular/platform-browser";
 import { provideServiceWorker } from "@angular/service-worker";
+import { MessageService } from "primeng/api";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       ripple: false,
       theme: {
-        preset: Aura,
+        preset: customPreset(),
         options: {
           prefix: "p",
           darkModeSelector: ".dark",
@@ -26,5 +27,80 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: "registerWhenStable:30000",
     }),
+    MessageService
   ],
 };
+
+function customPreset() {
+  return definePreset(Aura, {
+    semantic: {
+      colorScheme: {
+        light: {
+          primary: {
+            color: 'var(--primary)',
+            inverseColor: 'var(--primary-foreground)',
+            hoverColor: 'var(--primary)',
+            activeColor: 'var(--primary)'
+          },
+          highlight: {
+            background: 'var(--primary)',
+            focusBackground: 'var(--primary)',
+            color: 'var(--primary-foreground)',
+            focusColor: 'var(--primary-foreground)'
+          },
+          content: {
+            background: 'var(--card)',
+            hoverBackground: 'var(--muted)',
+            borderColor: 'var(--border)',
+            color: 'var(--card-foreground)'
+          },
+          formField: {
+            background: 'var(--input)',
+            borderColor: 'var(--border)',
+            color: 'var(--foreground)',
+            focusBorderColor: 'var(--ring)'
+          }
+        },
+        dark: {
+          primary: {
+            color: 'var(--primary)',
+            inverseColor: 'var(--primary-foreground)',
+            hoverColor: 'var(--primary)',
+            activeColor: 'var(--primary)'
+          },
+          highlight: {
+            background: 'var(--primary)',
+            focusBackground: 'var(--primary)',
+            color: 'var(--primary-foreground)',
+            focusColor: 'var(--primary-foreground)'
+          },
+          content: {
+            background: 'var(--card)',
+            hoverBackground: 'var(--muted)',
+            borderColor: 'var(--border)',
+            color: 'var(--card-foreground)'
+          },
+          formField: {
+            background: 'var(--input)',
+            borderColor: 'var(--border)',
+            color: 'var(--foreground)',
+            focusBorderColor: 'var(--ring)'
+          }
+        }
+      }
+    },
+    // components: {
+    //   // Explicitly target the Divider component to enforce your border variable
+    //   divider: {
+    //     colorScheme: {
+    //       light: {
+    //         root: { borderColor: 'var(--border)' }
+    //       },
+    //       dark: {
+    //         root: { borderColor: 'var(--border)' }
+    //       }
+    //     }
+    //   }
+    // }
+  });
+}

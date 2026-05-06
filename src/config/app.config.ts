@@ -89,18 +89,18 @@ function customPreset() {
         }
       }
     },
-    // components: {
-    //   // Explicitly target the Divider component to enforce your border variable
-    //   divider: {
-    //     colorScheme: {
-    //       light: {
-    //         root: { borderColor: 'var(--border)' }
-    //       },
-    //       dark: {
-    //         root: { borderColor: 'var(--border)' }
-    //       }
-    //     }
-    //   }
-    // }
+    components: {
+      // Explicitly target the Divider component to enforce your border variable
+      divider: {
+        colorScheme: {
+          light: {
+            root: { borderColor: 'var(--border)' }
+          },
+          dark: {
+            root: { borderColor: 'var(--border)' }
+          }
+        }
+      }
+    }
   });
 }

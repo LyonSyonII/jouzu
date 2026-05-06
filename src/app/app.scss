@@ -30,6 +30,7 @@ main > div > x-card {
   /* background: red; */
 
   section {
+    padding: var(--padding);
     h3 {
       margin-top: 0;
     }

@@ -1,8 +1,12 @@
-/* Global styles */
+/* 
+  Theme created with:
+  - https://tweakcn.com/editor 
+  - https://www.realtimecolors.com/?colors=040316-fbfbfe-4d003c-a9a8bd-58577a&fonts=Inter-Inter
+*/
 
 :root {
   /* Baseline Configuration (Light Mode) */
-  --background: oklch(1 0 0);
+  --background: oklch(0.9680 0.0070 247.8960);
   --foreground: oklch(0.1450 0 0);
 
   --card: oklch(1 0 0);
@@ -11,50 +15,50 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.1450 0 0);
 
-  --primary: oklch(0.2050 0 0);
-  --primary-foreground: oklch(0.9850 0 0);
+  --primary:#4d003c;
+  --primary-foreground: #a9a8bd;
 
-  --secondary: oklch(0.9700 0 0);
-  --secondary-foreground: oklch(0.2050 0 0);
+  --secondary: var(--primary-foreground);
+  --secondary-foreground: var(--primary);
 
-  --muted: oklch(0.9700 0 0);
+  --muted: oklch(1 0 0);
   --muted-foreground: oklch(0.5560 0 0);
 
-  --accent: oklch(0.9700 0 0);
+  --accent: oklch(0.9520 0.0370 318.8520);
   --accent-foreground: oklch(0.2050 0 0);
 
   --destructive: oklch(0.5770 0.2450 27.3250);
   --destructive-foreground: oklch(1 0 0);
 
   --border: oklch(0.9220 0 0);
-  --input: oklch(0.9220 0 0);
+  --input: oklch(0.8330 0.1450 321.4340);
   --ring: oklch(0.7080 0 0);
 
-  --chart-1: oklch(0.8100 0.1000 252);
-  --chart-2: oklch(0.6200 0.1900 260);
-  --chart-3: oklch(0.5500 0.2200 263);
-  --chart-4: oklch(0.4900 0.2200 264);
-  --chart-5: oklch(0.4200 0.1800 266);
+  --chart-1: oklch(0.9030 0.0760 319.6200);
+  --chart-2: oklch(0.7400 0.2380 322.1600);
+  --chart-3: oklch(0.6670 0.2950 322.1500);
+  --chart-4: oklch(0.5910 0.2930 322.8960);
+  --chart-5: oklch(0.5180 0.2530 323.9490);
 
-  --sidebar: oklch(0.9850 0 0);
+  --sidebar: oklch(0.9680 0.0070 247.8960);
   --sidebar-foreground: oklch(0.1450 0 0);
-  --sidebar-primary: oklch(0.2050 0 0);
-  --sidebar-primary-foreground: oklch(0.9850 0 0);
-  --sidebar-accent: oklch(0.9700 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9520 0.0370 318.8520);
   --sidebar-accent-foreground: oklch(0.2050 0 0);
   --sidebar-border: oklch(0.9220 0 0);
   --sidebar-ring: oklch(0.7080 0 0);
 
   /* Typography Configuration */
-  --font-sans: "Inter", "Noto Sans JP", sans-serif;
-  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Inter", ui-sans-serif, sans-serif, system-ui;
+  --font-serif: "Abhaya Libre", ui-serif, serif;
+  --font-mono: "Roboto Mono", ui-monospace, monospace;
   --tracking-normal: 0em;
 
   /* Layout & Sizing Tokens */
   --spacing: 0.25rem;
   --padding: 1rem;
-  --radius: 0.625rem;
+  --radius: 0.5rem;
 
   /* System Calculations (No Hardcoded Intermediary Values) */
   --radius-sm: calc(var(--radius) - var(--spacing));
@@ -76,25 +80,25 @@
 
 /* Dark Mode Overrides */
 .dark {
-  --background: oklch(0.2100 0.0060 285.8850);
+  --background: oklch(0.1450 0 0);
   --foreground: oklch(0.9850 0 0);
 
-  --card: oklch(0.2410 0.0076 285.8190);
+  --card: oklch(0.2050 0 0);
   --card-foreground: oklch(0.9850 0 0);
 
-  --popover: oklch(0.2367 0.0076 285.8055);
+  --popover: oklch(0.2690 0 0);
   --popover-foreground: oklch(0.9850 0 0);
 
-  --primary: oklch(0.9840 0.0030 247.8580);
-  --primary-foreground: oklch(0.2050 0 0);
+  --primary: #ffb3ee;
+  --primary-foreground: #434257;
 
-  --secondary: oklch(0.2740 0.0060 286.0330);
-  --secondary-foreground: oklch(0.9850 0 0);
+  --secondary: var(--primary-foreground);
+  --secondary-foreground: var(--primary);
 
-  --muted: oklch(0.2367 0.0076 285.8055);
+  --muted: oklch(0.2690 0 0);
   --muted-foreground: oklch(0.7080 0 0);
 
-  --accent: oklch(0.2740 0.0060 286.0330);
+  --accent: #8685a7;
   --accent-foreground: oklch(0.9850 0 0);
 
   --destructive: oklch(0.7040 0.1910 22.2160);
@@ -104,22 +108,23 @@
   --input: oklch(0.3250 0 0);
   --ring: oklch(0.5560 0 0);
 
-  --sidebar: oklch(0.2367 0.0076 285.8055);
+  --chart-1: oklch(0.8100 0.1000 252);
+  --chart-2: oklch(0.6200 0.1900 260);
+  --chart-3: oklch(0.5500 0.2200 263);
+  --chart-4: oklch(0.4900 0.2200 264);
+  --chart-5: oklch(0.4200 0.1800 266);
+
+  --sidebar: oklch(0.2050 0 0);
   --sidebar-foreground: oklch(0.9850 0 0);
   --sidebar-primary: oklch(0.4880 0.2430 264.3760);
   --sidebar-primary-foreground: oklch(0.9850 0 0);
-  --sidebar-accent: oklch(0.2740 0.0060 286.0330);
+  --sidebar-accent: oklch(0.2690 0 0);
   --sidebar-accent-foreground: oklch(0.9850 0 0);
   --sidebar-border: oklch(0.2750 0 0);
   --sidebar-ring: oklch(0.4390 0 0);
 }
 
-
-/* ==========================================================================
-   BROWSER RESET & PREFLIGHT STYLES RESTORATION
-   ========================================================================== */
-
-/* 1. Global Box-Sizing & Border Reset */
+/* Global Box-Sizing & Border Reset */
 *, 
 *::before, 
 *::after {
@@ -206,7 +211,7 @@ button,
   justify-content: center;
   
   &:hover {
-    opacity: 0.9;
+    opacity: 0.8;
   }
   
   &:focus-visible {
@@ -250,7 +255,6 @@ select {
 }
 
 /* Fonts */
-
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/600.css";
 @import "@fontsource/noto-sans-jp/400.css";
@@ -268,3 +272,9 @@ body {
 
 /* PrimeNG Classes */
 @import "primeicons/primeicons.css";
+
+/* Animations */
+* {
+  transition-property: color, background-color, border-color, background;
+  transition-duration: 0.25s;
+}

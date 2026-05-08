@@ -1,6 +1,6 @@
 // DISCLAIMER:
 // This file has been generated with AI.
-// There's no way I'm mapping everything manually.
+// There's no way I'm mapping everything by hand.
 // I did my best to format it to be legible, though (manually, because AI is stupid and can't see).
 
 /* @formatter:off */

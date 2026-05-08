@@ -7,11 +7,22 @@ import { PanelModule } from "primeng/panel";
 import { TooltipModule } from "primeng/tooltip";
 import { DividerModule } from "primeng/divider";
 import { ToastModule } from "primeng/toast";
+import { SelectModule } from "primeng/select";
 import { Card } from "@components/card/card";
 
 @Component({
   selector: "app-root",
-  imports: [Card, DividerModule, PanelModule, TooltipModule, PanelModule, ButtonModule, CardModule, ToastModule],
+  imports: [
+    Card,
+    DividerModule,
+    SelectModule,
+    PanelModule,
+    TooltipModule,
+    PanelModule,
+    ButtonModule,
+    CardModule,
+    ToastModule,
+  ],
   templateUrl: "./app.html",
   styleUrl: "./app.scss",
 })
@@ -20,7 +31,7 @@ export class App {
   protected readonly themeService = inject(ThemeService);
 
   protected readonly romanizeTooltip: TooltipOptions = {
-    tooltipPosition: "bottom",
+    tooltipPosition: "top",
     tooltipStyleClass: "romanize-tooltip",
   };
 }

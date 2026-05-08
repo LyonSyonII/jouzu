@@ -1,6 +1,6 @@
 /*
   Theme created with:
-  - https://tweakcn.com/editor
+  - https://tweakcn.com/themes/cmovwaeos000004kzfw9b6o80
   - https://www.realtimecolors.com/?colors=040316-fbfbfe-4d003c-a9a8bd-58577a&fonts=Inter-Inter
 */
 
@@ -15,10 +15,10 @@
 
 :root {
   /* Baseline Configuration (Light Mode) */
-  --background: oklch(0.968 0.007 247.896);
+  --background: #fff;
   --foreground: oklch(0.145 0 0);
 
-  --card: oklch(1 0 0);
+  --card: var(--background);
   --card-foreground: oklch(0.145 0 0);
 
   --popover: oklch(1 0 0);
@@ -26,10 +26,10 @@
 
   /* --primary:oklch(0.501 0.4 340.2); */
   --primary: #c3368c;
-  --primary-foreground: #a9a8bd;
+  --primary-foreground: var(--background);
 
-  --secondary: var(--primary-foreground);
-  --secondary-foreground: var(--primary);
+  --secondary: oklch(0.952 0.037 318.852);
+  --secondary-foreground: oklch(0 0 0);
 
   --muted: oklch(1 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -41,7 +41,7 @@
   --destructive-foreground: oklch(1 0 0);
 
   --border: oklch(0.922 0 0);
-  --input: oklch(0.833 0.145 321.434);
+  --input: var(--secondary);
   --ring: oklch(0.708 0 0);
 
   --chart-1: oklch(0.903 0.076 319.62);
@@ -159,15 +159,13 @@ $transition-props: (
 }
 
 /* Global Animations */
-* {
+* :not(.p-tooltip) {
   @include theme-transition;
 }
 
 /* Force PrimeNG components to respect the mixin */
-body .p-component, 
-body .p-component *, 
-body .p-component::before, 
-body .p-component::after {
+body .p-button,
+body .p-divider::before {
   @include theme-transition;
 }
 

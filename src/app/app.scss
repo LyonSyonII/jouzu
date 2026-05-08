@@ -29,7 +29,6 @@ main > div > x-card {
     display: grid;
     grid-template-columns: 1fr 1px 1fr;
     justify-items: center;
-  
     section {
       padding: var(--padding);
       h3 {
@@ -49,7 +48,6 @@ main > div > x-card {
   }
 }
 
-
 /* section > x-card:nth-child(odd) {
   justify-self: right;
 }
@@ -57,4 +55,3 @@ main > div > x-card {
 section > x-card:nth-child(even) {
   justify-self: left;
 } */
-

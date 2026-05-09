@@ -198,3 +198,7 @@ export const fromKatakana = {
   [katakana.bya[0]]: 'bya',                          [katakana.bya[2]]: 'byu',                         [katakana.bya[4]]: 'byo',
   [katakana.pya[0]]: 'pya',                          [katakana.pya[2]]: 'pyu',                         [katakana.pya[4]]: 'pyo'
 } as const;
+
+export type HiraganaChar = typeof toHiragana[keyof typeof toHiragana];
+export type KatakanaChar = typeof toKatakana[keyof typeof toKatakana];
+export type KanaChar = HiraganaChar | KatakanaChar;

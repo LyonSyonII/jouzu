@@ -35,8 +35,10 @@
             "security": {
               "allowedHosts": []
             },
-            "outputMode": "static",
-            "ssr": false
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/config/main.server.ts"
+            }
           },
           "configurations": {
             "production": {

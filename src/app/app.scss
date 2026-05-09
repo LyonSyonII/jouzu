@@ -30,10 +30,15 @@ main > div > x-card {
     grid-template-columns: 1fr 1px 1fr;
     justify-items: center;
     section {
-      padding: var(--padding);
+      display: grid;
+      justify-items: center;
+      
       h3 {
-        margin-top: 0;
+        text-align: center;
       }
+    }
+    p-divider {
+      margin: var(--padding); /* TODO: Does not work */
     }
   }
 }
@@ -41,12 +46,48 @@ main > div > x-card {
 ::ng-deep .romanize-tooltip.p-tooltip {
   font-weight: 900;
 
-  .p-tooltip-text {
+  /* .p-tooltip-text {
     padding: 0.15rem;
     padding-left: 0.45rem;
     padding-right: 0.45rem;
+  } */
+}
+
+:host {
+  --grid-gap: calc(var(--spacing));
+}
+
+fieldset.character-table {
+  margin-top: var(--padding);
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  align-items: center;
+  justify-items: end;
+  gap: var(--grid-gap);
+
+  background-color: wheat;
+
+  div.character-table-row {
+    display: grid;
+    grid-template-columns: repeat(5, 42px);
+    grid-template-rows: 42px;
+    gap: var(--grid-gap);
+  
+    background-color: aquamarine;
   }
 }
+
+/* :host .character-row-checkbox ::ng-deep {
+  height: 32px;
+  width: 32px;
+  .p-togglebutton-content {
+    height: 24px;
+    width: 24px;
+  }
+  .p-togglebutton-label {
+    display: none;
+  }
+} */
 
 /* section > x-card:nth-child(odd) {
   justify-self: right;

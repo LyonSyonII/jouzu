@@ -38,10 +38,6 @@ main > div > x-card {
       }
     }
   }
-
-  .character-toggle {
-    font-weight: var(--bold);
-  }
 }
 
 ::ng-deep .romanize-tooltip {
@@ -58,43 +54,28 @@ main > div > x-card {
   --grid-gap: calc(var(--spacing));
 }
 
-fieldset.character-table {
+fieldset.char-table {
   margin-top: var(--padding);
   margin-right: var(--padding);
   display: grid;
-  grid-template-columns: 32px 1fr;
+  grid-template-columns: 32px repeat(5, 1fr);
   align-items: center;
   justify-items: start;
-  gap: var(--grid-gap);
 
-  // background-color: wheat;
+  row-gap: var(--spacing);
 
-  div.character-table-row {
-    display: grid;
-    grid-template-columns: repeat(5, 42px);
-    grid-template-rows: 42px;
-    gap: var(--grid-gap);
-
-    // background-color: aquamarine;
+  ::ng-deep {
+    .char-toggle {
+      font-weight: var(--bold);
+    }
+    
+    p-togglebutton:has(+ p-togglebutton) {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+    }
+    p-togglebutton + p-togglebutton {
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+    }
   }
 }
-
-/* :host .character-row-checkbox ::ng-deep {
-  height: 32px;
-  width: 32px;
-  .p-togglebutton-content {
-    height: 24px;
-    width: 24px;
-  }
-  .p-togglebutton-label {
-    display: none;
-  }
-} */
-
-/* section > x-card:nth-child(odd) {
-  justify-self: right;
-}
-
-section > x-card:nth-child(even) {
-  justify-self: left;
-} */

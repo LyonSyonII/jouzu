@@ -23,18 +23,16 @@
       <section>
         <h3 pTooltip="hiragana" [tooltipOptions]="romanizeTooltip">ひらがな</h3>
 
-        <fieldset class="character-table">
-          @for (characterRow of hiragana; track characterRow.i) {
-            <p-checkbox  class="character-row-checkbox" />
-            <div class="character-table-row">
-              @for (character of characterRow.row; track character.j) {
-                @if (character.char) {
-                  <p-togglebutton class="character-toggle" [onLabel]="character.char" [offLabel]="character.char" />
+        <fieldset class="char-table">
+          @for (charRow of hiragana; track charRow.i) {
+            <p-checkbox class="char-row-check" (onChange)="charRow" />
+              @for (char of charRow.row; track char.j) {
+                @if (char.char) {
+                  <p-togglebutton class="char-toggle" [onLabel]="char.char" [offLabel]="char.char" />
                 } @else {
                   <div></div>
                 }
               }
-            </div>
           }
         </fieldset>
         <!-- Add hiragana character list -->

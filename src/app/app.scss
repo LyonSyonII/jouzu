@@ -32,19 +32,20 @@ main > div > x-card {
     section {
       display: grid;
       justify-items: center;
-      
+
       h3 {
         text-align: center;
       }
     }
-    p-divider {
-      margin: var(--padding); /* TODO: Does not work */
-    }
+  }
+
+  .character-toggle {
+    font-weight: var(--bold);
   }
 }
 
-::ng-deep .romanize-tooltip.p-tooltip {
-  font-weight: 900;
+::ng-deep .romanize-tooltip {
+  font-weight: var(--bold);
 
   /* .p-tooltip-text {
     padding: 0.15rem;
@@ -73,7 +74,7 @@ fieldset.character-table {
     grid-template-columns: repeat(5, 42px);
     grid-template-rows: 42px;
     gap: var(--grid-gap);
-  
+
     // background-color: aquamarine;
   }
 }

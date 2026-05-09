@@ -36,6 +36,13 @@ main > div > x-card {
       h3 {
         text-align: center;
       }
+
+      &:first-child {
+        margin-right: var(--padding);
+      }
+      &:last-child {
+        margin-left: var(--padding);
+      }
     }
   }
 }
@@ -56,7 +63,6 @@ main > div > x-card {
 
 fieldset.char-table {
   margin-top: var(--padding);
-  margin-right: var(--padding);
   display: grid;
   grid-template-columns: 32px repeat(5, 1fr);
   align-items: center;
@@ -68,7 +74,7 @@ fieldset.char-table {
     .char-toggle {
       font-weight: var(--bold);
     }
-    
+
     p-togglebutton:has(+ p-togglebutton) {
       border-start-end-radius: 0;
       border-end-end-radius: 0;

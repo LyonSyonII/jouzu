@@ -6,8 +6,8 @@ import { TooltipModule } from "primeng/tooltip";
 @Component({
   selector: "x-card",
   imports: [DividerModule, TooltipModule],
-  templateUrl: "./card.html",
-  styleUrl: "./card.scss",
+  templateUrl: "./card.component.html",
+  styleUrl: "./card.component.scss",
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class Card {

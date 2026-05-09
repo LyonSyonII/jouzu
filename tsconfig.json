@@ -18,7 +18,8 @@
     "paths": {
       "@app/*": ["app/*"],
       "@services/*": ["libs/services/*"],
-      "@components/*": ["components/*"],
+      "@components/*": ["libs/components/*"],
+      "@shared/*": ["libs/shared/*"],
       "@config/*": ["config/*"],
       "@styles/*": ["styles/*"],
       "@/*": ["*"]

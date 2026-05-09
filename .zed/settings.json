@@ -11,18 +11,18 @@
       "language_servers": ["!typescript-language-server", "!eslint", "angular", "vtsls", "..."],
     },
     "HTML": {
-      "colorize_brackets": true,
-      "semantic_tokens": "combined",
       "language_servers": ["angular", "..."],
       "formatter": {
         "external": {
-          "command": "pnpm",
-          "arguments": ["prettier", "--stdin-filepath", "{buffer_path}", "--parser", "angular"],
-        },
-      },
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}", "--parser", "angular"]
+        }
+      }
+    },
+    "Angular": {
     },
     "CSS": {
-      "language_servers": ["css-variables", "!vscode-css-language-server"],
-    },
-  },
+      "language_servers": ["css-variables", "!vscode-css-language-server"]
+    }
+  }
 }

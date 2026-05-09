@@ -25,6 +25,7 @@
             typescript
             angular-language-server
             jujutsu
+            prettier
           ];
 
           buildInputs = with pkgs; [

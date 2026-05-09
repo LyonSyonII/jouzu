@@ -46,6 +46,6 @@ export class ThemeService {
   }
 
   public isDarkMode(): boolean {
-    return this._theme() === "dark"
+    return this._theme() === "dark";
   }
 }

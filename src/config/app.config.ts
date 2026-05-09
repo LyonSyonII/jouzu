@@ -1,4 +1,9 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode, importProvidersFrom } from "@angular/core";
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  isDevMode,
+  importProvidersFrom,
+} from "@angular/core";
 import { provideRouter } from "@angular/router";
 import { providePrimeNG } from "primeng/config";
 import { definePreset } from "@primeuix/themes";
@@ -27,7 +32,7 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: "registerWhenStable:30000",
     }),
-    MessageService
+    MessageService,
   ],
 };
 
@@ -37,70 +42,70 @@ function customPreset() {
       colorScheme: {
         light: {
           primary: {
-            color: 'var(--primary)',
-            inverseColor: 'var(--primary-foreground)',
-            hoverColor: 'var(--primary)',
-            activeColor: 'var(--primary)'
+            color: "var(--primary)",
+            inverseColor: "var(--primary-foreground)",
+            hoverColor: "var(--primary)",
+            activeColor: "var(--primary)",
           },
           highlight: {
-            background: 'var(--primary)',
-            focusBackground: 'var(--primary)',
-            color: 'var(--primary-foreground)',
-            focusColor: 'var(--primary-foreground)'
+            background: "var(--primary)",
+            focusBackground: "var(--primary)",
+            color: "var(--primary-foreground)",
+            focusColor: "var(--primary-foreground)",
           },
           content: {
-            background: 'var(--card)',
-            hoverBackground: 'var(--muted)',
-            borderColor: 'var(--border)',
-            color: 'var(--card-foreground)'
+            background: "var(--card)",
+            hoverBackground: "var(--muted)",
+            borderColor: "var(--border)",
+            color: "var(--card-foreground)",
           },
           formField: {
-            background: 'var(--input)',
-            borderColor: 'var(--border)',
-            color: 'var(--foreground)',
-            focusBorderColor: 'var(--ring)'
-          }
+            background: "var(--input)",
+            borderColor: "var(--border)",
+            color: "var(--foreground)",
+            focusBorderColor: "var(--ring)",
+          },
         },
         dark: {
           primary: {
-            color: 'var(--primary)',
-            inverseColor: 'var(--primary-foreground)',
-            hoverColor: 'var(--primary)',
-            activeColor: 'var(--primary)'
+            color: "var(--primary)",
+            inverseColor: "var(--primary-foreground)",
+            hoverColor: "var(--primary)",
+            activeColor: "var(--primary)",
           },
           highlight: {
-            background: 'var(--primary)',
-            focusBackground: 'var(--primary)',
-            color: 'var(--primary-foreground)',
-            focusColor: 'var(--primary-foreground)'
+            background: "var(--primary)",
+            focusBackground: "var(--primary)",
+            color: "var(--primary-foreground)",
+            focusColor: "var(--primary-foreground)",
           },
           content: {
-            background: 'var(--card)',
-            hoverBackground: 'var(--muted)',
-            borderColor: 'var(--border)',
-            color: 'var(--card-foreground)'
+            background: "var(--card)",
+            hoverBackground: "var(--muted)",
+            borderColor: "var(--border)",
+            color: "var(--card-foreground)",
           },
           formField: {
-            background: 'var(--input)',
-            borderColor: 'var(--border)',
-            color: 'var(--foreground)',
-            focusBorderColor: 'var(--ring)'
-          }
-        }
-      }
+            background: "var(--input)",
+            borderColor: "var(--border)",
+            color: "var(--foreground)",
+            focusBorderColor: "var(--ring)",
+          },
+        },
+      },
     },
     components: {
       // Explicitly target the Divider component to enforce your border variable
       divider: {
         colorScheme: {
           light: {
-            root: { borderColor: 'var(--border)' }
+            root: { borderColor: "var(--border)" },
           },
           dark: {
-            root: { borderColor: 'var(--border)' }
-          }
-        }
-      }
-    }
+            root: { borderColor: "var(--border)" },
+          },
+        },
+      },
+    },
   });
 }

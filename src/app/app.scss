@@ -59,13 +59,14 @@ main > div > x-card {
 
 fieldset.character-table {
   margin-top: var(--padding);
+  margin-right: var(--padding);
   display: grid;
   grid-template-columns: 32px 1fr;
   align-items: center;
-  justify-items: end;
+  justify-items: start;
   gap: var(--grid-gap);
 
-  background-color: wheat;
+  // background-color: wheat;
 
   div.character-table-row {
     display: grid;
@@ -73,7 +74,7 @@ fieldset.character-table {
     grid-template-rows: 42px;
     gap: var(--grid-gap);
   
-    background-color: aquamarine;
+    // background-color: aquamarine;
   }
 }
 

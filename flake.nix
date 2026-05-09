@@ -24,6 +24,7 @@
             nodejs
             typescript
             angular-language-server
+            jujutsu
           ];
 
           buildInputs = with pkgs; [

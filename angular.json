@@ -31,13 +31,16 @@
               }
             ],
             "styles": ["src/styles/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/"]
+            },
             "server": "src/config/main.server.ts",
             "security": {
-              "allowedHosts": []
+              "allowedHosts": ["localhost"]
             },
             "outputMode": "server",
             "ssr": {
-              "entry": "src/config/main.server.ts"
+              "entry": "src/config/server.ts"
             }
           },
           "configurations": {

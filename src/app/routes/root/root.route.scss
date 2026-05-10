@@ -1,3 +1,9 @@
+@use 'variables' as *;
+
+::ng-deep .romanize-tooltip {
+  font-weight: var(--bold);
+}
+
 main {
   padding: var(--padding);
 }
@@ -17,44 +23,59 @@ main > div {
   width: 100%;
   display: grid;
   justify-content: center;
-}
-
-main > div > x-card {
-  width: 100%;
-  min-width: 32rem;
+  margin-top: var(--padding);
 }
 
 :host ::ng-deep {
   x-card > .content {
     display: grid;
-    grid-template-columns: 1fr 1px 1fr;
+    grid-template-columns: 1fr;
+    gap: 0;
     justify-items: center;
+
     section {
+      width: max-content;
       display: grid;
       justify-items: center;
 
       h3 {
+        text-wrap: nowrap;
         text-align: center;
       }
+    }
 
-      &:first-child {
-        margin-right: var(--padding);
+    section:first-child {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--padding);
+      margin-bottom: var(--padding);
+    }
+
+    @media (min-width: $desktop-size) {
+      & {
+        --desktop-padding: calc(var(--padding) * 2);
+        grid-template-columns: 1fr 1fr;
+        padding: var(--desktop-padding);
       }
-      &:last-child {
-        margin-left: var(--padding);
+
+      & section:first-child {
+        /* Reset mobile bottom border */
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+
+        /* Add padding to grid center */
+        padding-right: calc(var(--desktop-padding) + var(--padding));
+        
+        /* Apply desktop right border */
+        border-right: 1px solid var(--border);
+      }
+
+      & section:last-child {
+        /* Add padding to grid center */
+        padding-left: calc(var(--desktop-padding) + var(--padding));
       }
     }
   }
-}
-
-::ng-deep .romanize-tooltip {
-  font-weight: var(--bold);
-
-  /* .p-tooltip-text {
-    padding: 0.15rem;
-    padding-left: 0.45rem;
-    padding-right: 0.45rem;
-  } */
 }
 
 :host {
@@ -71,11 +92,8 @@ fieldset.char-table {
   row-gap: var(--spacing);
 
   ::ng-deep {
-    .char-toggle {
-      font-weight: var(--bold);
-    }
-
     p-togglebutton {
+      font-weight: var(--bold);
       border-color: transparent;
     }
     p-togglebutton:has(+ p-togglebutton) {

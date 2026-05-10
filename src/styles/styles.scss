@@ -2,6 +2,8 @@
   Theme created with:
   - https://tweakcn.com/themes/cmovwaeos000004kzfw9b6o80
   - https://www.realtimecolors.com/?colors=040316-fbfbfe-4d003c-a9a8bd-58577a&fonts=Inter-Inter
+
+  AI has been used to generate certain repetitive sections.
 */
 
 /* PrimeNG Classes */
@@ -24,7 +26,6 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
 
-  /* --primary:oklch(0.501 0.4 340.2); */
   --primary: #c3368c;
   --primary-foreground: var(--background);
 
@@ -130,10 +131,6 @@ $transition-props: (
   transition-timing-function: ease;
 }
 
-body {
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.001);
-}
-
 /* Global Animations */
 // Core Layout & Containers
 html, body, main, section, nav, header, footer, article, aside, 
@@ -177,7 +174,7 @@ $primeng-surfaces:
   border-color: var(--border);
 }
 
-/* 2. Global Baseline Restoration */
+/* Global Baseline Restoration */
 html {
   font-family: var(--font-sans);
   line-height: 1.5;
@@ -197,7 +194,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 3. Typography Restoration */
+/* Typography Restoration */
 h1,
 h2,
 h3,
@@ -237,7 +234,7 @@ a {
   }
 }
 
-/* 4. Interactive & Input Elements Theme Mapping */
+/* Interactive & Input Elements Theme Mapping */
 button,
 input,
 optgroup,

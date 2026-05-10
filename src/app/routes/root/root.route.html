@@ -27,8 +27,6 @@
         />
       </section>
 
-      <p-divider layout="vertical" />
-
       <section>
         <h3 pTooltip="katakana" [tooltipOptions]="romanizeTooltip">カタカナ</h3>
         <ng-container
@@ -44,7 +42,6 @@
   <fieldset class="char-table">
     @for (selected of selectedRows; track selected.i) {
       <p-checkbox
-        class="char-row-check"
         [binary]="true"
         [ngModel]="selected.row.partial"
         [checkboxIcon]="selected.row.fully ? PrimeIcons.CHECK : PrimeIcons.MINUS"
@@ -53,8 +50,7 @@
       />
       @for (char of selected.row.chars; track char.j) {
         @if (char.char) {
-          <p-toggleButton
-            class="char-toggle"
+          <p-togglebutton
             [onLabel]="char.char"
             [offLabel]="char.char"
             [ngModel]="char.selected"

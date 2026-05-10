@@ -1,9 +1,8 @@
 :host {
   display: grid;
 
-  height: fit-content;
-  width: fit-content;
-  min-width: 8rem;
+  height: max-content;
+  width: max-content;
   padding: var(--padding);
 
   background-color: var(--card);

@@ -106,6 +106,44 @@ function customPreset() {
           },
         },
       },
+      togglebutton: {
+              colorScheme: {
+                light: {
+                  root: {
+                    background: "var(--input)",
+                    hoverBackground: "var(--muted)",
+                    checkedBackground: "var(--input)",
+                    color: "var(--foreground)",
+                    hoverColor: "var(--primary)",
+                    checkedColor: "var(--primary)",
+                    borderColor: "var(--border)",
+                    checkedBorderColor: "var(--primary)",
+                  },
+                  icon: {
+                    color: "var(--foreground)",
+                    hoverColor: "var(--foreground)",
+                    checkedColor: "var(--primary-foreground)",
+                  }
+                },
+                dark: {
+                  root: {
+                    background: "var(--input)",
+                    hoverBackground: "var(--muted)",
+                    checkedBackground: "var(--input)",
+                    color: "var(--foreground)",
+                    hoverColor: "var(--primary)",
+                    checkedColor: "var(--primary)",
+                    borderColor: "var(--border)",
+                    checkedBorderColor: "var(--primary)",
+                  },
+                  icon: {
+                    color: "var(--foreground)",
+                    hoverColor: "var(--foreground)",
+                    checkedColor: "var(--primary-foreground)",
+                  }
+                }
+        },
+      },
     },
   });
 }

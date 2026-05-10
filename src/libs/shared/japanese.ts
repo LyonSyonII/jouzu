@@ -199,6 +199,16 @@ export const fromKatakana = {
   [katakana.pya[0]]: 'pya',                          [katakana.pya[2]]: 'pyu',                         [katakana.pya[4]]: 'pyo'
 } as const;
 
+export type Hiragana = typeof hiragana;
+export type Katakana = typeof katakana;
+export type Kana<K> = K extends keyof Hiragana ? Record<K, HiraganaChar> : K extends keyof Katakana ? Record<K, KatakanaChar> : never;
+
 export type HiraganaChar = (typeof toHiragana)[keyof typeof toHiragana];
 export type KatakanaChar = (typeof toKatakana)[keyof typeof toKatakana];
 export type KanaChar = HiraganaChar | KatakanaChar;
+
+export type FromHiragana = typeof fromHiragana;
+export type FromKatakana = typeof fromKatakana;
+export type KanaTable<C extends KanaChar> = Readonly<Record<string, readonly (C | null)[]>>;
+export type KanaToRomajiMap<C extends KanaChar> = Readonly<Record<C, Romaji>>;
+export type Romaji = (typeof fromHiragana)[HiraganaChar] | (typeof fromKatakana)[KatakanaChar];

@@ -29,6 +29,7 @@
     "@primeuix/themes": "^2.0.3",
     "express": "^5.2.1",
     "fzstd": "^0.1.1",
+    "idb-keyval": "^6.2.2",
     "primeicons": "^7.0.0",
     "primeng": "^21.1.6",
     "rxjs": "~7.8.2",

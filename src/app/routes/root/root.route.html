@@ -55,6 +55,7 @@
             [offLabel]="char.char"
             [ngModel]="char.selected"
             (onChange)="toggleCharacter(char.char)"
+            [pTooltip]="char.romaji ?? undefined"
           />
         } @else {
           <div></div>

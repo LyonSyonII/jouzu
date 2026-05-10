@@ -2,7 +2,6 @@ import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
   isDevMode,
-  importProvidersFrom,
 } from "@angular/core";
 import { provideRouter } from "@angular/router";
 import { providePrimeNG } from "primeng/config";

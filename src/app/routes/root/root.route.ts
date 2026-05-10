@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from "@angular/core";
+import { Component, computed, inject } from "@angular/core";
 import { ThemeService } from "@services/theme";
 import { PrimeIcons, TooltipOptions } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -7,9 +7,10 @@ import { TooltipModule } from "primeng/tooltip";
 import { DividerModule } from "primeng/divider";
 import { CheckboxModule } from "primeng/checkbox";
 import { Card } from "@components/card/card.component";
-import { hiragana, katakana, KanaChar } from "@shared/japanese";
+import { hiragana, katakana, KanaChar, fromKatakana, fromHiragana, Romaji, KanaTable, KanaToRomajiMap } from "@shared/japanese";
 import { FormsModule } from "@angular/forms";
 import { NgTemplateOutlet } from "@angular/common";
+import { storage } from "@/libs/signals/storage.signal";
 
 @Component({
   selector: "x-root",
@@ -38,20 +39,20 @@ export class Root {
 
   // TODO: Remove specific rows for dakuten and combined, and add "toggle dakuten" + "toggle combined" buttons
   // TODO: Add "random" button
-  protected readonly hiragana = this.enumerateRowsChars(hiragana, 11);
-  protected readonly katakana = this.enumerateRowsChars(katakana, 11);
+  protected readonly hiragana = this.enumerateRowsChars(hiragana, fromHiragana, 11);
+  protected readonly katakana = this.enumerateRowsChars(katakana, fromKatakana, 11);
 
-  protected readonly selectedCharacters = signal(new Set<KanaChar>());
+  protected readonly selectedKana = storage("selected-kana",  new Set<KanaChar>());
   protected readonly hiraganaSelected = computed(() =>
-    this.getRowsWithSelected(this.selectedCharacters(), this.hiragana)
+    this.getRowsWithSelected(this.selectedKana(), this.hiragana)
   );
   protected readonly katakanaSelected = computed(() =>
-    this.getRowsWithSelected(this.selectedCharacters(), this.katakana)
+    this.getRowsWithSelected(this.selectedKana(), this.katakana)
   );
-  protected readonly asSelectedChars = (value: any) => value as ReturnType<typeof this.getRowsWithSelected>;
+  protected readonly asSelectedChars = <C extends KanaChar>(value: unknown) => value as KanaRowSelection<C>[];
 
   protected toggleCharacter(char: KanaChar) {
-    this.selectedCharacters.update((chars) => {
+    this.selectedKana.update((chars) => {
       if (chars.has(char)) chars.delete(char);
       else chars.add(char);
       return new Set<KanaChar>(chars);
@@ -59,7 +60,7 @@ export class Root {
   }
 
   protected toggleRow(row: readonly { char: KanaChar | null }[], fully: boolean) {
-    this.selectedCharacters.update((chars) => {
+    this.selectedKana.update((chars) => {
       for (const { char } of row) {
         if (char === null) continue;
         if (fully) chars.delete(char);
@@ -69,30 +70,32 @@ export class Root {
     });
   }
 
-  private enumerateRowsChars(rows: Record<string, readonly (KanaChar | null)[]>, endRow?: number) {
-    return Object.values(rows)
+  private enumerateRowsChars<C extends KanaChar>(
+    rows: KanaTable<C>,
+    toRomaji: KanaToRomajiMap<C>,
+    endRow?: number
+  ): KanaRow<C>[] {    return Object.values(rows)
       .slice(0, endRow)
       .map((row, i) => ({
         i,
-        row: row.map((char, j) => ({ j, char })),
+        row: row.map((char, j) => ({ j, char, romaji: char ? toRomaji[char] : null })),
       }));
   }
 
-  private getRowsWithSelected(selectedChars: Set<KanaChar>, rows: typeof this.hiragana) {
-    return rows.map((row) => ({
+  private getRowsWithSelected<C extends KanaChar>(selectedChars: ReadonlySet<KanaChar>, rows: KanaRow<C>[]): KanaRowSelection<C>[] {    return rows.map((row) => ({
       ...row,
       row: this.getRowWithSelected(selectedChars, row.row),
     }));
   }
 
-  private getRowWithSelected(
-    selectedChars: Set<KanaChar>,
-    row: (typeof this.hiragana)[number]["row"],
+  private getRowWithSelected<C extends KanaChar>(
+    selectedChars: ReadonlySet<KanaChar>,
+    row: KanaCell<C>[],
   ) {
     const result = {
       partial: false,
       fully: true,
-      chars: new Array<(typeof this.hiragana)[number]["row"][number] & { selected: boolean }>(),
+      chars: new Array<KanaCell<C> & { selected: boolean }>(),
     };
 
     for (const char of row) {
@@ -111,4 +114,24 @@ export class Root {
 
     return result;
   }
+}
+
+interface KanaCell<C extends KanaChar> {
+  j: number;
+  char: C | null;
+  romaji: Romaji | null;
+}
+
+interface KanaRow<C extends KanaChar> {
+  i: number;
+  row: KanaCell<C>[];
+}
+
+interface KanaRowSelection<C extends KanaChar> {
+  i: number;
+  row: {
+    partial: boolean;
+    fully: boolean;
+    chars: Array<KanaCell<C> & { selected: boolean }>;
+  };
 }

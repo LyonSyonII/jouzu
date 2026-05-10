@@ -30,7 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideServiceWorker("ngsw-worker.js", {
       enabled: !isDevMode(),
-      registrationStrategy: "registerWhenStable:30000",
+      registrationStrategy: "registerImmediately:30000",
     }),
     MessageService,
   ],

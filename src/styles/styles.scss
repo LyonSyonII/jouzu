@@ -130,15 +130,39 @@ $transition-props: (
   transition-timing-function: ease;
 }
 
+body {
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.001);
+}
+
 /* Global Animations */
-* :not(.p-tooltip) {
+// Core Layout & Containers
+html, body, main, section, nav, header, footer, article, aside, 
+// Typography & Text
+h1, h2, h3, h4, h5, h6, p, span, a, label, strong, em, ruby, rt, li, td, th,
+// Native Interactive & Forms
+button, input, textarea, select, fieldset, legend,
+// Custom components
+x-card
+{
   @include theme-transition;
 }
 
 /* Force PrimeNG components to respect the mixin */
-body .p-button,
-body .p-divider::before {
-  @include theme-transition;
+$primeng-surfaces: 
+  ".p-card", 
+  ".p-panel", 
+  ".p-dialog", 
+  ".p-menu", 
+  ".p-sidebar", 
+  ".p-checkbox-box", 
+  ".p-button", 
+  ".p-togglebutton", 
+  ".p-divider::before";
+#{$primeng-surfaces} {
+  &,
+  body & {
+    @include theme-transition;
+  }
 }
 
 /* Global Box-Sizing & Border Reset */

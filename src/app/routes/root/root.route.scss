@@ -75,6 +75,9 @@ fieldset.char-table {
       font-weight: var(--bold);
     }
 
+    p-togglebutton {
+      border-color: transparent;
+    }
     p-togglebutton:has(+ p-togglebutton) {
       border-start-end-radius: 0;
       border-end-end-radius: 0;

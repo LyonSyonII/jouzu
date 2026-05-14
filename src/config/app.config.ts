@@ -7,6 +7,7 @@ import { routes } from "@app/app.routes";
 import { provideClientHydration, withEventReplay } from "@angular/platform-browser";
 import { provideServiceWorker } from "@angular/service-worker";
 import { MessageService } from "primeng/api";
+import { Preset } from "@primeuix/themes/types";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,122 +33,90 @@ export const appConfig: ApplicationConfig = {
 };
 
 function customPreset() {
-  return definePreset(Aura, {
+  const preset = {
     semantic: {
-      colorScheme: {
-        light: {
-          primary: {
-            color: "var(--primary)",
-            inverseColor: "var(--primary-foreground)",
-            hoverColor: "var(--primary)",
-            activeColor: "var(--primary)",
-          },
-          highlight: {
-            background: "var(--primary)",
-            focusBackground: "var(--primary)",
-            color: "var(--primary-foreground)",
-            focusColor: "var(--primary-foreground)",
-          },
-          content: {
-            background: "var(--card)",
-            hoverBackground: "var(--muted)",
-            borderColor: "var(--border)",
-            color: "var(--card-foreground)",
-          },
-          formField: {
-            background: "var(--input)",
-            borderColor: "var(--border)",
-            color: "var(--foreground)",
-            focusBorderColor: "var(--ring)",
-          },
+      root: {
+        primary: {
+          color: "var(--primary)",
+          inverseColor: "var(--primary-foreground)",
+          hoverColor: "var(--primary)",
+          activeColor: "var(--primary)",
         },
-        dark: {
-          primary: {
-            color: "var(--primary)",
-            inverseColor: "var(--primary-foreground)",
-            hoverColor: "var(--primary)",
-            activeColor: "var(--primary)",
-          },
-          highlight: {
-            background: "var(--primary)",
-            focusBackground: "var(--primary)",
-            color: "var(--primary-foreground)",
-            focusColor: "var(--primary-foreground)",
-          },
-          content: {
-            background: "var(--card)",
-            hoverBackground: "var(--muted)",
-            borderColor: "var(--border)",
-            color: "var(--card-foreground)",
-          },
-          formField: {
-            background: "var(--input)",
-            borderColor: "var(--border)",
-            color: "var(--foreground)",
-            focusBorderColor: "var(--ring)",
-          },
+        highlight: {
+          background: "var(--primary)",
+          focusBackground: "var(--primary)",
+          color: "var(--primary-foreground)",
+          focusColor: "var(--primary-foreground)",
+        },
+        content: {
+          background: "var(--card)",
+          hoverBackground: "var(--muted)",
+          borderColor: "var(--border)",
+          color: "var(--card-foreground)",
+        },
+        formField: {
+          background: "var(--input)",
+          borderColor: "var(--border)",
+          color: "var(--foreground)",
+          focusBorderColor: "var(--ring)",
         },
       },
     },
     components: {
       divider: {
-        colorScheme: {
-          light: {
-            root: { borderColor: "var(--border)" },
-          },
-          dark: {
-            root: { borderColor: "var(--border)" },
-          },
+        root: {
+          borderColor: "var(--border)",
         },
       },
       togglebutton: {
-        colorScheme: {
-          light: {
-            root: {
-              background: "var(--input)",
-              hoverBackground: "var(--muted)",
-              checkedBackground: "var(--input)",
-              color: "var(--foreground)",
-              hoverColor: "var(--primary)",
-              checkedColor: "var(--primary)",
-              borderColor: "var(--border)",
-              checkedBorderColor: "var(--primary)",
-            },
-            icon: {
-              color: "var(--foreground)",
-              hoverColor: "var(--foreground)",
-              checkedColor: "var(--primary-foreground)",
-            },
-          },
-          dark: {
-            root: {
-              background: "var(--input)",
-              hoverBackground: "var(--muted)",
-              checkedBackground: "var(--input)",
-              color: "var(--foreground)",
-              hoverColor: "var(--primary)",
-              checkedColor: "var(--primary)",
-              borderColor: "var(--border)",
-              checkedBorderColor: "var(--primary)",
-            },
-            icon: {
-              color: "var(--foreground)",
-              hoverColor: "var(--foreground)",
-              checkedColor: "var(--primary-foreground)",
-            },
-          },
+        root: {
+          background: "var(--input)",
+          hoverBackground: "var(--muted)",
+          checkedBackground: "var(--input)",
+          color: "var(--foreground)",
+          hoverColor: "var(--primary)",
+          checkedColor: "var(--primary)",
+          borderColor: "var(--border)",
+          checkedBorderColor: "var(--primary)",
+        },
+        icon: {
+          color: "var(--foreground)",
+          hoverColor: "var(--foreground)",
+          checkedColor: "var(--primary-foreground)",
         },
       },
       tooltip: {
-        colorScheme: {
-          dark: {
-            root: {
-              background: "var(--primary)",
-              color: "var(--primary-foreground)",
-            }
-          }
+        root: {
+          background: "var(--primary)",
+          color: "var(--primary-foreground)",
         },
+      },
+      checkbox: {
+        root: {
+          borderColor: "var(--input-muted)",
+          hoverBorderColor: "var(--primary)"
+        }
       }
     },
+  } satisfies Preset;
+
+  return definePreset(Aura, {
+    semantic: {
+      colorScheme: {
+        light: { ...preset.semantic.root },
+        dark: { ...preset.semantic.root },
+      },
+    },
+    components: Object.fromEntries(
+      Object.entries(preset.components).map(([name, config]) => [
+        name,
+        {
+          colorScheme: {
+            light: { root: { ...config.root } },
+            dark: { root: { ...config.root } },
+          },
+        },
+      ]),
+    ),
   });
 }

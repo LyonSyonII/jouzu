@@ -28,9 +28,11 @@
 
   --primary: #c3368c;
   --primary-foreground: var(--background);
+  --primary-muted: #a06085;
 
   --secondary: oklch(0.952 0.037 318.852);
   --secondary-foreground: oklch(0 0 0);
+  --secondary-muted: oklch(0.89 0.02 318.852);
 
   --muted: #fbedff;
   --muted-foreground: oklch(0.556 0 0);
@@ -43,6 +45,7 @@
 
   --border: oklch(0.922 0 0);
   --input: var(--secondary);
+  --input-muted: var(--secondary-muted);
   --ring: oklch(0.708 0 0);
 
   /* Typography Configuration */
@@ -94,6 +97,7 @@
 
   --primary: #ffb3ee;
   --primary-foreground: #434257;
+  --primary-muted: #ccacc5;
 
   --secondary: var(--primary-foreground);
   --secondary-foreground: var(--primary);
@@ -109,6 +113,7 @@
 
   --border: oklch(0.275 0 0);
   --input: oklch(0.325 0 0);
+  --input-muted: oklch(0.38 0 0);
   --ring: oklch(0.556 0 0);
 }
 

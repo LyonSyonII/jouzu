@@ -199,9 +199,23 @@ export const fromKatakana = {
   [katakana.pya[0]]: 'pya',                          [katakana.pya[2]]: 'pyu',                         [katakana.pya[4]]: 'pyo'
 } as const;
 
+export function romanize(text: string): string {
+  function get<T extends object>(key: any, obj: T): T[keyof T] | null {
+    if (key in obj) {
+      return obj[key as keyof T];
+    }
+    return null;
+  }
+  return [...text].map((c) => get(c, fromHiragana) ?? get(c, fromKatakana) ?? c).join("");
+}
+
 export type Hiragana = typeof hiragana;
 export type Katakana = typeof katakana;
-export type Kana<K> = K extends keyof Hiragana ? Record<K, HiraganaChar> : K extends keyof Katakana ? Record<K, KatakanaChar> : never;
+export type Kana<K> = K extends keyof Hiragana
+  ? Record<K, HiraganaChar>
+  : K extends keyof Katakana
+    ? Record<K, KatakanaChar>
+    : never;
 
 export type HiraganaChar = (typeof toHiragana)[keyof typeof toHiragana];
 export type KatakanaChar = (typeof toKatakana)[keyof typeof toKatakana];

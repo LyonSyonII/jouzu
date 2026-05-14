@@ -20,47 +20,48 @@
         options: romanizeTooltip,
       }"
     >
-      <section>
-        <h3 pTooltip="hiragana" [tooltipOptions]="romanizeTooltip">ひらがな</h3>
-        <ng-container
-          *ngTemplateOutlet="charTable; context: { chars: hiraganaSelected() }"
-        />
-      </section>
-
-      <section>
-        <h3 pTooltip="katakana" [tooltipOptions]="romanizeTooltip">カタカナ</h3>
-        <ng-container
-          *ngTemplateOutlet="charTable; context: { chars: katakanaSelected() }"
-        />
-      </section>
+      @for (
+        kana of [
+          {
+            name: "ひらがな",
+            selected: hiraganaSelected(),
+          },
+          {
+            name: "カタカナ",
+            selected: katakanaSelected(),
+          },
+        ];
+        track kana.name
+      ) {
+        <section>
+          <h3 [pTooltip]="romanize(kana.name)" [tooltipOptions]="romanizeTooltip">{{kana.name}}</h3>
+          <fieldset class="char-table">
+            @for (selected of kana.selected; track selected.i) {
+              <p-checkbox
+                [binary]="true"
+                [ngModel]="selected.row.partial"
+                [checkboxIcon]="selected.row.fully ? PrimeIcons.CHECK : PrimeIcons.MINUS"
+                (click)="toggleRow(selected.row.chars, selected.row.fully)"
+                readonly
+              />
+              @for (char of selected.row.chars; track char.j) {
+                @if (char.char) {
+                  <p-togglebutton
+                    [onLabel]="char.char"
+                    [offLabel]="char.char"
+                    [ngModel]="char.selected"
+                    (onChange)="toggleCharacter(char.char)"
+                    [pTooltip]="char.romaji ?? undefined"
+                    [tooltipOptions]="romanizeTooltip"
+                  />
+                } @else {
+                  <div></div>
+                }
+              }
+            }
+          </fieldset>
+        </section>
+      }
     </x-card>
   </div>
 </main>
-
-<ng-template #charTable let-_chars="chars">
-  @let selectedRows = asSelectedChars(_chars);
-  <fieldset class="char-table">
-    @for (selected of selectedRows; track selected.i) {
-      <p-checkbox
-        [binary]="true"
-        [ngModel]="selected.row.partial"
-        [checkboxIcon]="selected.row.fully ? PrimeIcons.CHECK : PrimeIcons.MINUS"
-        (click)="toggleRow(selected.row.chars, selected.row.fully)"
-        readonly
-      />
-      @for (char of selected.row.chars; track char.j) {
-        @if (char.char) {
-          <p-togglebutton
-            [onLabel]="char.char"
-            [offLabel]="char.char"
-            [ngModel]="char.selected"
-            (onChange)="toggleCharacter(char.char)"
-            [pTooltip]="char.romaji ?? undefined"
-          />
-        } @else {
-          <div></div>
-        }
-      }
-    }
-  </fieldset>
-</ng-template>

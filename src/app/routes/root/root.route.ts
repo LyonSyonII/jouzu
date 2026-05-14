@@ -7,9 +7,8 @@ import { TooltipModule } from "primeng/tooltip";
 import { DividerModule } from "primeng/divider";
 import { CheckboxModule } from "primeng/checkbox";
 import { Card } from "@components/card/card.component";
-import { hiragana, katakana, KanaChar, fromKatakana, fromHiragana, Romaji, KanaTable, KanaToRomajiMap } from "@shared/japanese";
+import { hiragana, katakana, KanaChar, fromKatakana, fromHiragana, Romaji, KanaTable, KanaToRomajiMap, romanize } from "@shared/japanese";
 import { FormsModule } from "@angular/forms";
-import { NgTemplateOutlet } from "@angular/common";
 import { storage } from "@/libs/signals/storage.signal";
 
 @Component({
@@ -22,7 +21,6 @@ import { storage } from "@/libs/signals/storage.signal";
     TooltipModule,
     CheckboxModule,
     FormsModule,
-    NgTemplateOutlet,
   ],
   templateUrl: "./root.route.html",
   styleUrl: "./root.route.scss",
@@ -31,7 +29,7 @@ export class Root {
   protected readonly console = console;
   protected readonly PrimeIcons = PrimeIcons;
   protected readonly themeService = inject(ThemeService);
-
+  protected readonly romanize = romanize;
   protected readonly romanizeTooltip: TooltipOptions = {
     tooltipPosition: "top",
     tooltipStyleClass: "romanize-tooltip",

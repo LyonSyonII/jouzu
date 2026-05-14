@@ -1,29 +1,34 @@
 @use 'variables' as *;
 
-::ng-deep .romanize-tooltip {
-  font-weight: var(--bold);
+::ng-deep {
+  .p-tooltip {
+    
+    &.romanize-tooltip {
+      font-weight: var(--bold);
+    }
+  }
 }
 
-main {
+:host main {
   padding: var(--padding);
-}
 
-main > nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-}
+  & > nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
 
-main > nav > h1 {
-  margin: 0;
-}
+    & > h1 {
+      margin: 0;
+    }
+  }
 
-main > div {
-  width: 100%;
-  display: grid;
-  justify-content: center;
-  margin-top: var(--padding);
+  & > div {
+    width: 100%;
+    display: grid;
+    justify-content: center;
+    margin-top: var(--padding);
+  }
 }
 
 :host ::ng-deep {
@@ -76,10 +81,6 @@ main > div {
       }
     }
   }
-}
-
-:host {
-  --grid-gap: calc(var(--spacing));
 }
 
 fieldset.char-table {

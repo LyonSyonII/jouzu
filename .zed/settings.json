@@ -3,9 +3,9 @@
 // For a full list of overridable settings, and general information on folder-specific settings,
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
-  // "file_types": {
-  //   "Angular": ["html"],
-  // },
+  "file_types": {
+    "Angular": ["html"],
+  },
   "languages": {
     "TypeScript": {
       "language_servers": ["!typescript-language-server", "!eslint", "angular", "vtsls", "..."],
@@ -20,6 +20,12 @@
       }
     },
     "Angular": {
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}", "--parser", "angular"]
+        }
+      }
     },
     "CSS": {
       "language_servers": ["css-variables", "!vscode-css-language-server"]

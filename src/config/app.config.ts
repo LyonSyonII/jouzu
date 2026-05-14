@@ -1,8 +1,4 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  isDevMode,
-} from "@angular/core";
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from "@angular/core";
 import { provideRouter } from "@angular/router";
 import { providePrimeNG } from "primeng/config";
 import { definePreset } from "@primeuix/themes";
@@ -94,7 +90,6 @@ function customPreset() {
       },
     },
     components: {
-      // Explicitly target the Divider component to enforce your border variable
       divider: {
         colorScheme: {
           light: {
@@ -106,43 +101,53 @@ function customPreset() {
         },
       },
       togglebutton: {
-              colorScheme: {
-                light: {
-                  root: {
-                    background: "var(--input)",
-                    hoverBackground: "var(--muted)",
-                    checkedBackground: "var(--input)",
-                    color: "var(--foreground)",
-                    hoverColor: "var(--primary)",
-                    checkedColor: "var(--primary)",
-                    borderColor: "var(--border)",
-                    checkedBorderColor: "var(--primary)",
-                  },
-                  icon: {
-                    color: "var(--foreground)",
-                    hoverColor: "var(--foreground)",
-                    checkedColor: "var(--primary-foreground)",
-                  }
-                },
-                dark: {
-                  root: {
-                    background: "var(--input)",
-                    hoverBackground: "var(--muted)",
-                    checkedBackground: "var(--input)",
-                    color: "var(--foreground)",
-                    hoverColor: "var(--primary)",
-                    checkedColor: "var(--primary)",
-                    borderColor: "var(--border)",
-                    checkedBorderColor: "var(--primary)",
-                  },
-                  icon: {
-                    color: "var(--foreground)",
-                    hoverColor: "var(--foreground)",
-                    checkedColor: "var(--primary-foreground)",
-                  }
-                }
+        colorScheme: {
+          light: {
+            root: {
+              background: "var(--input)",
+              hoverBackground: "var(--muted)",
+              checkedBackground: "var(--input)",
+              color: "var(--foreground)",
+              hoverColor: "var(--primary)",
+              checkedColor: "var(--primary)",
+              borderColor: "var(--border)",
+              checkedBorderColor: "var(--primary)",
+            },
+            icon: {
+              color: "var(--foreground)",
+              hoverColor: "var(--foreground)",
+              checkedColor: "var(--primary-foreground)",
+            },
+          },
+          dark: {
+            root: {
+              background: "var(--input)",
+              hoverBackground: "var(--muted)",
+              checkedBackground: "var(--input)",
+              color: "var(--foreground)",
+              hoverColor: "var(--primary)",
+              checkedColor: "var(--primary)",
+              borderColor: "var(--border)",
+              checkedBorderColor: "var(--primary)",
+            },
+            icon: {
+              color: "var(--foreground)",
+              hoverColor: "var(--foreground)",
+              checkedColor: "var(--primary-foreground)",
+            },
+          },
         },
       },
+      tooltip: {
+        colorScheme: {
+          dark: {
+            root: {
+              background: "var(--primary)",
+              color: "var(--primary-foreground)",
+            }
+          }
+        },
+      }
     },
   });
 }

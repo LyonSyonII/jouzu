@@ -1,11 +1,18 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 ::ng-deep {
   .p-tooltip {
-    
     &.romanize-tooltip {
       font-weight: var(--bold);
     }
+    /* .p-tooltip-text {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+    .p-tooltip-arrow {
+      border-top-color: var(--primary);
+      border-top-color: var(--primary);
+    } */
   }
 }
 
@@ -70,7 +77,7 @@
 
         /* Add padding to grid center */
         padding-right: calc(var(--desktop-padding) + var(--padding));
-        
+
         /* Apply desktop right border */
         border-right: 1px solid var(--border);
       }

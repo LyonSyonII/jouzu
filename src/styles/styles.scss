@@ -10,10 +10,9 @@
 @import "primeicons/primeicons.css";
 
 /* Fonts */
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/noto-sans-jp/400.css";
-@import "@fontsource/noto-sans-jp/600.css";
+@import "@fontsource-variable/inter/wght.css";
+@import '@fontsource-variable/noto-sans-jp/wght.css';
+/* @import '@fontsource/noto-sans-jp'; */
 
 :root {
   /* Baseline Configuration (Light Mode) */
@@ -49,8 +48,7 @@
   --ring: oklch(0.708 0 0);
 
   /* Typography Configuration */
-  --font-sans: "Inter", ui-sans-serif, sans-serif, system-ui;
-  --font-serif: "Abhaya Libre", ui-serif, serif;
+  --font-sans: "Inter", "Noto Sans JP Variable", ui-sans-serif, sans-serif, system-ui;
   --font-mono: "Roboto Mono", ui-monospace, monospace;
   --tracking-normal: 0em;
 
@@ -239,6 +237,28 @@ a {
   }
 }
 
+ruby {
+  ruby-align: center; 
+  ruby-position: over;
+  line-height: 1;
+}
+rt {
+  font-size: 0.5em; 
+  line-height: 1;
+  text-align: center;
+  padding-bottom: 2px;
+}
+rp {
+  display: none; 
+}
+// Fix bug in Firefox where furigana is positioned too above the actual kanji
+@supports (-moz-appearance: none) {
+  rt {
+    position: relative;
+    top: 0.3em;
+  }
+}
+
 /* Interactive & Input Elements Theme Mapping */
 button,
 input,
@@ -319,7 +339,7 @@ select {
 }
 
 :root {
-  --p-font-family: "Inter", "Noto Sans JP", sans-serif;
+  --p-font-family: var(--font-sans);
 }
 
 body {

@@ -6,15 +6,15 @@
   xmlns="http://www.w3.org/2000/svg"
 >
   <style id="style1">
-    #icon {
-      fill: #c3368c;
-    }
+  #icon {
+    fill: #c3368c;
+  }
 
-    @media (prefers-color-scheme: dark) {
-      #icon {
-        fill: #ffb3ee;
-      }
+  @media (prefers-color-scheme: dark) {
+    #icon {
+      fill: #ffb3ee;
     }
+  }
   </style>
   <g transform="translate(138 -130)" id="icon">
     <path

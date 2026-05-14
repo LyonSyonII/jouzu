@@ -34,7 +34,9 @@
         track kana.name
       ) {
         <section>
-          <h3 [pTooltip]="romanize(kana.name)" [tooltipOptions]="romanizeTooltip">{{kana.name}}</h3>
+          <h3 [pTooltip]="kana.name | romanize" [tooltipOptions]="romanizeTooltip">
+            {{ kana.name }}
+          </h3>
           <fieldset class="char-table">
             @for (selected of kana.selected; track selected.i) {
               <p-checkbox
@@ -63,9 +65,28 @@
         </section>
       }
       <div id="kana-extra-toggles">
-        <p-togglebutton />
-        <p-togglebutton />
+        @for (
+          item of [
+            { icon: "dakuten", signal: dakutenSelected },
+            { icon: "handakuten", signal: handakutenSelected },
+            { icon: "youon", tooltip: "yōon", signal: youonSelected },
+          ];
+          track item.icon
+        ) {
+          <p-togglebutton
+            [pTooltip]="item.tooltip ?? item.icon"
+            [tooltipOptions]="romanizeTooltip"
+            [(ngModel)]="item.signal"
+          >
+            @for (state of ["on", "off"]; track state) {
+              <ng-template [pTemplate]="state">
+                <svg-icon style="height: 32px" [src]="'/assets/' + item.icon + '.svg'" [svgStyle]="{ 'width.px': 40, 'height.px': 32, 'fill':'currentColor' }" />
+              </ng-template>
+            }
+          </p-togglebutton>
+        }
       </div>
     </x-card>
   </div>
 </main>
+<!-- { kanji: "拗音", furigana: "ようおん", example: "にゃニャ", romaji: "yōon", exampleRomaji: "nya nya" }, -->

@@ -3,7 +3,7 @@
 ::ng-deep {
   .p-tooltip {
     &.romanize-tooltip {
-      font-weight: var(--bold);
+      font-weight: bold;
     }
   }
 }
@@ -37,21 +37,61 @@
     gap: 0;
     justify-items: center;
 
-    section {
+    & > section {
       width: max-content;
       display: grid;
       justify-items: center;
 
-      h3 {
+      & > h3 {
         text-wrap: nowrap;
         text-align: center;
       }
+
+      & > fieldset.char-table {
+        margin-top: var(--padding);
+        display: grid;
+        grid-template-columns: 32px repeat(5, 1fr);
+        align-items: center;
+        justify-items: start;
+
+        row-gap: var(--spacing);
+
+        & > ::ng-deep {
+          p-togglebutton {
+            font-weight: bold;
+          }
+          p-togglebutton:has(+ p-togglebutton) {
+            border-start-end-radius: 0;
+            border-end-end-radius: 0;
+          }
+          p-togglebutton + p-togglebutton {
+            border-start-start-radius: 0;
+            border-end-start-radius: 0;
+          }
+        }
+      }
     }
 
-    section:first-child {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: var(--padding);
-      margin-bottom: var(--padding);
+    & > #kana-extra-toggles {
+      display: flex;
+      gap: var(--padding);
+      margin: var(--padding);
+      justify-self: center;
+      align-self: center;
+      grid-column: 1 / span 2;
+
+      & > p-togglebutton {
+        width: 50px;
+        height: 50px;
+        .p-togglebutton-content {
+          padding: 0;
+          width: 40px;
+          height: 42px;
+        }
+        .p-togglebutton-label {
+          display: none;
+        }
+      }
     }
 
     @media (min-width: $desktop-size) {
@@ -61,48 +101,16 @@
         padding: var(--desktop-padding);
       }
 
-      & section:first-child {
-        /* Reset mobile bottom border */
+      & > section:first-of-type {
         border-bottom: none;
         padding-bottom: 0;
         margin-bottom: 0;
-
-        /* Add padding to grid center */
         padding-right: calc(var(--desktop-padding) + var(--padding));
-
-        /* Apply desktop right border */
         border-right: 1px solid var(--border);
       }
-
-      & section:last-child {
-        /* Add padding to grid center */
+      & > section:last-of-type {
         padding-left: calc(var(--desktop-padding) + var(--padding));
       }
-    }
-  }
-}
-
-fieldset.char-table {
-  margin-top: var(--padding);
-  display: grid;
-  grid-template-columns: 32px repeat(5, 1fr);
-  align-items: center;
-  justify-items: start;
-
-  row-gap: var(--spacing);
-
-  ::ng-deep {
-    p-togglebutton {
-      font-weight: var(--bold);
-      border-color: transparent;
-    }
-    p-togglebutton:has(+ p-togglebutton) {
-      border-start-end-radius: 0;
-      border-end-end-radius: 0;
-    }
-    p-togglebutton + p-togglebutton {
-      border-start-start-radius: 0;
-      border-end-start-radius: 0;
     }
   }
 }

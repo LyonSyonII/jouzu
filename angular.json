@@ -41,7 +41,10 @@
             "outputMode": "server",
             "ssr": {
               "entry": "src/config/server.ts"
-            }
+            },
+            "polyfills": [
+              "core-js/actual/iterator"
+            ]
           },
           "configurations": {
             "production": {

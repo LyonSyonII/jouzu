@@ -5,74 +5,122 @@
 
 /* @formatter:off */
 
-// prettier-ignore
-/**
- * Grouped Hiragana
- */
+export const hiraganaDakuten = {
+  ga: ["が", "ぎ", "ぐ", "げ", "ご"],
+  za: ["ざ", "じ", "ず", "ぜ", "ぞ"],
+  da: ["だ", null, null, "で", "ど"],
+  ba: ["ば", "び", "ぶ", "べ", "ぼ"],
+} as const;
+export const hiraganaDakutenChars = [
+  ...hiraganaDakuten.ga,
+  ...hiraganaDakuten.za,
+  ...hiraganaDakuten.da,
+  ...hiraganaDakuten.ba,
+] as const;
+export const hiraganaHandakuten = {
+  pa: ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"],
+} as const;
+export const hiraganaHandakutenChars = hiraganaHandakuten.pa;
+export const hiraganaYouon = {
+  kya: ["きゃ", null, "きゅ", null, "きょ"],
+  sha: ["しゃ", null, "しゅ", null, "しょ"],
+  cha: ["ちゃ", null, "ちゅ", null, "ちょ"],
+  nya: ["にゃ", null, "にゅ", null, "にょ"],
+  hya: ["ひゃ", null, "ひゅ", null, "ひょ"],
+  mya: ["みゃ", null, "みゅ", null, "みょ"],
+  rya: ["りゃ", null, "りゅ", null, "りょ"],
+  gya: ["ぎゃ", null, "ぎゅ", null, "ぎょ"],
+  ja: ["じゃ", null, "じゅ", null, "じょ"],
+  bya: ["びゃ", null, "びゅ", null, "びょ"],
+  pya: ["ぴゃ", null, "ぴゅ", null, "ぴょ"],
+} as const;
+export const hiraganaYouonChars = [
+  ...hiraganaYouon.kya,
+  ...hiraganaYouon.sha,
+  ...hiraganaYouon.cha,
+  ...hiraganaYouon.nya,
+  ...hiraganaYouon.hya,
+  ...hiraganaYouon.mya,
+  ...hiraganaYouon.rya,
+  ...hiraganaYouon.gya,
+  ...hiraganaYouon.ja,
+  ...hiraganaYouon.bya,
+  ...hiraganaYouon.pya,
+] as const;
 export const hiragana = {
-  //      'a'   'i'     'u'  'e'   　'o'
-  a:   [  'あ', 'い',   'う', 'え', 　'お'],
-  ka:  [  'か', 'き',   'く', 'け', 　'こ'],
-  sa:  [  'さ', 'し',   'す', 'せ', 　'そ'],
-  ta:  [  'た', 'ち',   'つ', 'て', 　'と'],
-  na:  [  'な', 'に',   'ぬ', 'ね', 　'の'],
-  ha:  [  'は', 'ひ',   'ふ', 'へ', 　'ほ'],
-  ma:  [  'ま', 'み',   'む', 'め', 　'も'],
-  ya:  [  'や', null,   'ゆ', null,  'よ'],
-  ra:  [  'ら', 'り',   'る', 'れ', 　'ろ'],
-  wa:  [  'わ', null,   null, null,  'を'],
-  n:   [  'ん', null,   null, null,  null],
-  ga:  [  'が', 'ぎ',   'ぐ', 'げ',   'ご'],
-  za:  [  'ざ', 'じ',   'ず', 'ぜ',   'ぞ'],
-  da:  [  'だ', null,　 null, 'で',   'ど'],
-  ba:  [  'ば', 'び',   'ぶ', 'べ',   'ぼ'],
-  pa:  [  'ぱ', 'ぴ',   'ぷ', 'ぺ',   'ぽ'],
-  kya: ['きゃ', null, 'きゅ', null, 'きょ'],
-  sha: ['しゃ', null, 'しゅ', null, 'しょ'],
-  cha: ['ちゃ', null, 'ちゅ', null, 'ちょ'],
-  nya: ['にゃ', null, 'にゅ', null, 'にょ'],
-  hya: ['ひゃ', null, 'ひゅ', null, 'ひょ'],
-  mya: ['みゃ', null, 'みゅ', null, 'みょ'],
-  rya: ['りゃ', null, 'りゅ', null, 'りょ'],
-  gya: ['ぎゃ', null, 'ぎゅ', null, 'ぎょ'],
-  ja:  ['じゃ', null, 'じゅ', null, 'じょ'],
-  bya: ['びゃ', null, 'びゅ', null, 'びょ'],
-  pya: ['ぴゃ', null, 'ぴゅ', null, 'ぴょ']
+  a: ["あ", "い", "う", "え", "お"],
+  ka: ["か", "き", "く", "け", "こ"],
+  sa: ["さ", "し", "す", "せ", "そ"],
+  ta: ["た", "ち", "つ", "て", "と"],
+  na: ["な", "に", "ぬ", "ね", "の"],
+  ha: ["は", "ひ", "ふ", "へ", "ほ"],
+  ma: ["ま", "み", "む", "め", "も"],
+  ya: ["や", null, "ゆ", null, "よ"],
+  ra: ["ら", "り", "る", "れ", "ろ"],
+  wa: ["わ", null, null, null, "を"],
+  n: ["ん", null, null, null, null],
+  ...hiraganaDakuten,
+  ...hiraganaHandakuten,
+  ...hiraganaYouon,
 } as const;
 
-// prettier-ignore
-/**
- * Grouped Katakana
- */
+export const katakanaDakuten = {
+  ga: ["ガ", "ギ", "グ", "ゲ", "ゴ"],
+  za: ["ザ", "ジ", "ズ", "ゼ", "ゾ"],
+  da: ["ダ", null, null, "デ", "ド"],
+  ba: ["バ", "ビ", "ブ", "ベ", "ボ"],
+} as const;
+export const katakanaDakutenChars = [
+  ...katakanaDakuten.ga,
+  ...katakanaDakuten.za,
+  ...katakanaDakuten.da,
+  ...katakanaDakuten.ba,
+] as const;
+export const katakanaHandakuten = {
+  pa: ["パ", "ピ", "プ", "ペ", "ポ"],
+} as const;
+export const katakanaHandakutenChars = katakanaHandakuten.pa;
+export const katakanaYouon = {
+  kya: ["キャ", null, "キュ", null, "キョ"],
+  sha: ["シャ", null, "シュ", null, "ショ"],
+  cha: ["チャ", null, "チュ", null, "チョ"],
+  nya: ["ニャ", null, "ニュ", null, "ニョ"],
+  hya: ["ヒャ", null, "ヒュ", null, "ヒョ"],
+  mya: ["ミャ", null, "ミュ", null, "ミョ"],
+  rya: ["リャ", null, "リュ", null, "リョ"],
+  gya: ["ギャ", null, "ギュ", null, "ギョ"],
+  ja: ["ジャ", null, "ジュ", null, "ジョ"],
+  bya: ["ビャ", null, "ビュ", null, "ビョ"],
+  pya: ["ピャ", null, "ピュ", null, "ピョ"],
+} as const;
+export const katakanaYouonChars = [
+  ...katakanaYouon.kya,
+  ...katakanaYouon.sha,
+  ...katakanaYouon.cha,
+  ...katakanaYouon.nya,
+  ...katakanaYouon.hya,
+  ...katakanaYouon.mya,
+  ...katakanaYouon.rya,
+  ...katakanaYouon.gya,
+  ...katakanaYouon.ja,
+  ...katakanaYouon.bya,
+  ...katakanaYouon.pya,
+] as const;
 export const katakana = {
-//      'a'     'i'     'u'  'e'   　'o'
-   a:  [ 'ア',  'イ', 　'ウ', 'エ', 　 'オ'],
-  ka:  [ 'カ',  'キ', 　'ク', 'ケ', 　 'コ'],
-  sa:  [ 'サ',  'シ', 　'ス', 'セ', 　 'ソ'],
-  ta:  [ 'タ',  'チ', 　'ツ', 'テ', 　 'ト'],
-  na:  [ 'ナ',  'ニ', 　'ヌ', 'ネ', 　 'ノ'],
-  ha:  [ 'ハ',  'ヒ', 　'フ', 'ヘ', 　 'ホ'],
-  ma:  [ 'マ',  'ミ', 　'ム', 'メ', 　 'モ'],
-  ya:  [ 'ヤ',  null,　 'ユ', null,　 'ヨ'],
-  ra:  [ 'ラ',   'リ', 'ル', 'レ', 　  'ロ'],
-  wa:  [ 'ワ',  null,　null,　null,　 'ヲ'],
-   n:  [ 'ン',  null,  null, null,   null],
-  ga:  [ 'ガ',  'ギ',  'グ', 'ゲ',    'ゴ'],
-  za:  [ 'ザ',  'ジ',  'ズ', 'ゼ',    'ゾ'],
-  da:  [ 'ダ',  null,  null, 'デ',    'ド'],
-  ba:  [ 'バ',  'ビ',  'ブ', 'ベ',     'ボ'],
-  pa:  [ 'パ',  'ピ',  'プ', 'ペ',     'ポ'],
-  kya: ['キャ', null, 'キュ', null,　'キョ'],
-  sha: ['シャ', null, 'シュ', null,　'ショ'],
-  cha: ['チャ', null, 'チュ', null,　'チョ'],
-  nya: ['ニャ', null, 'ニュ', null,　'ニョ'],
-  hya: ['ヒャ', null, 'ヒュ', null,　'ヒョ'],
-  mya: ['ミャ', null, 'ミュ', null,　'ミョ'],
-  rya: ['リャ', null, 'リュ', null,　'リョ'],
-  gya: ['ギャ', null, 'ギュ', null,　'ギョ'],
-   ja: ['ジャ', null, 'ジュ', null,　'ジョ'],
-  bya: ['ビャ', null, 'ビュ', null,　'ビョ'],
-  pya: ['ピャ', null, 'ピュ', null,　'ピョ']
+  a: ["ア", "イ", "ウ", "エ", "オ"],
+  ka: ["カ", "キ", "ク", "ケ", "コ"],
+  sa: ["サ", "シ", "ス", "セ", "ソ"],
+  ta: ["タ", "チ", "ツ", "テ", "ト"],
+  na: ["ナ", "ニ", "ヌ", "ネ", "ノ"],
+  ha: ["ハ", "ヒ", "フ", "ヘ", "ホ"],
+  ma: ["マ", "ミ", "ム", "メ", "モ"],
+  ya: ["ヤ", null, "ユ", null, "ヨ"],
+  ra: ["ラ", "リ", "ル", "レ", "ロ"],
+  wa: ["ワ", null, null, null, "ヲ"],
+  n: ["ン", null, null, null, null],
+  ...katakanaDakuten,
+  ...katakanaHandakuten,
+  ...katakanaYouon,
 } as const;
 
 // prettier-ignore
@@ -199,14 +247,24 @@ export const fromKatakana = {
   [katakana.pya[0]]: 'pya',                          [katakana.pya[2]]: 'pyu',                         [katakana.pya[4]]: 'pyo'
 } as const;
 
+const romajiMap: KanaToRomajiMap<KanaChar> = { ...fromHiragana, ...fromKatakana };
+
 export function romanize(text: string): string {
-  function get<T extends object>(key: any, obj: T): T[keyof T] | null {
-    if (key in obj) {
-      return obj[key as keyof T];
+  let result = "";
+
+  for (let i = 0; i < text.length; ) {
+    const bigram = text.slice(i, i + 2) as KanaChar;
+    if (bigram in romajiMap) {
+      result += romajiMap[bigram];
+      i += 2;
+    } else {
+      const unigram = text[i] as KanaChar;
+      result += romajiMap[unigram] ?? text[i];
+      i++;
     }
-    return null;
   }
-  return [...text].map((c) => get(c, fromHiragana) ?? get(c, fromKatakana) ?? c).join("");
+
+  return result;
 }
 
 export type Hiragana = typeof hiragana;

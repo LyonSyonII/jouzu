@@ -24,10 +24,10 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideClientHydration(withEventReplay()),
-    provideServiceWorker("ngsw-worker.js", {
-      enabled: !isDevMode(),
-      registrationStrategy: "registerImmediately:30000",
-    }),
+    // provideServiceWorker("ngsw-worker.js", {
+    //   enabled: !isDevMode(),
+    //   registrationStrategy: "registerImmediately:30000",
+    // }),
     MessageService,
   ],
 };
@@ -76,8 +76,10 @@ function customPreset() {
           color: "var(--foreground)",
           hoverColor: "var(--primary)",
           checkedColor: "var(--primary)",
-          borderColor: "var(--border)",
-          checkedBorderColor: "var(--primary)",
+          borderColor: "transparent",
+          checkedBorderColor: "transparent"
+          // borderColor: "var(--border)",
+          // checkedBorderColor: "var(--primary)",
         },
         icon: {
           color: "var(--foreground)",

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/libs/components/card/card.component.scss"],
+  "sourcesContent": [":host {\n  display: grid;\n\n  height: max-content;\n  width: max-content;\n  padding: var(--padding);\n\n  background-color: var(--card);\n  border-color: var(--border);\n  border-width: 1px;\n  border-radius: var(--radius);\n\n  box-shadow: var(--shadow-lg);\n\n  h2 {\n    margin: 0;\n    margin-left: auto;\n    margin-right: auto;\n  }\n}\n"],
+  "mappings": "AAAA,MACE,QAAA,KAEA,OAAA,YACA,MAAA,YACA,QAAA,IAAA,WAEA,iBAAA,IAAA,QACA,aAAA,IAAA,UACA,aAAA,IACA,cAAA,IAAA,UAEA,WAAA,IAAA,aAEA,MAAA,GAdF,OAeI,EAEA",
+  "names": []
+}

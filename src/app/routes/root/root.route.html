@@ -7,7 +7,7 @@
     <p-button
       size="large"
       [icon]="this.themeService.isDarkMode() ? PrimeIcons.SUN : PrimeIcons.MOON"
-      (onClick)="this.themeService.toggleDarkMode()"
+      (onClick)="themeService.toggleDarkMode()"
     />
   </nav>
 
@@ -62,6 +62,10 @@
           </fieldset>
         </section>
       }
+      <div id="kana-extra-toggles">
+        <p-togglebutton />
+        <p-togglebutton />
+      </div>
     </x-card>
   </div>
 </main>

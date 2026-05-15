@@ -1,5 +1,5 @@
 import { inject } from "@angular/core";
-import { ThemeService } from "@services/theme";
+import { ThemeService } from "@services/theme.service";
 import { PrimeIcons } from "primeng/api";
 
 export default class BaseComponent {

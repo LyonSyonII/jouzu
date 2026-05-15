@@ -77,7 +77,7 @@ function customPreset() {
           hoverColor: "var(--primary)",
           checkedColor: "var(--primary)",
           borderColor: "transparent",
-          checkedBorderColor: "transparent"
+          checkedBorderColor: "transparent",
           // borderColor: "var(--border)",
           // checkedBorderColor: "var(--primary)",
         },
@@ -96,9 +96,9 @@ function customPreset() {
       checkbox: {
         root: {
           borderColor: "var(--input-muted)",
-          hoverBorderColor: "var(--primary)"
-        }
-      }
+          hoverBorderColor: "var(--primary)",
+        },
+      },
     },
   } satisfies Preset;
 

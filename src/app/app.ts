@@ -1,14 +1,14 @@
 import BaseComponent from "@components/base.component";
 import { Component } from "@angular/core";
-import { Root } from "./routes/root/root.route";
 import { ToastModule } from "primeng/toast";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
   selector: "x-app",
   template: `
-    <x-root />
+    <router-outlet />
     <p-toast />
   `,
-  imports: [Root, ToastModule]
+  imports: [ToastModule, RouterOutlet]
 })
 export class App extends BaseComponent {}

@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from "@angular/core";
-import { provideRouter } from "@angular/router";
+import { provideRouter, withComponentInputBinding, withPreloading } from "@angular/router";
 import { providePrimeNG } from "primeng/config";
 import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
@@ -9,11 +9,15 @@ import { provideServiceWorker } from "@angular/service-worker";
 import { provideAngularSvgIcon } from 'angular-svg-icon';
 import { MessageService } from "primeng/api";
 import { Preset } from "@primeuix/themes/types";
+import { QuicklinkStrategy, quicklinkProviders } from "ngx-quicklink";
+import { provideHttpClient, withFetch } from "@angular/common/http";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    quicklinkProviders,
+    provideRouter(routes, withPreloading(QuicklinkStrategy), withComponentInputBinding()),
+    provideHttpClient(withFetch()),
     providePrimeNG({
       ripple: false,
       theme: {

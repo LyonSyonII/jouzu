@@ -28,6 +28,9 @@ import { storage } from "@/libs/signals/storage.signal";
 import BaseComponent from "@components/base.component";
 import { RomanizePipe } from "../../../libs/pipes/romanize.pipe";
 import { AngularSvgIconModule } from "angular-svg-icon";
+import { QuicklinkDirective } from "ngx-quicklink";
+import { RouterLink } from "@angular/router";
+import { kanaGameKeys } from "@shared/idb-keys";
 
 @Component({
   selector: "x-root",
@@ -41,25 +44,27 @@ import { AngularSvgIconModule } from "angular-svg-icon";
     FormsModule,
     RomanizePipe,
     AngularSvgIconModule,
+    QuicklinkDirective,
+    RouterLink
   ],
   templateUrl: "./root.route.html",
   styleUrl: "./root.route.scss",
 })
-export class Root extends BaseComponent {
+export default class Root extends BaseComponent {
   // TODO: Add "random" button
   protected readonly hiragana = this.enumerateRowsChars(hiragana, fromHiragana, 11);
   protected readonly katakana = this.enumerateRowsChars(katakana, fromKatakana, 11);
 
-  protected readonly selectedKana = storage("selected-kana", new Set<KanaChar>());
+  protected readonly selectedKana = storage(kanaGameKeys.selectedKana, new Set<KanaChar>());
   protected readonly hiraganaSelected = computed(() =>
     this.getRowsWithSelected(this.selectedKana(), this.hiragana),
   );
   protected readonly katakanaSelected = computed(() =>
     this.getRowsWithSelected(this.selectedKana(), this.katakana),
   );
-  protected readonly dakutenSelected = signal(false);
-  protected readonly handakutenSelected = signal(false);
-  protected readonly youonSelected = signal(false);
+  protected readonly dakutenSelected = storage(kanaGameKeys.dakutenSelected, false);
+  protected readonly handakutenSelected = storage(kanaGameKeys.handakutenSelected, false);
+  protected readonly youonSelected = storage(kanaGameKeys.youonSelected, false);
   
   protected readonly romanize = romanize;
   protected readonly romanizeTooltip: TooltipOptions = {
@@ -67,59 +72,10 @@ export class Root extends BaseComponent {
     tooltipStyleClass: "romanize-tooltip"
   };
 
-  protected startKana() {
-    const selected = new Set(this.selectedKana());
-
-    // Add kana variants
-    const dakutenChars = this.dakutenSelected() ? [...hiraganaDakutenChars, ...katakanaDakutenChars] as const : [] as const;
-    const handakutenChars = this.handakutenSelected() ? [...hiraganaHandakutenChars, ...katakanaHandakutenChars] as const : [] as const;
-    for (const variant of [...dakutenChars, ...handakutenChars]) {
-      if (variant === null) continue;
-      const base = variant.normalize("NFD")[0] as KanaChar;
-      if (selected.has(base)) selected.add(variant);
-    }
-    if (this.youonSelected()) {
-      for (const youon of [...hiraganaYouonChars, ...katakanaYouonChars]) {
-        if (youon === null) continue;
-        const base = youon[0] as KanaChar;
-        const small = String.fromCharCode(youon[1].charCodeAt(0) - 1) as KanaChar;
-        if (selected.has(base) && selected.has(small)) selected.add(youon);
-      }
-    }
-
-    console.log({selected});
-    console.error("TODO: Not implemented!");
-  }
-
   protected toggleCharacter(char: KanaChar) {
     this.selectedKana.update((selected) => {
       if (selected.has(char)) selected.delete(char);
       else selected.add(char);
-      return new Set<KanaChar>(selected);
-    });
-  }
-
-  protected toggleCharacters(chars: (KanaChar | null)[]) {
-    this.selectedKana.update((selected) => {
-      for (const char of chars) {
-        if (char === null) continue;
-        if (selected.has(char)) selected.delete(char);
-        else selected.add(char);
-      }
-      console.log({selected});
-      return new Set(selected);
-    });
-  }
-  
-  protected toggleCombination(chars: (KanaChar | null)[]) {
-    this.selectedKana.update((selected) => {
-      for (const char of chars) {
-        if (char === null) continue;
-        if (selected.has(char)) selected.delete(char);
-        else selected.add(char);
-      }
-      console.log({selected});
-      return new Set(selected);
     });
   }
 
@@ -130,7 +86,6 @@ export class Root extends BaseComponent {
         if (fully) selected.delete(char);
         else selected.add(char);
       }
-      return new Set(selected);
     });
   }
 

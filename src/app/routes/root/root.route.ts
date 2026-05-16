@@ -46,7 +46,6 @@ import { AngularSvgIconModule } from "angular-svg-icon";
   styleUrl: "./root.route.scss",
 })
 export class Root extends BaseComponent {
-  // TODO: Remove specific rows for dakuten and combined, and add "toggle dakuten" + "toggle combined" buttons
   // TODO: Add "random" button
   protected readonly hiragana = this.enumerateRowsChars(hiragana, fromHiragana, 11);
   protected readonly katakana = this.enumerateRowsChars(katakana, fromKatakana, 11);
@@ -67,6 +66,30 @@ export class Root extends BaseComponent {
     tooltipPosition: "top",
     tooltipStyleClass: "romanize-tooltip"
   };
+
+  protected startKana() {
+    const selected = new Set(this.selectedKana());
+
+    // Add kana variants
+    const dakutenChars = this.dakutenSelected() ? [...hiraganaDakutenChars, ...katakanaDakutenChars] as const : [] as const;
+    const handakutenChars = this.handakutenSelected() ? [...hiraganaHandakutenChars, ...katakanaHandakutenChars] as const : [] as const;
+    for (const variant of [...dakutenChars, ...handakutenChars]) {
+      if (variant === null) continue;
+      const base = variant.normalize("NFD")[0] as KanaChar;
+      if (selected.has(base)) selected.add(variant);
+    }
+    if (this.youonSelected()) {
+      for (const youon of [...hiraganaYouonChars, ...katakanaYouonChars]) {
+        if (youon === null) continue;
+        const base = youon[0] as KanaChar;
+        const small = String.fromCharCode(youon[1].charCodeAt(0) - 1) as KanaChar;
+        if (selected.has(base) && selected.has(small)) selected.add(youon);
+      }
+    }
+
+    console.log({selected});
+    console.error("TODO: Not implemented!");
+  }
 
   protected toggleCharacter(char: KanaChar) {
     this.selectedKana.update((selected) => {

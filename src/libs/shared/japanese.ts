@@ -122,6 +122,9 @@ export const katakana = {
   ...katakanaHandakuten,
   ...katakanaYouon,
 } as const;
+export const katakanaChars = [
+  
+] as const;
 
 // prettier-ignore
 export const toHiragana = {

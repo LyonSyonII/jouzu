@@ -78,7 +78,6 @@
       margin: var(--padding);
       justify-self: center;
       align-self: center;
-      grid-column: 1 / span 2;
 
       & > p-togglebutton {
         width: 50px;
@@ -94,11 +93,19 @@
       }
     }
 
+    #start-button {
+      margin-top: var(--padding);
+      span {
+        font-weight: 900;
+      }
+    }
+
     @media (min-width: $desktop-size) {
       & {
         --desktop-padding: calc(var(--padding) * 2);
         grid-template-columns: 1fr 1fr;
         padding: var(--desktop-padding);
+        padding-bottom: var(--padding);
       }
 
       & > section:first-of-type {
@@ -110,6 +117,11 @@
       }
       & > section:last-of-type {
         padding-left: calc(var(--desktop-padding) + var(--padding));
+      }
+
+      & > #kana-extra-toggles,
+      #start-button {
+        grid-column: 1 / span 2;
       }
     }
   }

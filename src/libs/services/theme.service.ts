@@ -4,8 +4,6 @@ import { DOCUMENT } from "@angular/common";
 import {
   inject,
   Injectable,
-  PLATFORM_ID,
-  RendererFactory2,
   signal,
   afterNextRender,
 } from "@angular/core";

@@ -1,5 +1,5 @@
 import BaseComponent from "@components/base.component";
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ToastModule } from "primeng/toast";
 import { RouterOutlet } from "@angular/router";
 
@@ -9,6 +9,7 @@ import { RouterOutlet } from "@angular/router";
     <router-outlet />
     <p-toast />
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ToastModule, RouterOutlet]
 })
 export class App extends BaseComponent {}

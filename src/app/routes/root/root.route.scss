@@ -11,18 +11,18 @@
 :host main {
   padding: var(--padding);
 
-  & > nav {
+  > nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
 
-    & > h1 {
+    > h1 {
       margin: 0;
     }
   }
 
-  & > div {
+  > div {
     width: 100%;
     display: grid;
     justify-content: center;
@@ -37,17 +37,17 @@
     gap: 0;
     justify-items: center;
 
-    & > section {
+    > section {
       width: max-content;
       display: grid;
       justify-items: center;
 
-      & > h3 {
+      > h3 {
         text-wrap: nowrap;
         text-align: center;
       }
 
-      & > fieldset.char-table {
+      > fieldset.char-table {
         margin-top: var(--padding);
         display: grid;
         grid-template-columns: 32px repeat(5, 1fr);
@@ -56,7 +56,7 @@
 
         row-gap: var(--spacing);
 
-        & > ::ng-deep {
+        > ::ng-deep {
           p-togglebutton {
             font-weight: bold;
           }
@@ -72,14 +72,14 @@
       }
     }
 
-    & > #kana-extra-toggles {
+    > #kana-extra-toggles {
       display: flex;
       gap: var(--padding);
       margin: var(--padding);
       justify-self: center;
       align-self: center;
 
-      & > p-togglebutton {
+      > p-togglebutton {
         width: 50px;
         height: 50px;
         .p-togglebutton-content {
@@ -108,18 +108,18 @@
         padding-bottom: var(--padding);
       }
 
-      & > section:first-of-type {
+      > section:first-of-type {
         border-bottom: none;
         padding-bottom: 0;
         margin-bottom: 0;
         padding-right: calc(var(--desktop-padding) + var(--padding));
         border-right: 1px solid var(--border);
       }
-      & > section:last-of-type {
+      > section:last-of-type {
         padding-left: calc(var(--desktop-padding) + var(--padding));
       }
 
-      & > #kana-extra-toggles,
+      > #kana-extra-toggles,
       #start-button {
         grid-column: 1 / span 2;
       }

@@ -1,14 +1,14 @@
-import { booleanAttribute, Component, input, ViewEncapsulation } from "@angular/core";
+import { booleanAttribute, ChangeDetectionStrategy, Component, input, ViewEncapsulation } from "@angular/core";
 import { TooltipOptions } from "primeng/api";
 import { DividerModule } from "primeng/divider";
 import { TooltipModule } from "primeng/tooltip";
 
 @Component({
   selector: "x-card",
-  imports: [DividerModule, TooltipModule],
   templateUrl: "./card.component.html",
   styleUrl: "./card.component.scss",
-  encapsulation: ViewEncapsulation.Emulated,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [DividerModule, TooltipModule],
 })
 export class Card {
   header = input<string>();

@@ -120,8 +120,8 @@ function customPreset() {
         name,
         {
           colorScheme: {
-            light: { root: { ...config.root } },
-            dark: { root: { ...config.root } },
+            light: { ...config },
+            dark: { ...config },
           },
         },
       ]),

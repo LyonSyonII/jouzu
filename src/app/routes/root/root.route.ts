@@ -1,4 +1,4 @@
-import { Component, computed, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
 import { TooltipOptions } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { ToggleButtonModule } from "primeng/togglebutton";
@@ -15,13 +15,6 @@ import {
   Romaji,
   KanaTable,
   KanaToRomajiMap,
-  romanize,
-  katakanaDakutenChars,
-  katakanaHandakutenChars,
-  katakanaYouonChars,
-  hiraganaDakutenChars,
-  hiraganaHandakutenChars,
-  hiraganaYouonChars,
 } from "@shared/japanese";
 import { FormsModule } from "@angular/forms";
 import { storage } from "@/libs/signals/storage.signal";
@@ -31,13 +24,16 @@ import { AngularSvgIconModule } from "angular-svg-icon";
 import { QuicklinkDirective } from "ngx-quicklink";
 import { RouterLink } from "@angular/router";
 import { kanaGameKeys } from "@shared/idb-keys";
+import { ThemeService } from "@services/theme.service";
 
 @Component({
   selector: "x-root",
+  templateUrl: "./root.route.html",
+  styleUrl: "./root.route.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ButtonModule,
     Card,
-    DividerModule,
     ToggleButtonModule,
     TooltipModule,
     CheckboxModule,
@@ -45,13 +41,13 @@ import { kanaGameKeys } from "@shared/idb-keys";
     RomanizePipe,
     AngularSvgIconModule,
     QuicklinkDirective,
-    RouterLink
+    RouterLink,
   ],
-  templateUrl: "./root.route.html",
-  styleUrl: "./root.route.scss",
 })
 export default class Root extends BaseComponent {
   // TODO: Add "random" button
+  protected readonly themeService = inject(ThemeService);
+  
   protected readonly hiragana = this.enumerateRowsChars(hiragana, fromHiragana, 11);
   protected readonly katakana = this.enumerateRowsChars(katakana, fromKatakana, 11);
 
@@ -65,12 +61,22 @@ export default class Root extends BaseComponent {
   protected readonly dakutenSelected = storage(kanaGameKeys.dakutenSelected, false);
   protected readonly handakutenSelected = storage(kanaGameKeys.handakutenSelected, false);
   protected readonly youonSelected = storage(kanaGameKeys.youonSelected, false);
-  
-  protected readonly romanize = romanize;
+
   protected readonly romanizeTooltip: TooltipOptions = {
     tooltipPosition: "top",
-    tooltipStyleClass: "romanize-tooltip"
+    tooltipStyleClass: "romanize-tooltip",
   };
+
+  protected readonly kanaGroups = computed(() => [
+    { name: "ひらがな", selected: this.hiraganaSelected() },
+    { name: "カタカナ", selected: this.katakanaSelected() },
+  ]);
+  protected readonly kanaExtraToggles = [
+    { icon: "dakuten", tooltip: "dakuten", signal: this.dakutenSelected },
+    { icon: "handakuten", tooltip: "handakuten", signal: this.handakutenSelected },
+    { icon: "youon", tooltip: "yōon", signal: this.youonSelected },
+  ] as const;
+  protected readonly togglebuttonIconStates = ["on", "off"] as const;
 
   protected toggleCharacter(char: KanaChar) {
     this.selectedKana.update((selected) => {

@@ -1,13 +1,15 @@
-<h2
-  [pTooltip]="tooltip()?.text"
-  [tooltipPosition]="tooltip()?.position"
-  [tooltipOptions]="tooltip()?.options"
->
-  {{ header() }}
-</h2>
-@if (divider()) {
-  <p-divider layout="horizontal" />
+@if (header()) {
+  <h2
+    [pTooltip]="tooltip()?.text"
+    [tooltipPosition]="tooltip()?.position"
+    [tooltipOptions]="tooltip()?.options"
+  >
+    {{ header() }}
+  </h2>
+  @if (divider()) {
+    <p-divider layout="horizontal" />
+  }
 }
 <div class="content">
-<ng-content></ng-content>
+  <ng-content></ng-content>
 </div>

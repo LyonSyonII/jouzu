@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from "@angular/core";
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode, ErrorHandler, Injectable, inject } from "@angular/core";
 import { provideRouter, withComponentInputBinding, withPreloading } from "@angular/router";
 import { providePrimeNG } from "primeng/config";
 import { definePreset } from "@primeuix/themes";
@@ -11,10 +11,12 @@ import { MessageService } from "primeng/api";
 import { Preset } from "@primeuix/themes/types";
 import { QuicklinkStrategy, quicklinkProviders } from "ngx-quicklink";
 import { provideHttpClient, withFetch } from "@angular/common/http";
+import { GlobalErrorHandler } from "@services/error.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     quicklinkProviders,
     provideRouter(routes, withPreloading(QuicklinkStrategy), withComponentInputBinding()),
     provideHttpClient(withFetch()),

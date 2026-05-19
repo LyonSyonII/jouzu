@@ -1,10 +1,11 @@
 import { Routes } from "@angular/router";
 import { kanaGameResolver } from "./routes/kana-game/kana-game.resolver";
+import Root from "./routes/root/root.route";
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import("./routes/root/root.route")
+    component: Root,
   },
   {
     path: 'kana',

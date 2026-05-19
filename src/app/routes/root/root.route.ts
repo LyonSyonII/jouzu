@@ -25,6 +25,7 @@ import { QuicklinkDirective } from "ngx-quicklink";
 import { RouterLink } from "@angular/router";
 import { kanaGameKeys } from "@shared/idb-keys";
 import { ThemeService } from "@services/theme.service";
+import { Nav } from "@components/nav/nav.component";
 
 @Component({
   selector: "x-root",
@@ -42,7 +43,8 @@ import { ThemeService } from "@services/theme.service";
     AngularSvgIconModule,
     QuicklinkDirective,
     RouterLink,
-  ],
+    Nav
+],
 })
 export default class Root extends BaseComponent {
   // TODO: Add "random" button

@@ -1,16 +1,5 @@
 <main>
-  <nav>
-    <h1>
-      <ruby>上手<rt>じょうず</rt></ruby>
-    </h1>
-
-    <p-button
-      ariaLabel="Toggle dark mode"
-      size="large"
-      [icon]="this.themeService.isDarkMode() ? PrimeIcons.SUN : PrimeIcons.MOON"
-      (onClick)="themeService.toggleDarkMode()"
-    />
-  </nav>
+  <x-nav />
 
   <div>
     <x-card

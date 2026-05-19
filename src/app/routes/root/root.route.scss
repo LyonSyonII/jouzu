@@ -11,17 +11,6 @@
 :host main {
   padding: var(--padding);
 
-  > nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-
-    > h1 {
-      margin: 0;
-    }
-  }
-
   > div {
     width: 100%;
     display: grid;

@@ -1,72 +1,144 @@
 #!/usr/bin/env nix-shell
 #! nix-shell -i python3 -p "python3.withPackages (ps: with ps; [ pykakasi ])"
 
+from __future__ import annotations
+
+import importlib
 import json
 import re
+from collections import Counter, defaultdict
+from collections.abc import Callable, Sequence
 from functools import lru_cache
-from collections import defaultdict, Counter
 from pathlib import Path
-from pykakasi import kakasi
+from typing import Final, Protocol, TypeAlias, TypedDict, cast
 
-IN = Path('./wordlist.json')
-OUT = Path('./wordlist_processed.json')
-REPORT = Path('./wordlist_chars_report.json')
-REMOVE_KEYS = {
+IN: Final[Path] = Path('./wordlist.json')
+OUT: Final[Path] = Path('./wordlist_processed.json')
+REPORT: Final[Path] = Path('./wordlist_chars_report.json')
+
+REMOVE_KEYS: Final[frozenset[str]] = frozenset({
     'appearance', 'subActivity', 'activity', 'lesson', 'section',
-    'partsOfSpeech', 'wordListIndex', 'alphabeticalIndex', 'extraInfo'
-}
-SMALL = set('ぁぃぅぇぉゃゅょゎァィゥェォャュョヮ')
-SOKUON = set('っッ')
-KANA_RE = re.compile(r'[\u3040-\u30ff]')
-KANJI_RE = re.compile(r'[\u3400-\u4dbf\u4e00-\u9fff々〆ヶ]')
-DIGIT_RE = re.compile(r'[0-9０-９,，]+')
-LATIN_RE = re.compile(r'[A-Za-z]+')
+    'partsOfSpeech', 'wordListIndex', 'alphabeticalIndex', 'extraInfo',
+})
+SMALL: Final[frozenset[str]] = frozenset('ぁぃぅぇぉゃゅょゎァィゥェォャュョヮ')
+SOKUON: Final[frozenset[str]] = frozenset('っッ')
+KANJI_RE: Final[re.Pattern[str]] = re.compile(r'[\u3400-\u4dbf\u4e00-\u9fff々〆ヶ]')
 
-LETTER_READINGS = {
+LETTER_READINGS: Final[dict[str, list[str]]] = {
     'A': ['エー'], 'B': ['ビー'], 'C': ['シー'], 'D': ['ディー'],
-    'E': ['イー','エー'], 'F': ['エフ'], 'G': ['ジー'], 'H': ['エイチ'],
+    'E': ['イー', 'エー'], 'F': ['エフ'], 'G': ['ジー'], 'H': ['エイチ'],
     'I': ['アイ'], 'J': ['ジェー'], 'K': ['ケー'], 'L': ['エル'],
     'M': ['エム'], 'N': ['エヌ'], 'O': ['オー'], 'P': ['ピー'],
     'Q': ['キュー'], 'R': ['アール'], 'S': ['エス'], 'T': ['ティー'],
     'U': ['ユー'], 'V': ['ブイ'], 'W': ['ダブリュー'], 'X': ['エックス'],
     'Y': ['ワイ'], 'Z': ['ゼット'],
 }
-DIGIT_READINGS = {
-    '0': ['ゼロ','れい'], '０': ['ゼロ','れい'],
+DIGIT_READINGS: Final[dict[str, list[str]]] = {
+    '0': ['ゼロ', 'れい'], '０': ['ゼロ', 'れい'],
     '1': ['いち'], '１': ['いち'],
     '2': ['に'], '２': ['に'],
     '3': ['さん'], '３': ['さん'],
-    '4': ['よん','し'], '４': ['よん','し'],
+    '4': ['よん', 'し'], '４': ['よん', 'し'],
     '5': ['ご'], '５': ['ご'],
     '6': ['ろく'], '６': ['ろく'],
-    '7': ['なな','しち'], '７': ['なな','しち'],
+    '7': ['なな', 'しち'], '７': ['なな', 'しち'],
     '8': ['はち'], '８': ['はち'],
-    '9': ['きゅう','く'], '９': ['きゅう','く'],
+    '9': ['きゅう', 'く'], '９': ['きゅう', 'く'],
 }
 
-def is_kana_char(c):
+SourceRow: TypeAlias = dict[str, object]
+OutputRow: TypeAlias = dict[str, object]
+Candidates: TypeAlias = defaultdict[str, Counter[str]]
+CandidateScore: TypeAlias = tuple[str, int]
+
+
+class StringReadingEntry(TypedDict):
+    word: str
+    reading: str
+
+
+class ArrayReadingEntry(TypedDict):
+    word: str
+    reading: list[str]
+
+
+class FallbackExample(TypedDict):
+    index: int
+    word: str
+    reading: str
+    reason: str
+
+
+class GroupedExample(TypedDict):
+    index: int
+    word: str
+    reading: str
+    group: StringReadingEntry
+
+
+class KakasiItem(TypedDict, total=False):
+    orig: str
+    hepburn: str
+
+
+class Romanizer(Protocol):
+    def convert(self, text: str) -> list[KakasiItem]:
+        ...
+
+
+AlignmentEntry: TypeAlias = str | StringReadingEntry
+ReadableEntry: TypeAlias = str | StringReadingEntry | ArrayReadingEntry
+AlignmentResult: TypeAlias = tuple[list[AlignmentEntry], int]
+TransformResult: TypeAlias = tuple[
+    list[OutputRow],
+    Candidates,
+    list[FallbackExample],
+    list[GroupedExample],
+]
+
+
+def make_romanizer() -> Romanizer:
+    module = importlib.import_module('pykakasi')
+    factory = cast(Callable[[], Romanizer], getattr(module, 'kakasi'))
+    return factory()
+
+
+ROMANIZER: Final[Romanizer] = make_romanizer()
+
+
+def is_kana_char(c: str) -> bool:
     return '\u3040' <= c <= '\u30ff'
 
-def is_kana_unit(u):
+
+def is_kana_unit(u: str) -> bool:
     return all(is_kana_char(c) for c in u)
 
-def is_kanji_char(c):
+
+def is_kanji_char(c: str) -> bool:
     return bool(KANJI_RE.fullmatch(c))
 
-def is_literal(u):
+
+def is_literal(u: str) -> bool:
     if is_kana_unit(u):
         return True
-    if all((not is_kanji_char(c)) and (not c.isalnum()) and c not in ',，' for c in u):
-        return True
-    return False
+    return all((not is_kanji_char(c)) and (not c.isalnum()) and c not in ',，' for c in u)
 
-def segment_word(s):
-    s = str(s)
-    out = []
+
+def kana_unit_end(value: str, start: int) -> int:
+    end = start + 1
+    if end < len(value) and value[end] in SMALL:
+        end += 1
+    while end < len(value) and value[end] == 'ー':
+        end += 1
+    return end
+
+
+def segment_word(value: object) -> list[str]:
+    s = str(value)
+    out: list[str] = []
     i = 0
     while i < len(s):
         c = s[i]
-        # number run, including separators inside the run
         if c.isdigit() or c in ',，':
             j = i + 1
             while j < len(s) and (s[j].isdigit() or s[j] in ',，'):
@@ -74,34 +146,26 @@ def segment_word(s):
             out.append(s[i:j])
             i = j
             continue
-        # Latin: split all-uppercase acronyms, keep mixed/lower words together.
         if ('A' <= c <= 'Z') or ('a' <= c <= 'z'):
             j = i + 1
             while j < len(s) and (('A' <= s[j] <= 'Z') or ('a' <= s[j] <= 'z')):
                 j += 1
             run = s[i:j]
             if run.isupper():
-                out.extend(list(run))
+                out.extend(run)
             else:
                 out.append(run)
             i = j
             continue
-        # Japanese kana mora-ish grouping: ちょ, ティー, っと, ップ, etc.
-        if c in SOKUON and i + 1 < len(s) and is_kana_char(s[i + 1]):
-            j = i + 2
-            if j < len(s) and s[j] in SMALL:
-                j += 1
-            while j < len(s) and s[j] == 'ー':
-                j += 1
+        if c in SOKUON:
+            j = i + 1
+            if j < len(s) and is_kana_char(s[j]):
+                j = kana_unit_end(s, j)
             out.append(s[i:j])
             i = j
             continue
         if is_kana_char(c):
-            j = i + 1
-            if j < len(s) and s[j] in SMALL:
-                j += 1
-            while j < len(s) and s[j] == 'ー':
-                j += 1
+            j = kana_unit_end(s, i)
             out.append(s[i:j])
             i = j
             continue
@@ -109,21 +173,65 @@ def segment_word(s):
         i += 1
     return out
 
-def entry_word(x):
-    return ''.join(e if isinstance(e, str) else str(e.get('word','')) for e in x)
 
-def entry_reading(x):
-    return ''.join(e if isinstance(e, str) else str(e.get('reading','')) for e in x)
+def entry_word(entries: Sequence[ReadableEntry]) -> str:
+    return ''.join(e if isinstance(e, str) else e['word'] for e in entries)
 
-def object_entry(word, reading):
+
+def entry_reading(entries: Sequence[ReadableEntry]) -> str:
+    parts: list[str] = []
+    for e in entries:
+        if isinstance(e, str):
+            parts.append(e)
+            continue
+        reading = e['reading']
+        if isinstance(reading, list):
+            parts.append(''.join(reading))
+        else:
+            parts.append(reading)
+    return ''.join(parts)
+
+
+def object_entry(word: str, reading: str) -> StringReadingEntry:
     return {'word': word, 'reading': reading}
 
-ROMANIZER = kakasi()
 
-def romanize_reading(reading):
-    reading = str(reading)
-    parts = []
-    for item in ROMANIZER.convert(reading):
+def segment_reading(value: object) -> list[str]:
+    reading = str(value)
+    out: list[str] = []
+    i = 0
+    while i < len(reading):
+        c = reading[i]
+        if c in SOKUON:
+            j = i + 1
+            if j < len(reading) and is_kana_char(reading[j]):
+                j = kana_unit_end(reading, j)
+            out.append(reading[i:j])
+            i = j
+            continue
+        if is_kana_char(c):
+            j = kana_unit_end(reading, i)
+            out.append(reading[i:j])
+            i = j
+            continue
+        out.append(c)
+        i += 1
+    return out
+
+
+def output_chars(aligned: Sequence[AlignmentEntry]) -> list[ArrayReadingEntry]:
+    out: list[ArrayReadingEntry] = []
+    for e in aligned:
+        if isinstance(e, str):
+            out.append({'word': e, 'reading': segment_reading(e)})
+        else:
+            out.append({'word': e['word'], 'reading': segment_reading(e['reading'])})
+    return out
+
+
+def romanize_reading(reading: object) -> str:
+    parts: list[str] = []
+    for item in ROMANIZER.convert(str(reading)):
         text = item.get('orig', '')
         hepburn = item.get('hepburn', '')
         if text == '／':
@@ -136,190 +244,210 @@ def romanize_reading(reading):
             parts.append(text)
     return ''.join(parts).replace('  ', ' ').strip()
 
-def is_empty_value(value):
+
+def is_empty_value(value: object) -> bool:
     return not str(value or '').strip()
 
-def candidate_list(unit, candidates):
-    vals = []
-    if unit in candidates:
-        for r, n in candidates[unit].most_common():
-            vals.append((r, 200 + min(n, 20)))
-    if unit in LETTER_READINGS:
-        for r in LETTER_READINGS[unit]:
-            vals.append((r, 180))
-    if unit in DIGIT_READINGS:
-        for r in DIGIT_READINGS[unit]:
-            vals.append((r, 120))
-    # Remove duplicates, keep best score.
-    best = {}
-    for r, s in vals:
-        best[r] = max(best.get(r, -9999), s)
-    return sorted(best.items(), key=lambda x: (-x[1], -len(x[0]), x[0]))
 
-def split_run(run, segment, candidates):
-    # No arbitrary split if there is no known anchor/candidate inside the run.
-    has_known = any(candidate_list(u, candidates) for u in run)
+def candidate_list(unit: str, candidates: Candidates) -> list[CandidateScore]:
+    vals: list[CandidateScore] = []
+    if unit in candidates:
+        for reading, count in candidates[unit].most_common():
+            vals.append((reading, 200 + min(count, 20)))
+    if unit in LETTER_READINGS:
+        for reading in LETTER_READINGS[unit]:
+            vals.append((reading, 180))
+    if unit in DIGIT_READINGS:
+        for reading in DIGIT_READINGS[unit]:
+            vals.append((reading, 120))
+    best: dict[str, int] = {}
+    for reading, score in vals:
+        best[reading] = max(best.get(reading, -9999), score)
+    return sorted(best.items(), key=lambda item: (-item[1], -len(item[0]), item[0]))
+
+
+def split_run(run: Sequence[str], segment: str, candidates: Candidates) -> AlignmentResult:
+    has_known = any(candidate_list(unit, candidates) for unit in run)
     if len(run) == 1 or not has_known:
-        return ([object_entry(''.join(run), segment)], 0 if len(run) == 1 else -80)
+        return [object_entry(''.join(run), segment)], 0 if len(run) == 1 else -80
 
     n = len(run)
-    @lru_cache(None)
-    def dp(i, j):
+
+    @lru_cache(maxsize=None)
+    def dp(i: int, j: int) -> AlignmentResult | None:
         if i == n:
             return ([], 0) if j == len(segment) else None
-        u = run[i]
-        best = None
-        # Known readings first.
-        for cand, base_score in candidate_list(u, candidates):
-            if segment.startswith(cand, j):
-                rest = dp(i + 1, j + len(cand))
+        unit = run[i]
+        best: AlignmentResult | None = None
+        for candidate, base_score in candidate_list(unit, candidates):
+            if segment.startswith(candidate, j):
+                rest = dp(i + 1, j + len(candidate))
                 if rest is not None:
                     entries, score = rest
-                    res = ([object_entry(u, cand)] + entries, score + base_score)
-                    if best is None or res[1] > best[1]:
-                        best = res
-        # Bounded unknown fallback. Needed for readings inferred from a known neighbor.
-        # Avoid for multi-character numeric or mixed Latin units.
+                    result = [object_entry(unit, candidate), *entries], score + base_score
+                    if best is None or result[1] > best[1]:
+                        best = result
         remaining_units = n - i - 1
         max_len = min(len(segment) - j, 8)
-        if max_len > 0 and not (len(u) > 1 and (u[0].isdigit() or u[0] in ',，')):
-            # Leave at least one kana/codepoint for each following unit when possible.
+        if max_len > 0 and not (len(unit) > 1 and (unit[0].isdigit() or unit[0] in ',，')):
             for k in range(1, max_len + 1):
                 if len(segment) - (j + k) < remaining_units:
                     continue
                 rest = dp(i + 1, j + k)
                 if rest is not None:
                     entries, score = rest
-                    res = ([object_entry(u, segment[j:j+k])] + entries, score - 10 * k)
-                    if best is None or res[1] > best[1]:
-                        best = res
+                    result = [object_entry(unit, segment[j:j + k]), *entries], score - 10 * k
+                    if best is None or result[1] > best[1]:
+                        best = result
         return best
+
     result = dp(0, 0)
     if result is None:
-        return ([object_entry(''.join(run), segment)], -80)
+        return [object_entry(''.join(run), segment)], -80
     return result
 
-def align(units, reading, candidates):
+
+def align(units: Sequence[str], reading: str, candidates: Candidates) -> AlignmentResult:
     n = len(units)
-    @lru_cache(None)
-    def dp(i, j):
+
+    @lru_cache(maxsize=None)
+    def dp(i: int, j: int) -> AlignmentResult | None:
         if i == n:
-            if j == len(reading):
-                return ([], 0)
-            return None
-        u = units[i]
-        if is_literal(u):
-            # Normal exact literal/kana match.
-            if reading.startswith(u, j):
-                rest = dp(i + 1, j + len(u))
+            return ([], 0) if j == len(reading) else None
+        unit = units[i]
+        if is_literal(unit):
+            if reading.startswith(unit, j):
+                rest = dp(i + 1, j + len(unit))
                 if rest is not None:
                     entries, score = rest
-                    return ([u] + entries, score + 10)
-            # Some source words have trailing spaces absent from reading.
-            if u.isspace():
+                    return [unit, *entries], score + 10
+            if unit.isspace():
                 rest = dp(i + 1, j)
                 if rest is not None:
                     entries, score = rest
-                    return ([object_entry(u, '')] + entries, score - 5)
+                    return [object_entry(unit, ''), *entries], score - 5
             return None
 
-        # Collect variable run.
         m = i
         while m < n and not is_literal(units[m]):
             m += 1
-        run = tuple(units[i:m])
-        best = None
-        # Try all possible reading endpoints. Prefer endpoints that allow the suffix to align.
+        run = units[i:m]
+        best: AlignmentResult | None = None
         for end in range(j, len(reading) + 1):
             rest = dp(m, end)
             if rest is None:
                 continue
-            run_entries, run_score = split_run(list(run), reading[j:end], candidates)
+            run_entries, run_score = split_run(run, reading[j:end], candidates)
             entries, score = rest
-            res = (run_entries + entries, score + run_score)
-            if best is None or res[1] > best[1]:
-                best = res
+            result = [*run_entries, *entries], score + run_score
+            if best is None or result[1] > best[1]:
+                best = result
         return best
+
     result = dp(0, 0)
     if result is None:
         return [object_entry(''.join(units), reading)], -1000
     return result
 
-def add_candidates_from_alignment(aligned, candidates):
+
+def add_candidates_from_alignment(aligned: Sequence[AlignmentEntry], candidates: Candidates) -> int:
     changed = 0
-    for e in aligned:
-        if isinstance(e, dict):
-            w, r = e['word'], e['reading']
-            # Learn one-kanji, one-letter, and one-token number readings only.
-            if len(w) == 1 and r and not is_literal(w):
-                before = candidates[w][r]
-                candidates[w][r] += 1
-                if before == 0:
-                    changed += 1
+    for entry in aligned:
+        if isinstance(entry, str):
+            continue
+        word = entry['word']
+        reading = entry['reading']
+        if len(word) == 1 and reading and not is_literal(word):
+            before = candidates[word][reading]
+            candidates[word][reading] += 1
+            if before == 0:
+                changed += 1
     return changed
 
-def make_initial_candidates(data):
-    c = defaultdict(Counter)
-    for k, vals in LETTER_READINGS.items():
-        for v in vals:
-            c[k][v] += 5
-    for k, vals in DIGIT_READINGS.items():
-        for v in vals:
-            c[k][v] += 3
-    # Direct one-character entries.
-    for row in data:
-        w, r = str(row.get('word', '')), str(row.get('reading', ''))
-        if len(w) == 1 and w != r and r:
-            c[w][r] += 10
-    return c
 
-def transform(data):
+def make_initial_candidates(data: Sequence[SourceRow]) -> Candidates:
+    candidates: Candidates = defaultdict(Counter)
+    for key, values in LETTER_READINGS.items():
+        for value in values:
+            candidates[key][value] += 5
+    for key, values in DIGIT_READINGS.items():
+        for value in values:
+            candidates[key][value] += 3
+    for row in data:
+        word = str(row.get('word', ''))
+        reading = str(row.get('reading', ''))
+        if len(word) == 1 and word != reading and reading:
+            candidates[word][reading] += 10
+    return candidates
+
+
+def transform(data: Sequence[SourceRow]) -> TransformResult:
     candidates = make_initial_candidates(data)
-    # Iteratively learn readings from anchored okurigana, particles, suffixes, etc.
     for _ in range(8):
         changed = 0
         for row in data:
-            w, r = str(row.get('word', '')), str(row.get('reading', ''))
-            aligned, _score = align(tuple(segment_word(w)), r, candidates)
-            if entry_word(aligned) == w and entry_reading(aligned) == r:
+            word = str(row.get('word', ''))
+            reading = str(row.get('reading', ''))
+            aligned, _score = align(tuple(segment_word(word)), reading, candidates)
+            if entry_word(aligned) == word and entry_reading(aligned) == reading:
                 changed += add_candidates_from_alignment(aligned, candidates)
         if changed == 0:
             break
 
-    out = []
-    fallbacks = []
-    grouped = []
-    for idx, row in enumerate(data):
-        w, r = str(row.get('word', '')), str(row.get('reading', ''))
-        aligned, score = align(tuple(segment_word(w)), r, candidates)
-        if entry_word(aligned) != w or entry_reading(aligned) != r:
-            aligned = [object_entry(w, r)]
-            fallbacks.append({'index': idx, 'word': w, 'reading': r, 'reason': 'alignment_failed'})
+    out: list[OutputRow] = []
+    fallbacks: list[FallbackExample] = []
+    grouped: list[GroupedExample] = []
+    for index, row in enumerate(data):
+        word = str(row.get('word', ''))
+        reading = str(row.get('reading', ''))
+        aligned, _score = align(tuple(segment_word(word)), reading, candidates)
+        if entry_word(aligned) != word or entry_reading(aligned) != reading:
+            aligned = [object_entry(word, reading)]
+            fallbacks.append({
+                'index': index,
+                'word': word,
+                'reading': reading,
+                'reason': 'alignment_failed',
+            })
         for part in aligned:
-            if isinstance(part, dict) and len(part['word']) > 1 and part['word'] != part['reading']:
-                grouped.append({'index': idx, 'word': w, 'reading': r, 'group': part})
-        new = {k: v for k, v in row.items() if k not in REMOVE_KEYS}
-        # CHANGED: preserve schema by forcing top-level word/reading to strings.
-        new['word'] = w
-        new['reading'] = r
+            if isinstance(part, str):
+                continue
+            if len(part['word']) > 1 and part['word'] != part['reading']:
+                grouped.append({'index': index, 'word': word, 'reading': reading, 'group': part})
+
+        new: OutputRow = {key: value for key, value in row.items() if key not in REMOVE_KEYS}
+        new['word'] = word
+        new['reading'] = reading
         if is_empty_value(new.get('romanization', '')):
-            new['romanization'] = romanize_reading(r)
-        # Insert chars after reading.
-        ordered = {}
-        for k, v in new.items():
-            ordered[k] = v
-            if k == 'reading':
-                ordered['chars'] = aligned
+            new['romanization'] = romanize_reading(reading)
+
+        chars = output_chars(aligned)
+        ordered: OutputRow = {}
+        for key, value in new.items():
+            ordered[key] = value
+            if key == 'reading':
+                ordered['chars'] = chars
         if 'chars' not in ordered:
-            ordered['chars'] = aligned
+            ordered['chars'] = chars
         out.append(ordered)
     return out, candidates, fallbacks, grouped
 
-def main():
-    data = json.loads(IN.read_text(encoding='utf-8'))
+
+def load_source_rows(path: Path) -> list[SourceRow]:
+    data = json.loads(path.read_text(encoding='utf-8'))
+    if not isinstance(data, list):
+        raise TypeError('wordlist.json must contain a JSON array')
+    for index, row in enumerate(data):
+        if not isinstance(row, dict):
+            raise TypeError(f'wordlist.json item {index} must be a JSON object')
+    return cast(list[SourceRow], data)
+
+
+def main() -> None:
+    data = load_source_rows(IN)
     out, candidates, fallbacks, grouped = transform(data)
-    OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    report = {
+    _ = OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    report: dict[str, object] = {
         'input_entries': len(data),
         'output_entries': len(out),
         'removed_keys': sorted(REMOVE_KEYS),
@@ -327,17 +455,19 @@ def main():
         'grouped_non_identity_segments': len(grouped),
         'fallback_examples': fallbacks[:50],
         'grouped_examples': grouped[:100],
-        'learned_single_unit_readings': sum(len(v) for v in candidates.values()),
+        'learned_single_unit_readings': sum(len(value) for value in candidates.values()),
     }
-    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    # Hard validation.
-    for src, dst in zip(data, out):
-        w, r = str(src.get('word','')), str(src.get('reading',''))
-        assert entry_word(dst['chars']) == w, (w, dst['chars'], entry_word(dst['chars']))
-        assert entry_reading(dst['chars']) == r, (r, dst['chars'], entry_reading(dst['chars']))
-        for k in REMOVE_KEYS:
-            assert k not in dst
+    _ = REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    for source, destination in zip(data, out, strict=True):
+        word = str(source.get('word', ''))
+        reading = str(source.get('reading', ''))
+        chars = cast(list[ArrayReadingEntry], destination['chars'])
+        assert entry_word(chars) == word, (word, chars, entry_word(chars))
+        assert entry_reading(chars) == reading, (reading, chars, entry_reading(chars))
+        for key in REMOVE_KEYS:
+            assert key not in destination
     print(json.dumps(report, ensure_ascii=False, indent=2))
+
 
 if __name__ == '__main__':
     main()

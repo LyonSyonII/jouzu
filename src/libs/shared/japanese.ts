@@ -3,12 +3,14 @@
 // There's no way I'm mapping everything by hand.
 // I did my best to format it to be legible, though (manually, because AI is stupid and can't see).
 
+import { type } from "arktype";
+
 /* @formatter:off */
 
 export const hiraganaDakuten = {
   ga: ["が", "ぎ", "ぐ", "げ", "ご"],
   za: ["ざ", "じ", "ず", "ぜ", "ぞ"],
-  da: ["だ", null, null, "で", "ど"],
+  da: ["だ", null, "づ", "で", "ど"],
   ba: ["ば", "び", "ぶ", "べ", "ぼ"],
 } as const;
 export const hiraganaDakutenChars = [
@@ -47,6 +49,14 @@ export const hiraganaYouonChars = [
   ...hiraganaYouon.bya,
   ...hiraganaYouon.pya,
 ] as const;
+export const hiraganaSmall = {
+  sokuon: ["っ", null, null, null, null],
+  smallYa: ["ゃ", null, "ゅ", null, "ょ"],
+} as const;
+export const hiraganaSmallChars = [
+  ...hiraganaSmall.sokuon,
+  ...hiraganaSmall.smallYa,
+] as const;
 export const hiragana = {
   a: ["あ", "い", "う", "え", "お"],
   ka: ["か", "き", "く", "け", "こ"],
@@ -62,6 +72,21 @@ export const hiragana = {
   ...hiraganaDakuten,
   ...hiraganaHandakuten,
   ...hiraganaYouon,
+  ...hiraganaSmall,
+} as const;
+export const hiraganaChoon = {
+    u_: "うー", e_: "えー",
+   fu_: "ふー", he_: "へー",
+} as const;
+export const hiraganaSokuon = {
+   kka: "っか",  kki: "っき",  kku: "っく", kke: "っけ",  kko: "っこ",
+   ssa: "っさ", sshi: "っし",  ssu: "っす", sse: "っせ",  sso: "っそ",
+   tta: "った", cchi: "っち", ttsu: "っつ", tte: "って",  tto: "っと",
+   ppa: "っぱ",  ppi: "っぴ",  ppu: "っぷ", ppe: "っぺ",  ppo: "っぽ",
+  kkya: "っきゃ",             kkyu: "っきゅ",             kkyo: "っきょ",
+  ssha: "っしゃ",             sshu: "っしゅ",             ssho: "っしょ",
+  ccha: "っちゃ",             cchu: "っちゅ",             ccho: "っちょ",
+  ppya: "っぴゃ",             ppyu: "っぴゅ",             ppyo: "っぴょ",
 } as const;
 
 export const katakanaDakuten = {
@@ -106,6 +131,42 @@ export const katakanaYouonChars = [
   ...katakanaYouon.bya,
   ...katakanaYouon.pya,
 ] as const;
+export const katakanaExtended = {
+   wi: ["ウィ", null, null, "ウェ", "ウォ"],
+   va: ["ヴァ", "ヴィ", "ヴ", "ヴェ", "ヴォ"],
+  she: ["シェ", null, null, null, null],
+   je: ["ジェ", null, null, null, null],
+  che: ["チェ", null, null, null, null],
+  tsa: ["ツァ", "ツィ", null, "ツェ", "ツォ"],
+   ti: ["ティ", null, null, null, null],
+   tu: ["トゥ", null, null, null, null],
+   di: ["ディ", null, null, null, null],
+   du: ["ドゥ", null, null, null, null],
+   fa: ["ファ", "フィ", null, "フェ", "フォ"],
+  fya: ["フャ", null, "フュ", null, "フョ"],
+} as const;
+export const katakanaExtendedChars = [
+  ...katakanaExtended.wi,
+  ...katakanaExtended.va,
+  ...katakanaExtended.she,
+  ...katakanaExtended.je,
+  ...katakanaExtended.che,
+  ...katakanaExtended.tsa,
+  ...katakanaExtended.ti,
+  ...katakanaExtended.tu,
+  ...katakanaExtended.di,
+  ...katakanaExtended.du,
+  ...katakanaExtended.fa,
+  ...katakanaExtended.fya,
+] as const;
+export const katakanaSmall = {
+  sokuon: ["ッ", null, null, null, null],
+  smallA: ["ァ", null, null, null, null],
+} as const;
+export const katakanaSmallChars = [
+  ...katakanaSmall.sokuon,
+  ...katakanaSmall.smallA,
+] as const;
 export const katakana = {
   a: ["ア", "イ", "ウ", "エ", "オ"],
   ka: ["カ", "キ", "ク", "ケ", "コ"],
@@ -121,10 +182,68 @@ export const katakana = {
   ...katakanaDakuten,
   ...katakanaHandakuten,
   ...katakanaYouon,
+  ...katakanaExtended,
+  ...katakanaSmall,
 } as const;
-export const katakanaChars = [
-  
-] as const;
+export const katakanaChoon = {
+    a_: "アー",   i_: "イー",   u_: "ウー",  e_: "エー",   o_: "オー",
+   ka_: "カー",  ki_: "キー",  ku_: "クー", ke_: "ケー",  ko_: "コー",
+   sa_: "サー", shi_: "シー",  su_: "スー", se_: "セー",  so_: "ソー",
+   ta_: "ター", chi_: "チー", tsu_: "ツー", te_: "テー",  to_: "トー",
+   na_: "ナー",  ni_: "ニー",  nu_: "ヌー", ne_: "ネー",  no_: "ノー",
+   ha_: "ハー",  hi_: "ヒー",  fu_: "フー", he_: "ヘー",  ho_: "ホー",
+   ma_: "マー",  mi_: "ミー",  mu_: "ムー", me_: "メー",  mo_: "モー",
+   ya_: "ヤー",                 yu_: "ユー",               yo_: "ヨー",
+   ra_: "ラー",  ri_: "リー",  ru_: "ルー", re_: "レー",  ro_: "ロー",
+   wa_: "ワー",                                           wo_: "ヲー",
+    n_: "ンー",
+   ga_: "ガー",  gi_: "ギー",  gu_: "グー", ge_: "ゲー",  go_: "ゴー",
+   za_: "ザー",  ji_: "ジー",  zu_: "ズー", ze_: "ゼー",  zo_: "ゾー",
+   da_: "ダー",                              de_: "デー",  do_: "ドー",
+   ba_: "バー",  bi_: "ビー",  bu_: "ブー", be_: "ベー",  bo_: "ボー",
+   pa_: "パー",  pi_: "ピー",  pu_: "プー", pe_: "ペー",  po_: "ポー",
+  kya_: "キャー",             kyu_: "キュー",             kyo_: "キョー",
+  sha_: "シャー",             shu_: "シュー",             sho_: "ショー",
+  cha_: "チャー",             chu_: "チュー",             cho_: "チョー",
+  nya_: "ニャー",             nyu_: "ニュー",             nyo_: "ニョー",
+  hya_: "ヒャー",             hyu_: "ヒュー",             hyo_: "ヒョー",
+  mya_: "ミャー",             myu_: "ミュー",             myo_: "ミョー",
+  rya_: "リャー",             ryu_: "リュー",             ryo_: "リョー",
+  gya_: "ギャー",             gyu_: "ギュー",             gyo_: "ギョー",
+   ja_: "ジャー",              ju_: "ジュー",              jo_: "ジョー",
+  bya_: "ビャー",             byu_: "ビュー",             byo_: "ビョー",
+  pya_: "ピャー",             pyu_: "ピュー",             pyo_: "ピョー",
+   wi_: "ウィー",                              we_: "ウェー", woAlt_: "ウォー",
+   va_: "ヴァー", vi_: "ヴィー", vu_: "ヴー", ve_: "ヴェー", vo_: "ヴォー",
+  she_: "シェー",
+   je_: "ジェー",
+  che_: "チェー",
+  tsa_: "ツァー", tsi_: "ツィー",               tse_: "ツェー", tso_: "ツォー",
+   ti_: "ティー",
+   tu_: "トゥー",
+   di_: "ディー",
+   du_: "ドゥー",
+   fa_: "ファー",  fi_: "フィー",                fe_: "フェー",  fo_: "フォー",
+  fya_: "フャー",             fyu_: "フュー",             fyo_: "フョー",
+} as const;
+export const katakanaSokuon = {
+   kka: "ッカ",  kki: "ッキ",  kku: "ック", kke: "ッケ",  kko: "ッコ",
+   ssa: "ッサ", sshi: "ッシ",  ssu: "ッス", sse: "ッセ",  sso: "ッソ",
+   tta: "ッタ", cchi: "ッチ", ttsu: "ッツ", tte: "ッテ",  tto: "ット",
+   gga: "ッガ",  ggi: "ッギ",  ggu: "ッグ", gge: "ッゲ",  ggo: "ッゴ",
+   dda: "ッダ",                              dde: "ッデ",  ddo: "ッド",
+   ppa: "ッパ",  ppi: "ッピ",  ppu: "ップ", ppe: "ッペ",  ppo: "ッポ",
+   ffu: "ッフ",
+   tti: "ッティ",
+  kkaa: "ッカー", kkii: "ッキー",
+  ssaa: "ッサー", ssee: "ッセー",
+  ttaa: "ッター",
+  kkya: "ッキャ",             kkyu: "ッキュ",             kkyo: "ッキョ",
+  ssha: "ッシャ",             sshu: "ッシュ",             ssho: "ッショ",
+  ccha: "ッチャ",             cchu: "ッチュ",             ccho: "ッチョ",
+  ppya: "ッピャ",             ppyu: "ッピュ",             ppyo: "ッピョ",
+  ppaa: "っパー",
+} as const;
 
 // prettier-ignore
 export const toHiragana = {
@@ -141,7 +260,7 @@ export const toHiragana = {
     n: hiragana.n  [0],
    ga: hiragana.ga [0],  gi: hiragana.ga[1],  gu: hiragana.ga [2], ge: hiragana.ga[3],  go: hiragana.ga [4],
    za: hiragana.za [0],  ji: hiragana.za[1],  zu: hiragana.za [2], ze: hiragana.za[3],  zo: hiragana.za [4],
-   da: hiragana.da [0],                                            de: hiragana.da[3],  do: hiragana.da [4],
+   da: hiragana.da [0],                      zuAlt: hiragana.da[2], de: hiragana.da[3],  do: hiragana.da [4],
    ba: hiragana.ba [0],  bi: hiragana.ba[1],  bu: hiragana.ba [2], be: hiragana.ba[3],  bo: hiragana.ba [4],
    pa: hiragana.pa [0],  pi: hiragana.pa[1],  pu: hiragana.pa [2], pe: hiragana.pa[3],  po: hiragana.pa [4],
   kya: hiragana.kya[0],                      kyu: hiragana.kya[2],                     kyo: hiragana.kya[4],
@@ -154,7 +273,11 @@ export const toHiragana = {
   gya: hiragana.gya[0],                      gyu: hiragana.gya[2],                     gyo: hiragana.gya[4],
    ja: hiragana.ja [0],                       ju: hiragana.ja [2],                      jo: hiragana.ja [4],
   bya: hiragana.bya[0],                      byu: hiragana.bya[2],                     byo: hiragana.bya[4],
-  pya: hiragana.pya[0],                      pyu: hiragana.pya[2],                     pyo: hiragana.pya[4]
+  pya: hiragana.pya[0],                      pyu: hiragana.pya[2],                     pyo: hiragana.pya[4],
+ sokuon: hiragana.sokuon[0],
+ yaSmall: hiragana.smallYa[0],       yuSmall: hiragana.smallYa[2],           yoSmall: hiragana.smallYa[4],
+  ...hiraganaChoon,
+  ...hiraganaSokuon
 } as const;
 
 // prettier-ignore
@@ -172,7 +295,7 @@ export const fromHiragana = {
   [hiragana.n  [0]]:   'n',
   [hiragana.ga [0]]:  'ga', [hiragana.ga[1]]:  'gi', [hiragana.ga [2]]:  'gu', [hiragana.ga[3]]: 'ge', [hiragana.ga [4]]:  'go',
   [hiragana.za [0]]:  'za', [hiragana.za[1]]:  'ji', [hiragana.za [2]]:  'zu', [hiragana.za[3]]: 'ze', [hiragana.za [4]]:  'zo',
-  [hiragana.da [0]]:  'da',                                                    [hiragana.da[3]]: 'de', [hiragana.da [4]]:  'do',
+  [hiragana.da [0]]:  'da',                          [hiragana.da [2]]:  'zu', [hiragana.da[3]]: 'de', [hiragana.da [4]]:  'do',
   [hiragana.ba [0]]:  'ba', [hiragana.ba[1]]:  'bi', [hiragana.ba [2]]:  'bu', [hiragana.ba[3]]: 'be', [hiragana.ba [4]]:  'bo',
   [hiragana.pa [0]]:  'pa', [hiragana.pa[1]]:  'pi', [hiragana.pa [2]]:  'pu', [hiragana.pa[3]]: 'pe', [hiragana.pa [4]]:  'po',
   [hiragana.kya[0]]: 'kya',                          [hiragana.kya[2]]: 'kyu',                         [hiragana.kya[4]]: 'kyo',
@@ -185,7 +308,19 @@ export const fromHiragana = {
   [hiragana.gya[0]]: 'gya',                          [hiragana.gya[2]]: 'gyu',                         [hiragana.gya[4]]: 'gyo',
   [hiragana.ja [0]]:  'ja',                          [hiragana.ja [2]]:  'ju',                         [hiragana.ja [4]]:  'jo',
   [hiragana.bya[0]]: 'bya',                          [hiragana.bya[2]]: 'byu',                         [hiragana.bya[4]]: 'byo',
-  [hiragana.pya[0]]: 'pya',                          [hiragana.pya[2]]: 'pyu',                         [hiragana.pya[4]]: 'pyo'
+  [hiragana.pya[0]]: 'pya',                          [hiragana.pya[2]]: 'pyu',                         [hiragana.pya[4]]: 'pyo',
+  [hiragana.sokuon[0]]: '',
+  [hiragana.smallYa[0]]: 'ya',                        [hiragana.smallYa[2]]: 'yu',                      [hiragana.smallYa[4]]: 'yo',
+  [hiraganaChoon.u_]:   'uu', [hiraganaChoon.e_]:   'ee',
+  [hiraganaChoon.fu_]: 'fuu', [hiraganaChoon.he_]: 'hee',
+  [hiraganaSokuon.kka]: 'kka', [hiraganaSokuon.kki]: 'kki', [hiraganaSokuon.kku]: 'kku', [hiraganaSokuon.kke]: 'kke', [hiraganaSokuon.kko]: 'kko',
+  [hiraganaSokuon.ssa]: 'ssa', [hiraganaSokuon.sshi]:'sshi', [hiraganaSokuon.ssu]: 'ssu', [hiraganaSokuon.sse]: 'sse', [hiraganaSokuon.sso]: 'sso',
+  [hiraganaSokuon.tta]: 'tta', [hiraganaSokuon.cchi]:'cchi', [hiraganaSokuon.ttsu]:'ttsu', [hiraganaSokuon.tte]: 'tte', [hiraganaSokuon.tto]: 'tto',
+  [hiraganaSokuon.ppa]: 'ppa', [hiraganaSokuon.ppi]: 'ppi', [hiraganaSokuon.ppu]: 'ppu', [hiraganaSokuon.ppe]: 'ppe', [hiraganaSokuon.ppo]: 'ppo',
+  [hiraganaSokuon.kkya]:'kkya',                              [hiraganaSokuon.kkyu]:'kkyu',                            [hiraganaSokuon.kkyo]:'kkyo',
+  [hiraganaSokuon.ssha]:'ssha',                              [hiraganaSokuon.sshu]:'sshu',                            [hiraganaSokuon.ssho]:'ssho',
+  [hiraganaSokuon.ccha]:'ccha',                              [hiraganaSokuon.cchu]:'cchu',                            [hiraganaSokuon.ccho]:'ccho',
+  [hiraganaSokuon.ppya]:'ppya',                              [hiraganaSokuon.ppyu]:'ppyu',                            [hiraganaSokuon.ppyo]:'ppyo',
 } as const;
 
 // prettier-ignore
@@ -216,7 +351,23 @@ export const toKatakana = {
   gya: katakana.gya[0],                      gyu: katakana.gya[2],                     gyo: katakana.gya[4],
    ja: katakana.ja [0],                       ju: katakana.ja [2],                      jo: katakana.ja [4],
   bya: katakana.bya[0],                      byu: katakana.bya[2],                     byo: katakana.bya[4],
-  pya: katakana.pya[0],                      pyu: katakana.pya[2],                     pyo: katakana.pya[4]
+  pya: katakana.pya[0],                      pyu: katakana.pya[2],                     pyo: katakana.pya[4],
+   wi: katakana.wi [0],                       we: katakana.wi [3],                      woAlt: katakana.wi[4],
+   va: katakana.va [0],  vi: katakana.va[1],  vu: katakana.va [2], ve: katakana.va[3],  vo: katakana.va [4],
+  she: katakana.she[0],
+   je: katakana.je [0],
+  che: katakana.che[0],
+  tsa: katakana.tsa[0], tsi: katakana.tsa[1],                     tse: katakana.tsa[3], tso: katakana.tsa[4],
+   ti: katakana.ti [0],
+   tu: katakana.tu [0],
+   di: katakana.di [0],
+   du: katakana.du [0],
+   fa: katakana.fa [0],  fi: katakana.fa[1],                      fe: katakana.fa [3],  fo: katakana.fa [4],
+  fya: katakana.fya[0],                      fyu: katakana.fya[2],                     fyo: katakana.fya[4],
+ sokuon: katakana.sokuon[0],
+  aSmall: katakana.smallA[0],
+  ...katakanaChoon,
+  ...katakanaSokuon
 } as const;
 
 // prettier-ignore
@@ -247,15 +398,207 @@ export const fromKatakana = {
   [katakana.gya[0]]: 'gya',                          [katakana.gya[2]]: 'gyu',                         [katakana.gya[4]]: 'gyo',
   [katakana.ja [0]]:  'ja',                          [katakana.ja [2]]:  'ju',                         [katakana.ja [4]]:  'jo',
   [katakana.bya[0]]: 'bya',                          [katakana.bya[2]]: 'byu',                         [katakana.bya[4]]: 'byo',
-  [katakana.pya[0]]: 'pya',                          [katakana.pya[2]]: 'pyu',                         [katakana.pya[4]]: 'pyo'
+  [katakana.pya[0]]: 'pya',                          [katakana.pya[2]]: 'pyu',                         [katakana.pya[4]]: 'pyo',
+  [katakana.wi [0]]:  'wi',                                                    [katakana.wi [3]]:  'we', [katakana.wi [4]]:  'wo',
+  [katakana.va [0]]:  'va', [katakana.va[1]]:  'vi', [katakana.va [2]]:  'vu', [katakana.va[3]]: 've', [katakana.va [4]]:  'vo',
+  [katakana.she[0]]: 'she',
+  [katakana.je [0]]:  'je',
+  [katakana.che[0]]: 'che',
+  [katakana.tsa[0]]: 'tsa', [katakana.tsa[1]]: 'tsi',                           [katakana.tsa[3]]:'tse', [katakana.tsa[4]]:'tso',
+  [katakana.ti [0]]:  'ti',
+  [katakana.tu [0]]:  'tu',
+  [katakana.di [0]]:  'di',
+  [katakana.du [0]]:  'du',
+  [katakana.fa [0]]:  'fa', [katakana.fa[1]]:  'fi',                            [katakana.fa [3]]: 'fe', [katakana.fa [4]]:  'fo',
+  [katakana.fya[0]]: 'fya',                          [katakana.fya[2]]: 'fyu',                         [katakana.fya[4]]: 'fyo',
+  [katakana.sokuon[0]]: '',
+  [katakana.smallA[0]]:   'a',
+  [katakanaChoon.a_]:   'aa', [katakanaChoon.i_]:   'ii', [katakanaChoon.u_]:   'uu', [katakanaChoon.e_]:  'ee', [katakanaChoon.o_]:   'oo',
+  [katakanaChoon.ka_]: 'kaa', [katakanaChoon.ki_]: 'kii', [katakanaChoon.ku_]: 'kuu', [katakanaChoon.ke_]: 'kee', [katakanaChoon.ko_]: 'koo',
+  [katakanaChoon.sa_]: 'saa', [katakanaChoon.shi_]:'shii', [katakanaChoon.su_]: 'suu', [katakanaChoon.se_]: 'see', [katakanaChoon.so_]: 'soo',
+  [katakanaChoon.ta_]: 'taa', [katakanaChoon.chi_]:'chii', [katakanaChoon.tsu_]:'tsuu', [katakanaChoon.te_]: 'tee', [katakanaChoon.to_]: 'too',
+  [katakanaChoon.na_]: 'naa', [katakanaChoon.ni_]: 'nii', [katakanaChoon.nu_]: 'nuu', [katakanaChoon.ne_]: 'nee', [katakanaChoon.no_]: 'noo',
+  [katakanaChoon.ha_]: 'haa', [katakanaChoon.hi_]: 'hii', [katakanaChoon.fu_]: 'fuu', [katakanaChoon.he_]: 'hee', [katakanaChoon.ho_]: 'hoo',
+  [katakanaChoon.ma_]: 'maa', [katakanaChoon.mi_]: 'mii', [katakanaChoon.mu_]: 'muu', [katakanaChoon.me_]: 'mee', [katakanaChoon.mo_]: 'moo',
+  [katakanaChoon.ya_]: 'yaa',                                                    [katakanaChoon.yu_]: 'yuu',                           [katakanaChoon.yo_]: 'yoo',
+  [katakanaChoon.ra_]: 'raa', [katakanaChoon.ri_]: 'rii', [katakanaChoon.ru_]: 'ruu', [katakanaChoon.re_]: 'ree', [katakanaChoon.ro_]: 'roo',
+  [katakanaChoon.wa_]: 'waa',                                                                                                  [katakanaChoon.wo_]: 'woo',
+  [katakanaChoon.n_]:   'nn',
+  [katakanaChoon.ga_]: 'gaa', [katakanaChoon.gi_]: 'gii', [katakanaChoon.gu_]: 'guu', [katakanaChoon.ge_]: 'gee', [katakanaChoon.go_]: 'goo',
+  [katakanaChoon.za_]: 'zaa', [katakanaChoon.ji_]: 'jii', [katakanaChoon.zu_]: 'zuu', [katakanaChoon.ze_]: 'zee', [katakanaChoon.zo_]: 'zoo',
+  [katakanaChoon.da_]: 'daa',                                                            [katakanaChoon.de_]: 'dee', [katakanaChoon.do_]: 'doo',
+  [katakanaChoon.ba_]: 'baa', [katakanaChoon.bi_]: 'bii', [katakanaChoon.bu_]: 'buu', [katakanaChoon.be_]: 'bee', [katakanaChoon.bo_]: 'boo',
+  [katakanaChoon.pa_]: 'paa', [katakanaChoon.pi_]: 'pii', [katakanaChoon.pu_]: 'puu', [katakanaChoon.pe_]: 'pee', [katakanaChoon.po_]: 'poo',
+  [katakanaChoon.kya_]:'kyaa',                              [katakanaChoon.kyu_]:'kyuu',                            [katakanaChoon.kyo_]:'kyoo',
+  [katakanaChoon.sha_]:'shaa',                              [katakanaChoon.shu_]:'shuu',                            [katakanaChoon.sho_]:'shoo',
+  [katakanaChoon.cha_]:'chaa',                              [katakanaChoon.chu_]:'chuu',                            [katakanaChoon.cho_]:'choo',
+  [katakanaChoon.nya_]:'nyaa',                              [katakanaChoon.nyu_]:'nyuu',                            [katakanaChoon.nyo_]:'nyoo',
+  [katakanaChoon.hya_]:'hyaa',                              [katakanaChoon.hyu_]:'hyuu',                            [katakanaChoon.hyo_]:'hyoo',
+  [katakanaChoon.mya_]:'myaa',                              [katakanaChoon.myu_]:'myuu',                            [katakanaChoon.myo_]:'myoo',
+  [katakanaChoon.rya_]:'ryaa',                              [katakanaChoon.ryu_]:'ryuu',                            [katakanaChoon.ryo_]:'ryoo',
+  [katakanaChoon.gya_]:'gyaa',                              [katakanaChoon.gyu_]:'gyuu',                            [katakanaChoon.gyo_]:'gyoo',
+  [katakanaChoon.ja_]:  'jaa',                              [katakanaChoon.ju_]:  'juu',                            [katakanaChoon.jo_]:  'joo',
+  [katakanaChoon.bya_]:'byaa',                              [katakanaChoon.byu_]:'byuu',                            [katakanaChoon.byo_]:'byoo',
+  [katakanaChoon.pya_]:'pyaa',                              [katakanaChoon.pyu_]:'pyuu',                            [katakanaChoon.pyo_]:'pyoo',
+  [katakanaChoon.wi_]:  'wii',                                                        [katakanaChoon.we_]:  'wee', [katakanaChoon.woAlt_]: 'woo',
+  [katakanaChoon.va_]:  'vaa', [katakanaChoon.vi_]:  'vii', [katakanaChoon.vu_]:  'vuu', [katakanaChoon.ve_]: 'vee', [katakanaChoon.vo_]:  'voo',
+  [katakanaChoon.she_]:'shee',
+  [katakanaChoon.je_]:  'jee',
+  [katakanaChoon.che_]:'chee',
+  [katakanaChoon.tsa_]:'tsaa', [katakanaChoon.tsi_]:'tsii',                              [katakanaChoon.tse_]:'tsee', [katakanaChoon.tso_]:'tsoo',
+  [katakanaChoon.ti_]:  'tii',
+  [katakanaChoon.tu_]:  'tuu',
+  [katakanaChoon.di_]:  'dii',
+  [katakanaChoon.du_]:  'duu',
+  [katakanaChoon.fa_]:  'faa', [katakanaChoon.fi_]:  'fii',                              [katakanaChoon.fe_]: 'fee', [katakanaChoon.fo_]:  'foo',
+  [katakanaChoon.fya_]:'fyaa',                              [katakanaChoon.fyu_]:'fyuu',                            [katakanaChoon.fyo_]:'fyoo',
+  [katakanaSokuon.kka]: 'kka', [katakanaSokuon.kki]: 'kki', [katakanaSokuon.kku]: 'kku', [katakanaSokuon.kke]: 'kke', [katakanaSokuon.kko]: 'kko',
+  [katakanaSokuon.ssa]: 'ssa', [katakanaSokuon.sshi]:'sshi', [katakanaSokuon.ssu]: 'ssu', [katakanaSokuon.sse]: 'sse', [katakanaSokuon.sso]: 'sso',
+  [katakanaSokuon.tta]: 'tta', [katakanaSokuon.cchi]:'cchi', [katakanaSokuon.ttsu]:'ttsu', [katakanaSokuon.tte]: 'tte', [katakanaSokuon.tto]: 'tto',
+  [katakanaSokuon.gga]: 'gga', [katakanaSokuon.ggi]: 'ggi', [katakanaSokuon.ggu]: 'ggu', [katakanaSokuon.gge]: 'gge', [katakanaSokuon.ggo]: 'ggo',
+  [katakanaSokuon.dda]: 'dda',                                                            [katakanaSokuon.dde]: 'dde', [katakanaSokuon.ddo]: 'ddo',
+  [katakanaSokuon.ppa]: 'ppa', [katakanaSokuon.ppi]: 'ppi', [katakanaSokuon.ppu]: 'ppu', [katakanaSokuon.ppe]: 'ppe', [katakanaSokuon.ppo]: 'ppo',
+  [katakanaSokuon.ffu]: 'ffu',
+  [katakanaSokuon.tti]: 'tti',
+  [katakanaSokuon.kkaa]:'kkaa', [katakanaSokuon.kkii]:'kkii',
+  [katakanaSokuon.ssaa]:'ssaa', [katakanaSokuon.ssee]:'ssee',
+  [katakanaSokuon.ttaa]:'ttaa',
+  [katakanaSokuon.kkya]:'kkya',                              [katakanaSokuon.kkyu]:'kkyu',                            [katakanaSokuon.kkyo]:'kkyo',
+  [katakanaSokuon.ssha]:'ssha',                              [katakanaSokuon.sshu]:'sshu',                            [katakanaSokuon.ssho]:'ssho',
+  [katakanaSokuon.ccha]:'ccha',                              [katakanaSokuon.cchu]:'cchu',                            [katakanaSokuon.ccho]:'ccho',
+  [katakanaSokuon.ppya]:'ppya',                              [katakanaSokuon.ppyu]:'ppyu',                            [katakanaSokuon.ppyo]:'ppyo',
+  [katakanaSokuon.ppaa]:'ppaa'
 } as const;
 
-const romajiMap: KanaToRomajiMap<KanaChar> = { ...fromHiragana, ...fromKatakana };
+export const punctuation = {
+  punctuation: ["!", "%", "(", ",", "-", ".", "?", "―", "…", "、", "。", "！", "％", "（", "）", "／", "？", "・"],
+  symbol: ["↓", "▲", "△", "○", "㎝", "～", "ー"],
+  space: [" ", "　"],
+  digit: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "１"],
+  latin: ["A", "C", "D", "E", "F", "I", "J", "L", "M", "N", "O", "P", "S", "T", "V", "W", "X", "a", "c", "d", "e", "f", "g", "h", "i", "m", "r", "u", "y"],
+  fullwidthLatin: ["Ｃ", "Ｐ", "ｃ", "ｍ"],
+  other: ["〇"],
+} as const;
+
+export const punctuationChars = [
+  ...punctuation.punctuation,
+  ...punctuation.symbol,
+  ...punctuation.space,
+  ...punctuation.digit,
+  ...punctuation.latin,
+  ...punctuation.fullwidthLatin,
+  ...punctuation.other,
+] as const;
+
+export const fromPunctuation = {
+  "!": "!",
+  "%": "%",
+  "(": "(",
+  ",": ",",
+  "-": "-",
+  ".": ".",
+  "?": "?",
+  "―": "-",
+  "…": "...",
+  "、": ",",
+  "。": ".",
+  "！": "!",
+  "％": "%",
+  "（": "(",
+  "）": ")",
+  "／": "/",
+  "？": "?",
+  "・": " ",
+
+  "↓": "",
+  "▲": "",
+  "△": "",
+  "○": "",
+  "㎝": "cm",
+  "～": "~",
+  "ー": "",
+
+  " ": " ",
+  "　": " ",
+
+  "0": "0",
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
+  "１": "1",
+
+  "A": "A",
+  "C": "C",
+  "D": "D",
+  "E": "E",
+  "F": "F",
+  "I": "I",
+  "J": "J",
+  "L": "L",
+  "M": "M",
+  "N": "N",
+  "O": "O",
+  "P": "P",
+  "S": "S",
+  "T": "T",
+  "V": "V",
+  "W": "W",
+  "X": "X",
+  "a": "a",
+  "c": "c",
+  "d": "d",
+  "e": "e",
+  "f": "f",
+  "g": "g",
+  "h": "h",
+  "i": "i",
+  "m": "m",
+  "r": "r",
+  "u": "u",
+  "y": "y",
+
+  "Ｃ": "C",
+  "Ｐ": "P",
+  "ｃ": "c",
+  "ｍ": "m",
+
+  "〇": "0",
+} as const satisfies Record<(typeof punctuationChars)[number], string>;
+
+const romajiMap: KanaToRomajiMap<KanaChar> = { ...fromHiragana, ...fromKatakana, ...fromPunctuation };
+
+export const kanaChars: readonly KanaChar[] = [
+  ...Object.values(toHiragana),
+  ...Object.values(toKatakana),
+  ...punctuationChars
+] as const;
+
+export const KanaCharArkType = type.enumerated(...kanaChars);
 
 export function romanize(text: string): string {
   let result = "";
 
   for (let i = 0; i < text.length; ) {
+    if (text[i] === "っ" || text[i] === "ッ") {
+      const next = romanize(text.slice(i + 1, i + 4))[0];
+      result += next ?? "";
+      i++;
+      continue;
+    }
+
+    const trigram = text.slice(i, i + 3) as KanaChar;
+    if (trigram in romajiMap) {
+      result += romajiMap[trigram];
+      i += 3;
+      continue;
+    }
+
     const bigram = text.slice(i, i + 2) as KanaChar;
     if (bigram in romajiMap) {
       result += romajiMap[bigram];
@@ -272,6 +615,7 @@ export function romanize(text: string): string {
 
 export type Hiragana = typeof hiragana;
 export type Katakana = typeof katakana;
+export type Punctuation = typeof punctuation;
 export type Kana<K> = K extends keyof Hiragana
   ? Record<K, HiraganaChar>
   : K extends keyof Katakana
@@ -280,10 +624,11 @@ export type Kana<K> = K extends keyof Hiragana
 
 export type HiraganaChar = (typeof toHiragana)[keyof typeof toHiragana];
 export type KatakanaChar = (typeof toKatakana)[keyof typeof toKatakana];
-export type KanaChar = HiraganaChar | KatakanaChar;
+export type PunctuationChar = (typeof punctuationChars)[number];
+export type KanaChar = HiraganaChar | KatakanaChar | PunctuationChar;
 
 export type FromHiragana = typeof fromHiragana;
 export type FromKatakana = typeof fromKatakana;
 export type KanaTable<C extends KanaChar> = Readonly<Record<string, readonly (C | null)[]>>;
 export type KanaToRomajiMap<C extends KanaChar> = Readonly<Record<C, Romaji>>;
-export type Romaji = (typeof fromHiragana)[HiraganaChar] | (typeof fromKatakana)[KatakanaChar];
+export type Romaji = (typeof fromHiragana)[HiraganaChar] | (typeof fromKatakana)[KatakanaChar] | (typeof fromPunctuation)[PunctuationChar];

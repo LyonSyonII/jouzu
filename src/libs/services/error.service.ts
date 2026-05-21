@@ -8,6 +8,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   
   handleError(error: unknown): void {
     const realError = error instanceof Error ? error : new Error(String(error));
+    console.error(realError);
     this.messageService.add({
       severity: "error",
       summary: "Fatal Error",
@@ -16,7 +17,5 @@ export class GlobalErrorHandler implements ErrorHandler {
     queueMicrotask(() => {
       this.appRef.tick();
     });
-    
-    console.error(realError);
   }
 }

@@ -16,9 +16,9 @@ export default class BaseComponent {
   
   protected error(error: any, message?: string) {
     this.messageService.add({
-      text: error,
       severity: "error",
-      summary: message
+      summary: message,
+      detail: error,
     });
   }
 

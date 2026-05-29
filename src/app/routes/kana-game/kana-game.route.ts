@@ -6,8 +6,6 @@ import {
   input,
   linkedSignal,
   resource,
-  ResourceLoaderParams,
-  signal,
 } from "@angular/core";
 import BaseComponent from "@components/base.component";
 import { Card } from "@components/card/card.component";
@@ -16,9 +14,8 @@ import { AngularSvgIconModule } from "angular-svg-icon";
 import { Skeleton } from "primeng/skeleton";
 import { Nav } from "@components/nav/nav.component";
 import { decompress } from "fzstd";
-import { filter, map, pipe, sort } from "remeda";
+import { filter, groupBy, map, pipe, sort, sortBy, unique, values } from "remeda";
 import { type } from "arktype";
-import { InputText } from "primeng/inputtext";
 import { FitTextDirective } from "@/libs/directives/fit-text.directive";
 
 @Component({
@@ -26,30 +23,34 @@ import { FitTextDirective } from "@/libs/directives/fit-text.directive";
   templateUrl: "./kana-game.route.html",
   styleUrl: "./kana-game.route.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Card, AngularSvgIconModule, Nav, Skeleton, InputText, FitTextDirective],
+  imports: [Card, AngularSvgIconModule, Nav, Skeleton, FitTextDirective],
 })
 export default class KanaGame extends BaseComponent {
-  public readonly selectedKana = input.required<KanaChar[]>();
+  public readonly selectedKana = input.required<Set<KanaChar>, KanaChar[]>({
+    transform: (kana) => new Set(kana),
+  });
   protected readonly words = resource({
     params: this.selectedKana,
-    loader: ({params}) => this.fetchWords(params),
+    loader: ({ params }) => this.fetchWords(params),
   });
   protected readonly currentWord = linkedSignal(() => {
-    if (this.words.hasValue()) {
-      const { word } = this.words.value()[2115];
-      console.log(this.words.value());
-      return word;
-    }
-    return null;
+    if (!this.words.hasValue()) return null;
+
+    // const { word } = this.words.value()[2114];
+    const { word } = this.words.value()[0][1];
+    console.log(this.words.value());
+    console.log("Chosen:", word);
+    return word;
   });
-  protected readonly currentWordRomaji = computed(() => {
-    if (this.currentWord() === null) return [];
+  protected readonly currentWordDisplay = computed(() => {
+    const currentWord = this.currentWord();
+    if (currentWord === null) return null;
     const selectedKana = this.selectedKana();
-    return (
-      this.currentWord()?.chars.map((char) =>
-        char.reading.map(kana => selectedKana.includes(kana) ? "_" : romanize(kana)).join("")
-      ) ?? []
-    );
+    const chars = currentWord.chars;
+    return chars.map(({ word: char, reading: furigana }) => ({
+      char,
+      furigana: furigana.map((kana) => kana), // TODO
+    }));
   });
   protected answer: string = "";
 
@@ -88,10 +89,10 @@ export default class KanaGame extends BaseComponent {
       if (error) {
         this.panic(error);
       }
-    })
+    });
   }
 
-  private async fetchWords(selectedKana: KanaChar[]) {
+  private async fetchWords(selectedKana: Set<KanaChar>) {
     return pipe(
       await fetch("/assets/wordlist.zst").then((r) => r.arrayBuffer()),
       (b) => new Uint8Array(b),
@@ -103,11 +104,8 @@ export default class KanaGame extends BaseComponent {
       },
       map((word) => {
         let score = 0;
-        for (const char of word.chars) {
-          const reading = typeof char === "string" ? char : char.reading;
-          for (const kana of selectedKana) {
-            if (reading.includes(kana)) score += 1;
-          }
+        for (const kana of selectedKana) {
+          if (word.reading.includes(kana)) score += 1;
         }
         return {
           word,
@@ -115,12 +113,9 @@ export default class KanaGame extends BaseComponent {
         };
       }),
       filter(({ score }) => score > 0),
-      sort((a, b) => {
-        if (a.word.reading.length !== b.word.reading.length) {
-          return a.word.reading.length - b.word.reading.length;
-        }
-        return b.score - a.score;
-      }),
+      sortBy(({ word }) => word.reading.length, [({ score }) => score, "desc"]),
+      groupBy(({ word }) => word.reading.length),
+      values(),
     );
   }
 }

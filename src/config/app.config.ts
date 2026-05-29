@@ -5,7 +5,7 @@ import { definePreset } from "@primeuix/themes";
 import Aura from "@primeuix/themes/aura";
 import { routes } from "@app/app.routes";
 import { provideClientHydration, withEventReplay } from "@angular/platform-browser";
-import { provideServiceWorker } from "@angular/service-worker";
+// import { provideServiceWorker } from "@angular/service-worker";
 import { provideAngularSvgIcon } from 'angular-svg-icon';
 import { MessageService } from "primeng/api";
 import { Preset } from "@primeuix/themes/types";

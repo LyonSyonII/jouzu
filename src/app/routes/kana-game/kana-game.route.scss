@@ -22,23 +22,34 @@
       margin-bottom: 1rem;
       font-size: 4rem;
 
-      .ruby-stack {
+      /* .ruby-stack {
         display: inline-grid;
         grid-template-rows: 32px 64px 32px;
         justify-items: center;
         align-items: center;
         vertical-align: middle;
+      } */
+
+      .ruby-stack {
+        display: grid;
+        grid-template-rows: 32px 64px 32px;
       }
 
-      .ruby-furigana,
-      .ruby-romaji {
-        font-size: 0.25em;
-      }
-      
       .ruby-base {
         font-size: 1em;
-        line-height: 1;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
       }
+      
+      .ruby-furigana, .romaji {
+        font-size: .5em;
+        margin-top: 2rem;
+      }
+
+      .ruby-furigana--shown {
+        opacity: 0.8;
+      }
+      
     }
 
     .kana-input {

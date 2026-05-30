@@ -23,20 +23,20 @@
       "@shared/*": ["libs/shared/*"],
       "@config/*": ["config/*"],
       "@styles/*": ["styles/*"],
-      "@/*": ["*"],
-    },
+      "@/*": ["*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
-    "compilationMode": "full",
+    "compilationMode": "full"
   },
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.app.json",
-    },
-  ],
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

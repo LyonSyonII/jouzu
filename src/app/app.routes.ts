@@ -4,14 +4,14 @@ import Root from "./routes/root/root.route";
 
 export const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: Root,
   },
   {
-    path: 'kana',
+    path: "kana",
     loadComponent: () => import("./routes/kana-game/kana-game.route"),
     resolve: {
-      selectedKana: kanaGameResolver
-    }
-  }
+      selectedKana: kanaGameResolver,
+    },
+  },
 ];

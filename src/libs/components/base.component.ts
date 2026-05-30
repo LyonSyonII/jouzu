@@ -10,10 +10,10 @@ export default class BaseComponent {
     this.messageService.add({
       severity: "info",
       summary: "Info",
-      detail: message
+      detail: message,
     });
   }
-  
+
   protected error(error: any, message?: string) {
     this.messageService.add({
       severity: "error",
@@ -23,6 +23,6 @@ export default class BaseComponent {
   }
 
   protected panic(error: any, message?: string): never {
-    throw new Error(`${message}: ${error}`)
+    throw new Error(`${message}: ${error}`);
   }
 }

@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "dev": "ng serve",
+    "dev": "NG_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.1.44 pnpm ng serve --host 0.0.0.0",
     "build": "ng build -c production",
     "watch": "ng build --watch --configuration development",
     "preview": "pnpm build && pnpx sirv-cli dist/jouzu/browser/ --single --etag --maxage 31536000 --immutable --port 4201 --gzip --brotli",
     "release": "ng deploy --cname=garriga.dev --base-href=/jouzu/",
     "serve:ssr:jouzu": "node dist/jouzu/server/server.mjs",
-    "format": "prettier --write ."
+    "format": "prettier --check --write ."
   },
   "private": true,
   "packageManager": "pnpm@10.33.2",

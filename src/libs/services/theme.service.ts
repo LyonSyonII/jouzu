@@ -1,12 +1,7 @@
 // Greatly inspired by https://dev.to/playfulprogramming-angular/dark-mode-with-analog-tailwind-4049
 
 import { DOCUMENT } from "@angular/common";
-import {
-  inject,
-  Injectable,
-  signal,
-  afterNextRender,
-} from "@angular/core";
+import { inject, Injectable, signal, afterNextRender } from "@angular/core";
 
 export type Theme = "light" | "dark";
 

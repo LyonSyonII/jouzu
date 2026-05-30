@@ -62,14 +62,14 @@ function storageBase<T>(
 
   const ready = isBrowser
     ? get<T>(key, store)
-        .then((stored) => {
+        .then(stored => {
           if (!dirtyBeforeLoad && stored !== undefined) raw.set(stored);
         })
         .catch(options.onError)
         .finally(() => loaded.set(true))
     : Promise.resolve().then(() => loaded.set(true));
 
-  effect((onCleanup) => {
+  effect(onCleanup => {
     if (!loaded() || !isBrowser) return;
     const current = raw();
     const timeoutId = setTimeout(

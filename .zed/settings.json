@@ -4,11 +4,11 @@
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
   "file_types": {
-    "Angular": ["html"],
+    "Angular": ["html"]
   },
   "languages": {
     "TypeScript": {
-      "language_servers": ["!typescript-language-server", "!eslint", "angular", "vtsls", "..."],
+      "language_servers": ["!typescript-language-server", "!eslint", "angular", "vtsls", "..."]
     },
     "HTML": {
       "language_servers": ["angular", "..."],

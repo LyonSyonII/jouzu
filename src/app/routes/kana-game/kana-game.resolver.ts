@@ -13,7 +13,9 @@ import {
 } from "@shared/japanese";
 
 export const kanaGameResolver: ResolveFn<KanaChar[]> = async () => {
-  const selected = await storage.get(kanaGameKeys.selectedKana, new Set<KanaChar>(), { clone: true });
+  const selected = await storage.get(kanaGameKeys.selectedKana, new Set<KanaChar>(), {
+    clone: true,
+  });
   const dakutenSelected = await storage.get(kanaGameKeys.dakutenSelected, false);
   const handakutenSelected = await storage.get(kanaGameKeys.handakutenSelected, false);
   const youonSelected = await storage.get(kanaGameKeys.youonSelected, false);

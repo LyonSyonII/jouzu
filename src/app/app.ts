@@ -10,6 +10,6 @@ import { RouterOutlet } from "@angular/router";
     <p-toast />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ToastModule, RouterOutlet]
+  imports: [ToastModule, RouterOutlet],
 })
 export class App extends BaseComponent {}

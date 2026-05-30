@@ -43,13 +43,13 @@ import { Nav } from "@components/nav/nav.component";
     AngularSvgIconModule,
     QuicklinkDirective,
     RouterLink,
-    Nav
-],
+    Nav,
+  ],
 })
 export default class Root extends BaseComponent {
   // TODO: Add "random" button
   protected readonly themeService = inject(ThemeService);
-  
+
   protected readonly hiragana = this.enumerateRowsChars(hiragana, fromHiragana, 11);
   protected readonly katakana = this.enumerateRowsChars(katakana, fromKatakana, 11);
 
@@ -81,14 +81,14 @@ export default class Root extends BaseComponent {
   protected readonly togglebuttonIconStates = ["on", "off"] as const;
 
   protected toggleCharacter(char: KanaChar) {
-    this.selectedKana.update((selected) => {
+    this.selectedKana.update(selected => {
       if (selected.has(char)) selected.delete(char);
       else selected.add(char);
     });
   }
 
   protected toggleRow(row: readonly { char: KanaChar | null }[], fully: boolean) {
-    this.selectedKana.update((selected) => {
+    this.selectedKana.update(selected => {
       for (const { char } of row) {
         if (char === null) continue;
         if (fully) selected.delete(char);
@@ -114,7 +114,7 @@ export default class Root extends BaseComponent {
     selectedChars: ReadonlySet<KanaChar>,
     rows: KanaRow<C>[],
   ): KanaRowSelection<C>[] {
-    return rows.map((row) => ({
+    return rows.map(row => ({
       ...row,
       row: this.getRowWithSelected(selectedChars, row.row),
     }));

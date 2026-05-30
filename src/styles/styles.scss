@@ -11,7 +11,7 @@
 
 /* Fonts */
 @import "@fontsource-variable/inter/wght.css";
-@import '@fontsource-variable/noto-sans-jp/wght.css';
+@import "@fontsource-variable/noto-sans-jp/wght.css";
 /* @import '@fontsource/noto-sans-jp'; */
 
 :root {
@@ -142,22 +142,14 @@ h1, h2, h3, h4, h5, h6, p, span, a, label, strong, em, ruby, rt, li, td, th,
 // Native Interactive & Forms
 button, input, textarea, select, fieldset, legend,
 // Custom components
-x-card
-{
+x-card {
   @include theme-transition;
 }
 
 /* Force PrimeNG components to respect the mixin */
-$primeng-surfaces: 
-  ".p-card", 
-  ".p-panel", 
-  ".p-dialog", 
-  ".p-menu", 
-  ".p-sidebar", 
-  ".p-checkbox-box", 
-  ".p-button", 
-  ".p-togglebutton", 
-  ".p-divider::before";
+$primeng-surfaces:
+  ".p-card", ".p-panel", ".p-dialog", ".p-menu", ".p-sidebar", ".p-checkbox-box", ".p-button",
+  ".p-togglebutton", ".p-divider::before";
 #{$primeng-surfaces} {
   &,
   body & {
@@ -238,18 +230,18 @@ a {
 }
 
 ruby {
-  ruby-align: center; 
+  ruby-align: center;
   ruby-position: over;
   line-height: 1;
 }
 rt {
-  font-size: 0.5em; 
+  font-size: 0.5em;
   line-height: 1;
   text-align: center;
   padding-bottom: 2px;
 }
 rp {
-  display: none; 
+  display: none;
 }
 // Fix bug in Firefox where furigana is positioned too above the actual kanji
 @supports (-moz-appearance: none) {

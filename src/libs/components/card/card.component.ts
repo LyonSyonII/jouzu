@@ -1,4 +1,10 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input, ViewEncapsulation } from "@angular/core";
+import {
+  booleanAttribute,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  ViewEncapsulation,
+} from "@angular/core";
 import { TooltipOptions } from "primeng/api";
 import { DividerModule } from "primeng/divider";
 import { TooltipModule } from "primeng/tooltip";

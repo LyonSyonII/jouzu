@@ -27,7 +27,7 @@ import { FitTextDirective } from "@/libs/directives/fit-text.directive";
 })
 export default class KanaGame extends BaseComponent {
   public readonly selectedKana = input.required<Set<KanaChar>, KanaChar[]>({
-    transform: (kana) => new Set(kana),
+    transform: kana => new Set(kana),
   });
   protected readonly words = resource({
     params: this.selectedKana,
@@ -49,7 +49,7 @@ export default class KanaGame extends BaseComponent {
     const chars = currentWord.chars;
     return chars.map(({ word: char, reading: furigana }) => ({
       char,
-      furigana: furigana.map((kana) => kana), // TODO
+      furigana: furigana.map(kana => kana), // TODO
     }));
   });
   protected answer: string = "";
@@ -94,15 +94,13 @@ export default class KanaGame extends BaseComponent {
 
   private async fetchWords(selectedKana: Set<KanaChar>) {
     return pipe(
-      await fetch("/assets/wordlist.zst").then((r) => r.arrayBuffer()),
-      (b) => new Uint8Array(b),
+      await fetch("/assets/wordlist.zst").then(r => r.arrayBuffer()),
+      b => new Uint8Array(b),
       decompress,
-      (d) => new TextDecoder().decode(d),
-      (text) => JSON.parse(text) as unknown,
-      (json) => {
-        return this.WordlistSchema.assert(json);
-      },
-      map((word) => {
+      d => new TextDecoder().decode(d),
+      JSON.parse,
+      this.WordlistSchema.assert,
+      map(word => {
         let score = 0;
         for (const kana of selectedKana) {
           if (word.reading.includes(kana)) score += 1;

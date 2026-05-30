@@ -43,48 +43,23 @@
             .kana--shown {
               opacity: 0.5;
             }
+
+            .kana-caret {
+              display: inline-block;
+              width: 0;
+              height: 1em;
+              border-left: 0.08em solid currentColor;
+              vertical-align: -0.1em;
+              animation: kana-caret-blink 2s steps(1) infinite;
+              @keyframes kana-caret-blink {
+                50% {
+                  opacity: 0;
+                }
+              }
+            }
           }
         }
       }
-
-
-
-      /* .ruby-stack {
-        display: inline-grid;
-        grid-template-rows: 32px 64px 32px;
-        justify-items: center;
-        align-items: center;
-        vertical-align: middle;
-      } */
-
-      /* .ruby-stack {
-        display: grid;
-        grid-template-rows: 32px 64px 32px;
-      }
-
-      .ruby-base {
-        font-size: 1em;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-      } */
-
-      /* .ruby-furigana,
-      .romaji {
-        font-size: 0.5em;
-        margin-top: 2rem;
-      }
-
-      .ruby-furigana--shown {
-        opacity: 0.8;
-      } */
-    }
-
-    .kana-input {
-      width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-      text-align: center;
-      padding-inline: 0;
     }
   }
 }

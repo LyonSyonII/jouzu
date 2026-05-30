@@ -12,16 +12,42 @@
               </span>
               <div class="kana-reading">
                 @for (reading of char.reading; track $index) {
-                  @let selected = reading.romaji === null;
                   <div class="kana-stack">
-                    <span class="kana-furigana" [class.kana--shown]="!selected">{{ reading.kana }}</span>
-                    <span class="kana-romaji" [class.kana--shown]="!selected">
-                      @if (selected) {
-                        _
-                      } @else {
+                    @if (reading.selectedValueIdx === null) {
+                      <span class="kana-furigana kana--shown">
+                        {{ reading.kana }}
+                      </span>
+                      <span class="kana-romaji kana--shown">
                         {{ reading.romaji }}
-                      }
-                    </span>
+                      </span>
+                    } @else {
+                      @let i = reading.selectedValueIdx;
+                      @let focused = selectedKanaInputFocused() === i;
+                      @let color = focused ? "var(--primary)" : undefined;
+                      <x-kana-game-input
+                        #input
+                        [(value)]="selectedKanaValues()[i]"
+                        [expectedValue]="reading.kana | romanize"
+                        [focused]="focused"
+                        (back)="goPrevInput()"
+                        (next)="goNextInput()"
+                      />
+                      <span class="kana-furigana" [style.color]="color">
+                        {{ reading.kana }}
+                      </span>
+                      @let selectedKanaValue = selectedKanaValues()[i];
+                      <span class="kana-romaji" [style.color]="color">
+                        @if (selectedKanaValue) {
+                          @let caret = input.caretPosition();
+                          <span>{{ selectedKanaValue.slice(0, caret) }}</span>
+                          @if (focused) { <span class="kana-caret"></span> }
+                          <span>{{ selectedKanaValue.slice(caret) }}</span>
+                        } @else {
+                          _
+                        }
+                        <span></span>
+                      </span>
+                    }
                   </div>
                 }
               </div>

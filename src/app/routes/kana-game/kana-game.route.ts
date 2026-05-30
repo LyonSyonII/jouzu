@@ -6,6 +6,7 @@ import {
   input,
   linkedSignal,
   resource,
+  signal,
 } from "@angular/core";
 import BaseComponent from "@components/base.component";
 import { Card } from "@components/card/card.component";
@@ -14,25 +15,28 @@ import { AngularSvgIconModule } from "angular-svg-icon";
 import { Skeleton } from "primeng/skeleton";
 import { Nav } from "@components/nav/nav.component";
 import { decompress } from "fzstd";
-import { filter, groupBy, map, pipe, sort, sortBy, unique, values } from "remeda";
+import { filter, flatMap, groupBy, map, pipe, sort, sortBy, unique, values } from "remeda";
 import { type } from "arktype";
-import { FitTextDirective } from "@/libs/directives/fit-text.directive";
+import { KanaGameInput } from "./kana-game-input";
+import { RomanizePipe } from "../../../libs/pipes/romanize.pipe";
 
 @Component({
   selector: "x-kana-game",
   templateUrl: "./kana-game.route.html",
   styleUrl: "./kana-game.route.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Card, AngularSvgIconModule, Nav, Skeleton, FitTextDirective],
+  imports: [Card, AngularSvgIconModule, Nav, Skeleton, KanaGameInput, RomanizePipe],
 })
 export default class KanaGame extends BaseComponent {
   public readonly selectedKana = input.required<Set<KanaChar>, KanaChar[]>({
     transform: kana => new Set(kana),
   });
+  
   protected readonly words = resource({
     params: this.selectedKana,
     loader: ({ params }) => this.fetchWords(params),
   });
+  
   protected readonly currentWord = linkedSignal(() => {
     if (!this.words.hasValue()) return null;
 
@@ -41,16 +45,35 @@ export default class KanaGame extends BaseComponent {
     console.log("Chosen:", word);
     return word;
   });
+  
   protected readonly currentWordDisplay = computed(() => {
     const currentWord = this.currentWord();
     if (currentWord === null) return null;
     const selectedKana = this.selectedKana();
     const chars = currentWord.chars;
+    let selectedValueIdx = 0;
     return chars.map(({ word: char, reading }) => ({
       char,
-      reading: reading.map(kana => ({ kana, romaji: selectedKana.has(kana) ? null : romanize(kana) })),
+      reading: reading.map(kana => ({
+        kana,
+        romaji: romanize(kana),
+        selectedValueIdx: selectedKana.has(kana) ? selectedValueIdx++ : null
+      })),
     }));
   });
+
+  protected readonly selectedKanaValues = linkedSignal(() => {
+    const currentWordDisplay = this.currentWordDisplay();
+    if (currentWordDisplay === null) return [];
+    return pipe(
+      currentWordDisplay,
+      flatMap(char => char.reading),
+      filter(kana => kana.selectedValueIdx !== null),
+      map(_ => "")
+    )
+  });
+  protected readonly selectedKanaInputFocused = signal(0);
+  
   protected answer: string = "";
 
   private readonly remainingKana: Set<KanaChar> = new Set();
@@ -89,6 +112,27 @@ export default class KanaGame extends BaseComponent {
         this.panic(error);
       }
     });
+  }
+
+  protected goPrevInput() {
+    this.selectedKanaInputFocused.update(i => {
+      if (i <= 0) {
+        return 0;
+      }
+      return i - 1;
+    })
+    console.log(this.selectedKanaInputFocused());
+  }
+  
+  protected goNextInput() {
+    this.selectedKanaInputFocused.update(i => {
+      const last = this.selectedKanaValues().length - 1;
+      if (i >= last) {
+        return last;
+      }
+      return i + 1;
+    })
+    console.log(this.selectedKanaInputFocused());
   }
 
   private async fetchWords(selectedKana: Set<KanaChar>) {

@@ -22,6 +22,33 @@
       margin-bottom: 1rem;
       font-size: 4rem;
 
+      .kana-char {
+        display: inline-grid;
+        align-items: center;
+        
+        .kana-base {
+          
+        }
+  
+        .kana-reading {
+          display: inline-flex;
+          justify-content: center;
+          
+          margin-top: 1rem;
+          font-size: 0.75em;
+          
+          .kana-stack {
+            display: inline-grid;
+
+            .kana--shown {
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+
+
+
       /* .ruby-stack {
         display: inline-grid;
         grid-template-rows: 32px 64px 32px;
@@ -30,7 +57,7 @@
         vertical-align: middle;
       } */
 
-      .ruby-stack {
+      /* .ruby-stack {
         display: grid;
         grid-template-rows: 32px 64px 32px;
       }
@@ -39,9 +66,9 @@
         font-size: 1em;
         margin-top: 1rem;
         margin-bottom: 1rem;
-      }
+      } */
 
-      .ruby-furigana,
+      /* .ruby-furigana,
       .romaji {
         font-size: 0.5em;
         margin-top: 2rem;
@@ -49,7 +76,7 @@
 
       .ruby-furigana--shown {
         opacity: 0.8;
-      }
+      } */
     }
 
     .kana-input {

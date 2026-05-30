@@ -36,9 +36,8 @@ export default class KanaGame extends BaseComponent {
   protected readonly currentWord = linkedSignal(() => {
     if (!this.words.hasValue()) return null;
 
-    // const { word } = this.words.value()[2114];
-    const { word } = this.words.value()[0][1];
     console.log(this.words.value());
+    const { word } = this.words.value()[14][0];
     console.log("Chosen:", word);
     return word;
   });
@@ -47,9 +46,9 @@ export default class KanaGame extends BaseComponent {
     if (currentWord === null) return null;
     const selectedKana = this.selectedKana();
     const chars = currentWord.chars;
-    return chars.map(({ word: char, reading: furigana }) => ({
+    return chars.map(({ word: char, reading }) => ({
       char,
-      furigana: furigana.map(kana => kana), // TODO
+      reading: reading.map(kana => ({ kana, romaji: selectedKana.has(kana) ? null : romanize(kana) })),
     }));
   });
   protected answer: string = "";

@@ -2,30 +2,30 @@
   <x-nav />
 
   <div id="main-content">
-    @if (words.hasValue() && currentWord(); as current) {
+    @if (currentWordDisplay(); as current) {
       <x-card>
-        <h1 fitText class="kana-word">
-          @for (char of current.chars; track $index) {
-            <div style="display: inline-grid">
-              <span class="ruby-base">
-                {{ char.word }}
+        <h1 class="kana-word">
+          @for (char of current; track $index) {
+            <div class="kana-char">
+              <span class="kana-base">
+                {{ char.char }}
               </span>
-              <div style="display: grid">
-                @for (kana of char.reading; track $index) {
-                  <!-- @let currentRomaji = currentWordRomaji()[$index]; -->
-                  <span class="ruby-furigana">{{ kana }}</span>
-                  <span class="romaji">
-                    {{ current.romanization[$index] }}
-                  </span>
+              <div class="kana-reading">
+                @for (reading of char.reading; track $index) {
+                  @let selected = reading.romaji === null;
+                  <div class="kana-stack">
+                    <span class="kana-furigana" [class.kana--shown]="!selected">{{ reading.kana }}</span>
+                    <span class="kana-romaji" [class.kana--shown]="!selected">
+                      @if (selected) {
+                        _
+                      } @else {
+                        {{ reading.romaji }}
+                      }
+                    </span>
+                  </div>
                 }
               </div>
             </div>
-
-            <!-- <span class="ruby-furigana" [class.ruby-furigana--shown]="currentRomaji !== '_'">
-                @if (char.word !== char.reading[0]) {
-                  {{ char.reading.join("") }}
-                }
-              </span> -->
           }
         </h1>
       </x-card>

@@ -23,8 +23,8 @@ import { InputText } from "primeng/inputtext";
       autocapitalize="none"
       spellcheck="false"
       [value]="value()"
-      [style.width.ch]="inputSize()"
-      [attr.maxlength]="inputSize()"
+      [style.width.ch]="inputWidth()"
+      [attr.maxlength]="maxLength()"
       [placeholder]="value() ? '' : '_'"
       [tabIndex]="focused() ? 0 : -1"
       (input)="onInput(input)"
@@ -39,20 +39,21 @@ import { InputText } from "primeng/inputtext";
       display: inline-block;
       min-width: 1ch;
       line-height: inherit;
-      vertical-align: baseline;
+      vertical-align: top;
     }
 
     input {
-      box-sizing: content-box;
+      box-sizing: border-box;
       min-width: 1ch;
+      height: 1.35em;
       border: 0;
-      padding: 0.05em 0.08em;
+      padding: 0 0.12em;
       color: inherit;
       font: inherit;
-      line-height: inherit;
+      line-height: 1;
       text-align: center;
       caret-color: currentColor;
-      vertical-align: baseline;
+      vertical-align: top;
     }
 
     input::placeholder {
@@ -78,8 +79,12 @@ export class KanaGameInput {
   public readonly next = output<void>();
 
   protected readonly inputSize = computed(() =>
-    Math.max(this.expectedValue().length, 1) + 0.2,
+    Math.max(this.expectedValue().length, 1),
   );
+  protected readonly inputWidth = computed(() =>
+    this.inputSize() + 0.35,
+  );
+  protected readonly maxLength = this.inputSize;
 
   private readonly input = viewChild.required<ElementRef<HTMLInputElement>>("input");
 

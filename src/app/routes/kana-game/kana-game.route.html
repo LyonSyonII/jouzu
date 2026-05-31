@@ -5,42 +5,46 @@
     @if (currentWordDisplay(); as current) {
       <x-card>
         <h1 class="kana-word">
-          @for (char of current; track $index) {
-            <div class="kana-char">
-              <span class="kana-base" [style.color]="$index === focusedCharIdx() ? 'var(--primary)' : undefined">
-                {{ char.char }}
-              </span>
-              <div class="kana-reading">
-                @for (reading of char.reading; track $index) {
-                  <div class="kana-stack">
-                    @if (reading.selectedValueIdx === null) {
-                      <span class="kana-furigana kana--shown">
-                        {{ reading.kana }}
+          @for (group of current; track $index) {
+            <span class="kana-group">
+              @for (char of group.chars; track char.charIdx) {
+                <span class="kana-char">
+                  <span class="kana-base" [style.color]="char.charIdx === focusedCharIdx() ? 'var(--primary)' : undefined">
+                    {{ char.char }}
+                  </span>
+                  <span class="kana-reading">
+                    @for (reading of char.reading; track $index) {
+                      <span class="kana-stack">
+                        @if (reading.selectedValueIdx === null) {
+                          <span class="kana-furigana kana--shown">
+                            {{ reading.kana }}
+                          </span>
+                          <span class="kana-romaji kana--shown">
+                            {{ reading.romaji }}
+                          </span>
+                        } @else {
+                          @let i = reading.selectedValueIdx;
+                          @let focused = selectedKanaInputFocused() === i;
+                          @let color = focused ? "var(--primary)" : undefined;
+                          <span class="kana-furigana" [style.color]="color">
+                            {{ reading.kana }}
+                          </span>
+                          <x-kana-game-input
+                            [(value)]="selectedKanaValues()[i]"
+                            [expectedValue]="reading.romaji"
+                            [focused]="focused"
+                            [color]="color"
+                            (back)="goPrevInput()"
+                            (focusRequested)="selectedKanaInputFocused.set(i)"
+                            (next)="goNextInput()"
+                          />
+                        }
                       </span>
-                      <span class="kana-romaji kana--shown">
-                        {{ reading.romaji }}
-                      </span>
-                    } @else {
-                      @let i = reading.selectedValueIdx;
-                      @let focused = selectedKanaInputFocused() === i;
-                      @let color = focused ? "var(--primary)" : undefined;
-                      <span class="kana-furigana" [style.color]="color">
-                        {{ reading.kana }}
-                      </span>
-                      <x-kana-game-input
-                        [(value)]="selectedKanaValues()[i]"
-                        [expectedValue]="reading.romaji"
-                        [focused]="focused"
-                        [color]="color"
-                        (back)="goPrevInput()"
-                        (focusRequested)="selectedKanaInputFocused.set(i)"
-                        (next)="goNextInput()"
-                      />
                     }
-                  </div>
-                }
-              </div>
-            </div>
+                  </span>
+                </span>
+              }
+            </span>
           }
         </h1>
       </x-card>

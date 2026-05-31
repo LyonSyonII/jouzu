@@ -22,45 +22,44 @@
       margin-bottom: 1rem;
       font-size: 4rem;
 
-      .kana-char {
-        display: inline-grid;
-        align-items: center;
-        
-        .kana-base {
-          
-        }
-  
-        .kana-reading {
-          display: inline-flex;
-          justify-content: center;
-          
-          margin-top: 1rem;
-          font-size: 0.75em;
-          
-          .kana-stack {
-            display: inline-grid;
+      .kana-group {
+        display: inline-flex;
+        column-gap: 0.08em;
+        margin-inline: 0.16em;
+        vertical-align: top;
 
-            .kana--shown {
-              opacity: 0.5;
-            }
+        .kana-char {
+          display: inline-grid;
+          justify-items: center;
+          align-items: center;
+          row-gap: 0.25em;
 
-            .kana-romaji.kana--shown {
-              display: inline-block;
-              padding: 0.05em 0;
-              transform: translateY(0.14em);
-            }
+          .kana-reading {
+            display: inline-flex;
+            justify-content: center;
 
-            .kana-caret {
-              display: inline-block;
-              width: 0;
-              height: 1em;
-              border-left: 0.08em solid currentColor;
-              vertical-align: -0.1em;
-              animation: kana-caret-blink 2s steps(1) infinite;
-              @keyframes kana-caret-blink {
-                50% {
-                  opacity: 0;
-                }
+            font-size: 0.75em;
+
+            .kana-stack {
+              display: inline-grid;
+              grid-template-rows: 1em 1.35em;
+              justify-items: center;
+              align-items: start;
+              row-gap: 0.5em;
+
+              .kana--shown {
+                opacity: 0.5;
+              }
+
+              .kana-romaji.kana--shown {
+                display: inline-block;
+                min-width: 1.35ch;
+                height: 1.35em;
+                padding: 0 0.12em;
+                box-sizing: border-box;
+                line-height: 1;
+                text-align: center;
+                margin-top: 0.20em;
               }
             }
           }

@@ -18,14 +18,13 @@ import { decompress } from "fzstd";
 import { filter, flatMap, groupBy, map, pipe, sortBy, values } from "remeda";
 import { type } from "arktype";
 import { KanaGameInput } from "./kana-game-input";
-import { RomanizePipe } from "../../../libs/pipes/romanize.pipe";
 
 @Component({
   selector: "x-kana-game",
   templateUrl: "./kana-game.route.html",
   styleUrl: "./kana-game.route.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Card, AngularSvgIconModule, Nav, Skeleton, KanaGameInput, RomanizePipe],
+  imports: [Card, AngularSvgIconModule, Nav, Skeleton, KanaGameInput],
 })
 export default class KanaGame extends BaseComponent {
   public readonly selectedKana = input.required<Set<KanaChar>, KanaChar[]>({
@@ -41,7 +40,7 @@ export default class KanaGame extends BaseComponent {
     if (!this.words.hasValue()) return null;
 
     console.log(this.words.value());
-    const { word } = this.words.value()[2][0];
+    const { word } = this.words.value()[14][2];
     console.log("Chosen:", word);
     return word;
   });
@@ -50,16 +49,67 @@ export default class KanaGame extends BaseComponent {
     const currentWord = this.currentWord();
     if (currentWord === null) return null;
     const selectedKana = this.selectedKana();
-    const chars = currentWord.chars;
+    const Segmenter = (
+      Intl as typeof Intl & {
+        Segmenter?: new (
+          locale: string,
+          options: { granularity: "word" },
+        ) => { segment(value: string): Iterable<{ segment: string }> };
+      }
+    ).Segmenter;
+    const segmenter = Segmenter ? new Segmenter("ja", { granularity: "word" }) : null;
+    const segments = segmenter
+      ? [...segmenter.segment(currentWord.word)].map(({ segment }) => segment)
+      : [currentWord.word];
+    const wordSegments: string[] = [];
+    for (const segment of segments) {
+      const previous = wordSegments.at(-1);
+      const kanaOnly = /^[ぁ-んァ-ンー]+$/u.test(segment);
+      const previousKanaOnly = previous !== undefined && /^[ぁ-んァ-ンー]+$/u.test(previous);
+      const startsWithKanji = /^[一-龯々]/u.test(segment);
+
+      if (previous !== undefined && (previousKanaOnly && kanaOnly || previousKanaOnly && startsWithKanji)) {
+        wordSegments[wordSegments.length - 1] = previous + segment;
+      } else {
+        wordSegments.push(segment);
+      }
+    }
+
     let selectedValueIdx = 0;
-    return chars.map(({ word: char, reading }) => ({
-      char,
-      reading: reading.map(kana => ({
-        kana,
-        romaji: romanize(kana),
-        selectedValueIdx: selectedKana.has(kana) ? selectedValueIdx++ : null,
-      })),
-    }));
+    let charIdx = 0;
+    let segmentIdx = 0;
+    let segmentChars = "";
+    const groups = [{ chars: new Array<{
+      char: string;
+      charIdx: number;
+      reading: Array<{
+        kana: KanaChar;
+        romaji: string;
+        selectedValueIdx: number | null;
+      }>;
+    }>() }];
+
+    for (const { word: char, reading } of currentWord.chars) {
+      const group = groups.at(-1)!;
+      group.chars.push({
+        char,
+        charIdx: charIdx++,
+        reading: reading.map(kana => ({
+          kana,
+          romaji: romanize(kana),
+          selectedValueIdx: selectedKana.has(kana) ? selectedValueIdx++ : null,
+        })),
+      });
+
+      segmentChars += char;
+      if (segmentChars === wordSegments[segmentIdx]) {
+        segmentIdx++;
+        segmentChars = "";
+        groups.push({ chars: [] });
+      }
+    }
+
+    return groups.filter(group => group.chars.length > 0);
   });
 
   protected readonly selectedKanaValues = linkedSignal(() => {
@@ -67,6 +117,7 @@ export default class KanaGame extends BaseComponent {
     if (currentWordDisplay === null) return [];
     return pipe(
       currentWordDisplay,
+      flatMap(group => group.chars),
       flatMap(char => char.reading),
       filter(kana => kana.selectedValueIdx !== null),
       map(_ => ""),
@@ -78,9 +129,10 @@ export default class KanaGame extends BaseComponent {
     if (currentWordDisplay === null) return -1;
 
     const selectedInputIdx = this.selectedKanaInputFocused();
-    return currentWordDisplay.findIndex(char =>
-      char.reading.some(reading => reading.selectedValueIdx === selectedInputIdx),
-    );
+    return pipe(
+      currentWordDisplay,
+      flatMap(group => group.chars),
+    ).find(char => char.reading.some(reading => reading.selectedValueIdx === selectedInputIdx))?.charIdx ?? -1;
   });
 
   protected answer: string = "";

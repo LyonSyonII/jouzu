@@ -41,7 +41,7 @@ export default class KanaGame extends BaseComponent {
     if (!this.words.hasValue()) return null;
 
     console.log(this.words.value());
-    const { word } = this.words.value()[14][0];
+    const { word } = this.words.value()[2][0];
     console.log("Chosen:", word);
     return word;
   });

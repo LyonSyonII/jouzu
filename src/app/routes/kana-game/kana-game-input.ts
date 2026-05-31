@@ -80,7 +80,7 @@ export class KanaGameInput {
   protected readonly inputSize = computed(() =>
     Math.max(this.expectedValue().length, 1) + 0.2,
   );
-  
+
   private readonly input = viewChild.required<ElementRef<HTMLInputElement>>("input");
 
   public constructor() {
@@ -101,7 +101,11 @@ export class KanaGameInput {
   }
 
   protected onInput(input: HTMLInputElement) {
+    const prev = this.value();
     this.value.set(input.value);
+    if (prev.length < input.value.length && input.value.length === this.expectedValue().length) {
+      this.next.emit();
+    }
   }
 
   protected onFocus() {
@@ -109,7 +113,7 @@ export class KanaGameInput {
       this.focusRequested.emit();
     }
   }
-  
+
   protected onBlur() {
     if (this.focused()) {
       this.focus();

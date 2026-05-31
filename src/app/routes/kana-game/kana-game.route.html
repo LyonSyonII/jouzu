@@ -29,7 +29,7 @@
                       </span>
                       <x-kana-game-input
                         [(value)]="selectedKanaValues()[i]"
-                        [expectedValue]="reading.kana | romanize"
+                        [expectedValue]="reading.romaji"
                         [focused]="focused"
                         [color]="color"
                         (back)="goPrevInput()"

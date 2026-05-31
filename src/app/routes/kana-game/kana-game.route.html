@@ -30,6 +30,7 @@
                             {{ reading.kana }}
                           </span>
                           <x-kana-game-input
+                            #kanaInput
                             [(value)]="selectedKanaValues()[i]"
                             [expectedValue]="reading.romaji"
                             [focused]="focused"
@@ -37,6 +38,7 @@
                             (back)="goPrevInput()"
                             (focusRequested)="selectedKanaInputFocused.set(i)"
                             (next)="goNextInput()"
+                            (submit)="validateAnswer()"
                           />
                         }
                       </span>

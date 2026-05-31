@@ -13,7 +13,23 @@ export default class BaseComponent {
       detail: message,
     });
   }
+  
+  protected success(message: string) {
+    this.messageService.add({
+      severity: "success",
+      summary: "Info",
+      detail: message,
+    });
+  }
 
+  protected warn(error: any, message?: string) {
+    this.messageService.add({
+      severity: "warn",
+      summary: message,
+      detail: error,
+    });
+  }
+  
   protected error(error: any, message?: string) {
     this.messageService.add({
       severity: "error",

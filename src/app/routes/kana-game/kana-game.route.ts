@@ -3,14 +3,17 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   input,
   linkedSignal,
   resource,
   signal,
+  viewChildren,
+  ViewChildren,
 } from "@angular/core";
 import BaseComponent from "@components/base.component";
 import { Card } from "@components/card/card.component";
-import { KanaChar, KanaCharArkType, romanize } from "@shared/japanese";
+import { KanaChar, KanaCharArkType, romanize, segment } from "@shared/japanese";
 import { AngularSvgIconModule } from "angular-svg-icon";
 import { Skeleton } from "primeng/skeleton";
 import { Nav } from "@components/nav/nav.component";
@@ -31,63 +34,28 @@ export default class KanaGame extends BaseComponent {
     transform: kana => new Set(kana),
   });
 
-  protected readonly words = resource({
+  protected readonly words = resource<Words, Set<KanaChar>>({
     params: this.selectedKana,
     loader: ({ params }) => this.fetchWords(params),
   });
 
-  protected readonly currentWord = linkedSignal(() => {
+  protected readonly currentWord = linkedSignal<CurrentWord>(() => {
     if (!this.words.hasValue()) return null;
-
     console.log(this.words.value());
-    const { word } = this.words.value()[14][2];
-    console.log("Chosen:", word);
-    return word;
+    return this.getNextWord();
   });
 
-  protected readonly currentWordDisplay = computed(() => {
+  protected readonly currentWordDisplay = computed<CurrentWordDisplay | null>(() => {
     const currentWord = this.currentWord();
     if (currentWord === null) return null;
     const selectedKana = this.selectedKana();
-    const Segmenter = (
-      Intl as typeof Intl & {
-        Segmenter?: new (
-          locale: string,
-          options: { granularity: "word" },
-        ) => { segment(value: string): Iterable<{ segment: string }> };
-      }
-    ).Segmenter;
-    const segmenter = Segmenter ? new Segmenter("ja", { granularity: "word" }) : null;
-    const segments = segmenter
-      ? [...segmenter.segment(currentWord.word)].map(({ segment }) => segment)
-      : [currentWord.word];
-    const wordSegments: string[] = [];
-    for (const segment of segments) {
-      const previous = wordSegments.at(-1);
-      const kanaOnly = /^[ぁ-んァ-ンー]+$/u.test(segment);
-      const previousKanaOnly = previous !== undefined && /^[ぁ-んァ-ンー]+$/u.test(previous);
-      const startsWithKanji = /^[一-龯々]/u.test(segment);
-
-      if (previous !== undefined && (previousKanaOnly && kanaOnly || previousKanaOnly && startsWithKanji)) {
-        wordSegments[wordSegments.length - 1] = previous + segment;
-      } else {
-        wordSegments.push(segment);
-      }
-    }
+    const wordSegments = segment(currentWord.word);
 
     let selectedValueIdx = 0;
     let charIdx = 0;
     let segmentIdx = 0;
     let segmentChars = "";
-    const groups = [{ chars: new Array<{
-      char: string;
-      charIdx: number;
-      reading: Array<{
-        kana: KanaChar;
-        romaji: string;
-        selectedValueIdx: number | null;
-      }>;
-    }>() }];
+    const groups: CurrentWordDisplay = [{ chars: [] }];
 
     for (const { word: char, reading } of currentWord.chars) {
       const group = groups.at(-1)!;
@@ -137,20 +105,10 @@ export default class KanaGame extends BaseComponent {
 
   protected answer: string = "";
 
+  private readonly kanaInputs = viewChildren<KanaGameInput>("kanaInput");
+
   private readonly remainingKana: Set<KanaChar> = new Set();
   private readonly usedKana: Set<KanaChar> = new Set();
-
-  private readonly WordlistSchema = type({
-    word: "string",
-    reading: "string",
-    accent: "string",
-    romanization: "string",
-    english: "string",
-    chars: type({
-      word: "string",
-      reading: KanaCharArkType.array(),
-    }).array(),
-  }).array();
 
   // {
   //   "word": "胃",
@@ -182,28 +140,35 @@ export default class KanaGame extends BaseComponent {
       }
       return i - 1;
     });
-    console.log(this.selectedKanaInputFocused());
   }
 
   protected goNextInput() {
     this.selectedKanaInputFocused.update(i => {
       const last = this.selectedKanaValues().length - 1;
       if (i >= last) {
+        this.validateAnswer();
         return last;
       }
       return i + 1;
     });
-    console.log(this.selectedKanaInputFocused());
   }
 
-  private async fetchWords(selectedKana: Set<KanaChar>) {
+  protected validateAnswer() {
+    if (this.kanaInputs().every(input => input.isExpected())) {
+      this.success("Word is correct!");
+    } else {
+      this.error("Word is incorrect :(");
+    }
+  }
+
+  private async fetchWords(selectedKana: Set<KanaChar>): Promise<Words> {
     return pipe(
       await fetch("/assets/wordlist.zst").then(r => r.arrayBuffer()),
       b => new Uint8Array(b),
       decompress,
       d => new TextDecoder().decode(d),
       JSON.parse,
-      this.WordlistSchema.assert,
+      WordlistSchema.assert,
       map(word => {
         let score = 0;
         for (const kana of selectedKana) {
@@ -220,4 +185,43 @@ export default class KanaGame extends BaseComponent {
       values(),
     );
   }
+
+  private getNextWord(): CurrentWord | null {
+    if (!this.words.hasValue()) {
+      return null;
+    }
+    const words = this.words.value();
+    console.log("Chosen:", word);
+  }
 }
+
+const WordlistSchema = type({
+  word: "string",
+  reading: "string",
+  accent: "string",
+  romanization: "string",
+  english: "string",
+  chars: type({
+    word: "string",
+    reading: KanaCharArkType.array(),
+  }).array(),
+}).array();
+
+type Word = typeof WordlistSchema.infer[number];
+type ScoredWord = {
+  word: Word;
+  score: number;
+};
+type Words = ScoredWord[][];
+type CurrentWord = Word | null;
+type CurrentWordDisplay = Array<{
+  chars: Array<{
+    char: string;
+    charIdx: number;
+    reading: Array<{
+      kana: KanaChar;
+      romaji: string;
+      selectedValueIdx: number | null;
+    }>;
+  }>;
+}>;

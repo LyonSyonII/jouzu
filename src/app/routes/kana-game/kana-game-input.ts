@@ -77,6 +77,7 @@ export class KanaGameInput {
   public readonly back = output<void>();
   public readonly focusRequested = output<void>();
   public readonly next = output<void>();
+  public readonly submit = output<void>();
 
   protected readonly inputSize = computed(() =>
     Math.max(this.expectedValue().length, 1),
@@ -103,6 +104,10 @@ export class KanaGameInput {
 
   public focus() {
     this.input().nativeElement.focus({ preventScroll: true });
+  }
+
+  public isExpected(): boolean {
+    return this.expectedValue() === this.value();
   }
 
   protected onInput(input: HTMLInputElement) {
@@ -152,9 +157,20 @@ export class KanaGameInput {
       return;
     }
 
-    if (event.key === "Enter" || event.key === "Tab") {
+    if (event.key === "Tab") {
       event.preventDefault();
-      this.next.emit();
+
+      if (event.shiftKey) {
+        this.back.emit();
+      } else {
+        this.next.emit();
+      }
+      return;
+    }
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.submit.emit();
       return;
     }
 

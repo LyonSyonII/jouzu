@@ -807,6 +807,38 @@ export function romanize(text: string): string {
   return result;
 }
 
+const kanaOnlyPattern = /^[ぁ-んァ-ンー]+$/u;
+const startsWithKanjiPattern = /^[一-龯々]/u;
+
+export function segment(value: string): string[] {
+  const Segmenter = (
+    Intl as typeof Intl & {
+      Segmenter?: new (
+        locale: string,
+        options: { granularity: "word" },
+      ) => { segment(value: string): Iterable<{ segment: string }> };
+    }
+  ).Segmenter;
+
+  if (!Segmenter) return [value];
+
+  return [...new Segmenter("ja", { granularity: "word" }).segment(value)]
+    .map(({ segment }) => segment)
+    .reduce<string[]>((segments, part) => {
+      const previous = segments.at(-1);
+      if (
+        previous !== undefined &&
+        kanaOnlyPattern.test(previous) &&
+        (kanaOnlyPattern.test(part) || startsWithKanjiPattern.test(part))
+      ) {
+        segments[segments.length - 1] = previous + part;
+      } else {
+        segments.push(part);
+      }
+      return segments;
+    }, []);
+}
+
 export type Hiragana = typeof hiragana;
 export type Katakana = typeof katakana;
 export type Punctuation = typeof punctuation;

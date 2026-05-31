@@ -1,100 +1,132 @@
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
-  effect,
   ElementRef,
+  computed,
   input,
   model,
   output,
-  signal,
   viewChild,
 } from "@angular/core";
+
+import { 
+  InputText
+} from "primeng/inputtext"
 
 @Component({
   selector: "x-kana-game-input",
   template: `
     <input
+      pInputText
       #input
       type="text"
+      autocomplete="off"
+      autocapitalize="none"
+      spellcheck="false"
+      [value]="value()"
+      [style.width.ch]="inputSize()"
+      [attr.maxlength]="inputSize()"
+      [placeholder]="value() ? '' : '_'"
+      [tabIndex]="focused() ? 0 : -1"
       (input)="onInput(input)"
-      (blur)="onBlur(input)"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      (click)="onClick()"
       (keydown)="onKeyDown($event)"
     />
   `,
   styles: `
     :host {
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
+      display: inline-block;
+      min-width: 1ch;
+    }
 
-      input {
-        width: 1px;
-        height: 1px;
-        opacity: 0;
-      }
+    input {
+      box-sizing: content-box;
+      min-width: 1ch;
+      border: 0;
+      color: inherit;
+      font: inherit;
+      caret-color: currentColor;
+    }
+
+    input::placeholder {
+      color: currentColor;
+      opacity: 1;
     }
   `,
+  host: {
+    class: "kana-romaji",
+    "[style.color]": "color()",
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [InputText, InputText],
 })
 export class KanaGameInput {
   public readonly expectedValue = input.required<string>();
-  public readonly focused = input(false);
   public readonly value = model.required<string>();
-  public readonly caretPosition = signal<number>(0);
+  public readonly focused = input(false);
+  public readonly color = input<string | undefined>();
 
   public readonly back = output<void>();
+  public readonly focusRequested = output<void>();
   public readonly next = output<void>();
 
+  protected readonly inputSize = computed(() =>
+    Math.max(this.expectedValue().length, 1) + 0.2,
+  );
+  
   private readonly input = viewChild.required<ElementRef<HTMLInputElement>>("input");
 
   public constructor() {
-    effect(() => {
-      if (this.focused()) {
-        this.input().nativeElement.focus();
-        this.input().nativeElement.value = this.value();
-      }
+    afterRenderEffect({
+      write: () => {
+        const input = this.input().nativeElement;
+        if (this.focused()) {
+          this.focus();
+        } else {
+          input.blur();
+        }
+      },
     });
   }
 
   public focus() {
-    this.input().nativeElement.focus();
-    this.syncCaret(this.input().nativeElement);
+    this.input().nativeElement.focus({ preventScroll: true });
   }
 
   protected onInput(input: HTMLInputElement) {
     this.value.set(input.value);
   }
 
-  protected syncCaret(input: HTMLInputElement) {
-    this.caretPosition.set(
-      Math.min(input.selectionStart ?? input.value.length, input.value.length),
-    );
+  protected onFocus() {
+    if (!this.focused()) {
+      this.focusRequested.emit();
+    }
+  }
+  
+  protected onBlur() {
+    if (this.focused()) {
+      this.focus();
+    }
   }
 
-  protected onBlur(input: HTMLInputElement) {
-    if (this.focused()) {
-      input.focus();
-    } else {
-      input.blur();
+  protected onClick() {
+    console.log("Clicked");
+    if (!this.focused()) {
+      this.focusRequested.emit();
     }
   }
 
   protected onKeyDown(event: KeyboardEvent) {
-    console.log(event);
-    const input = event.target as HTMLInputElement;
+    const input = event.currentTarget as HTMLInputElement;
     const start = input.selectionStart ?? 0;
     const end = input.selectionEnd ?? 0;
 
     const hasSelection = start !== end;
     const atStart = start === 0 && !hasSelection;
     const atEnd = end === input.value.length && !hasSelection;
-
-    console.log({ start, end, hasSelection, atStart, atEnd });
 
     if (event.key === "ArrowLeft" && atStart) {
       event.preventDefault();
@@ -119,7 +151,5 @@ export class KanaGameInput {
       this.back.emit();
       return;
     }
-
-    window.setTimeout(() => this.syncCaret(input));
   }
 }

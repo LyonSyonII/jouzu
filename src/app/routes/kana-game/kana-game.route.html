@@ -24,29 +24,18 @@
                       @let i = reading.selectedValueIdx;
                       @let focused = selectedKanaInputFocused() === i;
                       @let color = focused ? "var(--primary)" : undefined;
-                      <x-kana-game-input
-                        #input
-                        [(value)]="selectedKanaValues()[i]"
-                        [expectedValue]="reading.kana | romanize"
-                        [focused]="focused"
-                        (back)="goPrevInput()"
-                        (next)="goNextInput()"
-                      />
                       <span class="kana-furigana" [style.color]="color">
                         {{ reading.kana }}
                       </span>
-                      @let selectedKanaValue = selectedKanaValues()[i];
-                      <span class="kana-romaji" [style.color]="color">
-                        @if (selectedKanaValue) {
-                          @let caret = input.caretPosition();
-                          <span>{{ selectedKanaValue.slice(0, caret) }}</span>
-                          @if (focused) { <span class="kana-caret"></span> }
-                          <span>{{ selectedKanaValue.slice(caret) }}</span>
-                        } @else {
-                          _
-                        }
-                        <span></span>
-                      </span>
+                      <x-kana-game-input
+                        [(value)]="selectedKanaValues()[i]"
+                        [expectedValue]="reading.kana | romanize"
+                        [focused]="focused"
+                        [color]="color"
+                        (back)="goPrevInput()"
+                        (focusRequested)="selectedKanaInputFocused.set(i)"
+                        (next)="goNextInput()"
+                      />
                     }
                   </div>
                 }

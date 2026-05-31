@@ -15,7 +15,7 @@ import { AngularSvgIconModule } from "angular-svg-icon";
 import { Skeleton } from "primeng/skeleton";
 import { Nav } from "@components/nav/nav.component";
 import { decompress } from "fzstd";
-import { filter, flatMap, groupBy, map, pipe, sort, sortBy, unique, values } from "remeda";
+import { filter, flatMap, groupBy, map, pipe, sortBy, values } from "remeda";
 import { type } from "arktype";
 import { KanaGameInput } from "./kana-game-input";
 import { RomanizePipe } from "../../../libs/pipes/romanize.pipe";
@@ -31,12 +31,12 @@ export default class KanaGame extends BaseComponent {
   public readonly selectedKana = input.required<Set<KanaChar>, KanaChar[]>({
     transform: kana => new Set(kana),
   });
-  
+
   protected readonly words = resource({
     params: this.selectedKana,
     loader: ({ params }) => this.fetchWords(params),
   });
-  
+
   protected readonly currentWord = linkedSignal(() => {
     if (!this.words.hasValue()) return null;
 
@@ -45,7 +45,7 @@ export default class KanaGame extends BaseComponent {
     console.log("Chosen:", word);
     return word;
   });
-  
+
   protected readonly currentWordDisplay = computed(() => {
     const currentWord = this.currentWord();
     if (currentWord === null) return null;
@@ -57,7 +57,7 @@ export default class KanaGame extends BaseComponent {
       reading: reading.map(kana => ({
         kana,
         romaji: romanize(kana),
-        selectedValueIdx: selectedKana.has(kana) ? selectedValueIdx++ : null
+        selectedValueIdx: selectedKana.has(kana) ? selectedValueIdx++ : null,
       })),
     }));
   });
@@ -69,11 +69,11 @@ export default class KanaGame extends BaseComponent {
       currentWordDisplay,
       flatMap(char => char.reading),
       filter(kana => kana.selectedValueIdx !== null),
-      map(_ => "")
-    )
+      map(_ => ""),
+    );
   });
   protected readonly selectedKanaInputFocused = signal(0);
-  
+
   protected answer: string = "";
 
   private readonly remainingKana: Set<KanaChar> = new Set();
@@ -120,10 +120,10 @@ export default class KanaGame extends BaseComponent {
         return 0;
       }
       return i - 1;
-    })
+    });
     console.log(this.selectedKanaInputFocused());
   }
-  
+
   protected goNextInput() {
     this.selectedKanaInputFocused.update(i => {
       const last = this.selectedKanaValues().length - 1;
@@ -131,7 +131,7 @@ export default class KanaGame extends BaseComponent {
         return last;
       }
       return i + 1;
-    })
+    });
     console.log(this.selectedKanaInputFocused());
   }
 

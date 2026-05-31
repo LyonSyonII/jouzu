@@ -73,6 +73,15 @@ export default class KanaGame extends BaseComponent {
     );
   });
   protected readonly selectedKanaInputFocused = signal(0);
+  protected readonly focusedCharIdx = computed(() => {
+    const currentWordDisplay = this.currentWordDisplay();
+    if (currentWordDisplay === null) return -1;
+
+    const selectedInputIdx = this.selectedKanaInputFocused();
+    return currentWordDisplay.findIndex(char =>
+      char.reading.some(reading => reading.selectedValueIdx === selectedInputIdx),
+    );
+  });
 
   protected answer: string = "";
 

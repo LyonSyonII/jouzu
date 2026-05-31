@@ -44,6 +44,12 @@
               opacity: 0.5;
             }
 
+            .kana-romaji.kana--shown {
+              display: inline-block;
+              padding: 0.05em 0;
+              transform: translateY(0.14em);
+            }
+
             .kana-caret {
               display: inline-block;
               width: 0;

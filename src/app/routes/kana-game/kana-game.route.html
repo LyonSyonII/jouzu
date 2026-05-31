@@ -7,7 +7,7 @@
         <h1 class="kana-word">
           @for (char of current; track $index) {
             <div class="kana-char">
-              <span class="kana-base">
+              <span class="kana-base" [style.color]="$index === focusedCharIdx() ? 'var(--primary)' : undefined">
                 {{ char.char }}
               </span>
               <div class="kana-reading">

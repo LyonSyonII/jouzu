@@ -10,9 +10,7 @@ import {
   viewChild,
 } from "@angular/core";
 
-import { 
-  InputText
-} from "primeng/inputtext"
+import { InputText } from "primeng/inputtext";
 
 @Component({
   selector: "x-kana-game-input",
@@ -40,15 +38,21 @@ import {
     :host {
       display: inline-block;
       min-width: 1ch;
+      line-height: inherit;
+      vertical-align: baseline;
     }
 
     input {
       box-sizing: content-box;
       min-width: 1ch;
       border: 0;
+      padding: 0.05em 0.08em;
       color: inherit;
       font: inherit;
+      line-height: inherit;
+      text-align: center;
       caret-color: currentColor;
+      vertical-align: baseline;
     }
 
     input::placeholder {
@@ -61,7 +65,7 @@ import {
     "[style.color]": "color()",
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [InputText, InputText],
+  imports: [InputText],
 })
 export class KanaGameInput {
   public readonly expectedValue = input.required<string>();
@@ -113,7 +117,6 @@ export class KanaGameInput {
   }
 
   protected onClick() {
-    console.log("Clicked");
     if (!this.focused()) {
       this.focusRequested.emit();
     }

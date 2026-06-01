@@ -3,8 +3,6 @@
 // There's no way I'm mapping everything by hand.
 // I did my best to format it to be legible, though (manually, because AI is stupid and can't see).
 
-import { type } from "arktype";
-
 /* @formatter:off */
 
 export const hiraganaDakuten = {
@@ -772,8 +770,6 @@ export const kanaChars: readonly KanaChar[] = [
   ...Object.values(toKatakana),
   ...punctuationChars,
 ] as const;
-
-export const KanaCharArkType = type.enumerated(...kanaChars);
 
 export function romanize(text: string): string {
   let result = "";

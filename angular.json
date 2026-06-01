@@ -42,7 +42,7 @@
             "ssr": {
               "entry": "src/config/server.ts"
             },
-            "polyfills": ["core-js/actual/iterator"]
+            "polyfills": []
           },
           "configurations": {
             "production": {

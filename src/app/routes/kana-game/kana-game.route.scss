@@ -1,3 +1,5 @@
+@use "variables" as *;
+
 :host main {
   padding: var(--padding);
 
@@ -7,6 +9,17 @@
     margin-top: var(--padding);
     margin-left: auto;
     margin-right: auto;
+  }
+
+  @media (max-width: ($desktop-size - 1px)) {
+    padding: calc(var(--padding) / 2);
+
+    > #main-content {
+      width: 100%;
+      height: auto;
+      min-height: 40vh;
+      margin-top: calc(var(--padding) / 2);
+    }
   }
 }
 
@@ -63,6 +76,24 @@
               }
             }
           }
+        }
+      }
+    }
+  }
+
+  @media (max-width: ($desktop-size - 1px)) {
+    x-card {
+      padding: calc(var(--padding) / 2);
+    }
+
+    x-card > .content {
+      h1.kana-word {
+        margin-bottom: 0;
+        font-size: 2.25rem;
+        overflow-wrap: anywhere;
+
+        .kana-group {
+          margin-inline: 0.08em;
         }
       }
     }

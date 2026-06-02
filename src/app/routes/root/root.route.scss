@@ -17,6 +17,14 @@
     justify-content: center;
     margin-top: var(--padding);
   }
+
+  @media (max-width: ($desktop-size - 1px)) {
+    padding: calc(var(--padding) / 2);
+
+    > div {
+      margin-top: calc(var(--padding) / 2);
+    }
+  }
 }
 
 :host ::ng-deep {
@@ -39,24 +47,37 @@
       > fieldset.char-table {
         margin-top: var(--padding);
         display: grid;
-        grid-template-columns: 32px repeat(5, 1fr);
-        align-items: center;
-        justify-items: start;
+        grid-template-columns: 44px repeat(5, 3rem);
+        grid-auto-rows: 3rem;
+        justify-content: center;
+        align-items: stretch;
+        justify-items: stretch;
 
-        row-gap: var(--spacing);
+        row-gap: calc(var(--spacing) * 1.5);
 
-        > ::ng-deep {
-          p-togglebutton {
-            font-weight: bold;
-          }
-          p-togglebutton:has(+ p-togglebutton) {
-            border-start-end-radius: 0;
-            border-end-end-radius: 0;
-          }
-          p-togglebutton + p-togglebutton {
-            border-start-start-radius: 0;
-            border-end-start-radius: 0;
-          }
+        p-checkbox {
+          align-self: center;
+          justify-self: center;
+        }
+        p-togglebutton {
+          font-weight: bold;
+        }
+        .p-togglebutton {
+          align-items: center;
+          justify-content: center;
+        }
+        .p-togglebutton-content {
+          width: 2.4rem;
+          height: 2.4rem;
+          flex: 0 0 2.4rem;
+        }
+        p-togglebutton:has(+ p-togglebutton) {
+          border-start-end-radius: 0;
+          border-end-end-radius: 0;
+        }
+        p-togglebutton + p-togglebutton {
+          border-start-start-radius: 0;
+          border-end-start-radius: 0;
         }
       }
     }
@@ -111,6 +132,36 @@
       > #kana-extra-toggles,
       #start-button {
         grid-column: 1 / span 2;
+      }
+    }
+  }
+
+  @media (max-width: ($desktop-size - 1px)) {
+    x-card {
+      width: calc(100vw - var(--padding));
+      max-width: 100%;
+      padding: calc(var(--padding) / 2);
+    }
+
+    x-card > .content {
+      > section {
+        width: 100%;
+        max-width: 100%;
+
+        > fieldset.char-table {
+          width: 100%;
+        }
+      }
+
+      > #kana-extra-toggles {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: calc(var(--padding) / 2);
+      }
+
+      #start-button {
+        padding: calc(var(--spacing) * 3) calc(var(--spacing) * 6);
+        margin-bottom: calc(var(--padding) * 2);
       }
     }
   }

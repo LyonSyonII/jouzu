@@ -2,42 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>上手 - Jouzu</title>
-    <base href="/jouzu/"/>
+    <title>Jouzu</title>
+    <base href="/"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content="Learn Japanese with real examples"/>
-    <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96"/>
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" sizes="any"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"/>
+    <meta name="apple-mobile-web-app-title" content="Jouzu"/>
+    <link rel="manifest" href="/favicon/site.webmanifest"/>
 
     <script>
-      if (
-        // check if user had saved dark as their
-        // theme when accessing page before
-        localStorage.theme === "dark" ||
-        // or user's requesting dark color
-        // scheme through operating system
-        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        // then if we have access to the document and the element
-        // we add the dark class to the html element and
-        // store the dark value in the localStorage
-        if (document && document.documentElement) {
-          document.documentElement.classList.add("dark");
-          localStorage.setItem("theme", "dark");
-        }
-      } else {
-        // else if we have access to the document and the element
-        // we remove the dark class to the html element and
-        // store the value light in the localStorage
-        if (document && document.documentElement) {
-          document.documentElement.classList.remove("dark");
-          localStorage.setItem("theme", "light");
-        }
-      }
+      const theme = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const isDark = theme === "dark" || (theme !== "light" && prefersDark);
+      document.documentElement.classList.toggle("dark", isDark);
     </script>
-    <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="stylesheet" href="styles-73ZYULA5.css"></head>
+  <link rel="stylesheet" href="styles-JZOIEPTR.css"></head>
   <body ngcm="">
     <x-app></x-app>
     <noscript>Please enable JavaScript to continue using this application.</noscript>
-  <script src="main-EVGJ3J75.js" type="module"></script></body>
+  <link rel="modulepreload" href="chunk-L4D5XLBI.js"><link rel="modulepreload" href="chunk-FXNOLWRO.js"><link rel="modulepreload" href="chunk-TFSEW3KG.js"><script src="main-FYVEYMJS.js" type="module"></script></body>
 </html>

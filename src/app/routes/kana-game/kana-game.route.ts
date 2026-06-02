@@ -64,7 +64,7 @@ export default class KanaGame extends BaseComponent {
     }));
   });
 
-  protected readonly selectedKanaValues = linkedSignal(() => {
+  protected readonly kanaInputValues = linkedSignal(() => {
     const currentWordDisplay = this.currentWordDisplay();
     if (currentWordDisplay === null) return [];
     return pipe(
@@ -75,12 +75,15 @@ export default class KanaGame extends BaseComponent {
       map(_ => ""),
     );
   });
-  protected readonly selectedKanaInputFocused = signal(0);
-  protected readonly focusedCharIdx = computed(() => {
+  protected readonly kanaInputFocusedIndex = linkedSignal(() => {
+    this.currentWordDisplay(); // Make it a dependency so it will update when word changes
+    return 0;
+  });
+  protected readonly displayFocusedCharIndex = computed(() => {
     const currentWordDisplay = this.currentWordDisplay();
     if (currentWordDisplay === null) return -1;
 
-    const selectedInputIdx = this.selectedKanaInputFocused();
+    const selectedInputIdx = this.kanaInputFocusedIndex();
     return (
       pipe(
         currentWordDisplay,
@@ -89,8 +92,6 @@ export default class KanaGame extends BaseComponent {
         ?.index ?? -1
     );
   });
-
-  protected answer: string = "";
 
   private readonly kanaInputs = viewChildren<KanaGameInput>("kanaInput");
 
@@ -123,7 +124,7 @@ export default class KanaGame extends BaseComponent {
   }
 
   protected goPrevInput() {
-    this.selectedKanaInputFocused.update(i => {
+    this.kanaInputFocusedIndex.update(i => {
       if (i <= 0) {
         return 0;
       }
@@ -132,8 +133,8 @@ export default class KanaGame extends BaseComponent {
   }
 
   protected goNextInput() {
-    this.selectedKanaInputFocused.update(i => {
-      const last = this.selectedKanaValues().length - 1;
+    this.kanaInputFocusedIndex.update(i => {
+      const last = this.kanaInputValues().length - 1;
       if (i >= last) {
         this.validateAnswer();
         return last;
@@ -144,9 +145,14 @@ export default class KanaGame extends BaseComponent {
 
   protected validateAnswer() {
     if (this.kanaInputs().every(input => input.isExpected())) {
-      this.success("Word is correct!");
+      const word = this.getNextWord();
+      if (word === null) {
+        this.success("You're amazing, you've completed all possible words!");
+        return;
+      }
+      this.currentWord.set(word);
     } else {
-      this.error("Word is incorrect :(");
+      this.error("Word is incorrect, try again");
     }
   }
 
@@ -198,7 +204,7 @@ export default class KanaGame extends BaseComponent {
     );
   }
 
-  private getNextWord(): CurrentWord | null {
+  private getNextWord(): CurrentWord {
     if (!this.words.hasValue()) {
       return null;
     }

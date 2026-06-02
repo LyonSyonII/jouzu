@@ -9,7 +9,10 @@
             <span class="kana-group">
               @for (char of group.chars; track char.index) {
                 <span class="kana-char">
-                  <span class="kana-base" [style.color]="char.index === focusedCharIdx() ? 'var(--primary)' : undefined">
+                  <span
+                    class="kana-base"
+                    [style.color]="char.index === displayFocusedCharIndex() ? 'var(--primary)' : undefined"
+                  >
                     {{ char.value }}
                   </span>
                   <span class="kana-reading">
@@ -24,19 +27,19 @@
                           </span>
                         } @else {
                           @let inputIndex = reading.inputIndex;
-                          @let focused = selectedKanaInputFocused() === inputIndex;
+                          @let focused = kanaInputFocusedIndex() === inputIndex;
                           @let color = focused ? "var(--primary)" : undefined;
                           <span class="kana-furigana" [style.color]="color">
                             {{ reading.kana }}
                           </span>
                           <x-kana-game-input
                             #kanaInput
-                            [(value)]="selectedKanaValues()[inputIndex]"
+                            [(value)]="kanaInputValues()[inputIndex]"
                             [expectedValue]="reading.romaji"
                             [focused]="focused"
                             [color]="color"
                             (back)="goPrevInput()"
-                            (focusRequested)="selectedKanaInputFocused.set(inputIndex)"
+                            (focusRequested)="kanaInputFocusedIndex.set(inputIndex)"
                             (next)="goNextInput()"
                             (submit)="validateAnswer()"
                           />

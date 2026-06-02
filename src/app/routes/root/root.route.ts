@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { TooltipOptions } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { ToggleButtonModule } from "primeng/togglebutton";
@@ -54,12 +54,6 @@ export default class Root extends BaseComponent {
   protected readonly katakana = this.enumerateRowsChars(katakana, fromKatakana, 11);
 
   protected readonly selectedKana = storage(kanaGameKeys.selectedKana, new Set<KanaChar>());
-  protected readonly hiraganaSelected = computed(() =>
-    this.getRowsWithSelected(this.selectedKana(), this.hiragana),
-  );
-  protected readonly katakanaSelected = computed(() =>
-    this.getRowsWithSelected(this.selectedKana(), this.katakana),
-  );
   protected readonly dakutenSelected = storage(kanaGameKeys.dakutenSelected, false);
   protected readonly handakutenSelected = storage(kanaGameKeys.handakutenSelected, false);
   protected readonly youonSelected = storage(kanaGameKeys.youonSelected, false);
@@ -69,10 +63,10 @@ export default class Root extends BaseComponent {
     tooltipStyleClass: "romanize-tooltip",
   };
 
-  protected readonly kanaGroups = computed(() => [
-    { name: "ひらがな", selected: this.hiraganaSelected() },
-    { name: "カタカナ", selected: this.katakanaSelected() },
-  ]);
+  protected readonly kanaGroups = [
+    { name: "ひらがな", rows: this.hiragana },
+    { name: "カタカナ", rows: this.katakana },
+  ] as const;
   protected readonly kanaExtraToggles = [
     { icon: "dakuten", tooltip: "dakuten", signal: this.dakutenSelected },
     { icon: "handakuten", tooltip: "handakuten", signal: this.handakutenSelected },
@@ -97,6 +91,18 @@ export default class Root extends BaseComponent {
     });
   }
 
+  protected isSelected(char: KanaChar) {
+    return this.selectedKana().has(char);
+  }
+
+  protected isRowFullySelected(row: readonly { char: KanaChar | null }[]) {
+    return row.every(({ char }) => char === null || this.selectedKana().has(char));
+  }
+
+  protected isRowPartiallySelected(row: readonly { char: KanaChar | null }[]) {
+    return row.some(({ char }) => char !== null && this.selectedKana().has(char));
+  }
+
   private enumerateRowsChars<C extends KanaChar>(
     rows: KanaTable<C>,
     toRomaji: KanaToRomajiMap<C>,
@@ -110,42 +116,6 @@ export default class Root extends BaseComponent {
       }));
   }
 
-  private getRowsWithSelected<C extends KanaChar>(
-    selectedChars: ReadonlySet<KanaChar>,
-    rows: KanaRow<C>[],
-  ): KanaRowSelection<C>[] {
-    return rows.map(row => ({
-      ...row,
-      row: this.getRowWithSelected(selectedChars, row.row),
-    }));
-  }
-
-  private getRowWithSelected<C extends KanaChar>(
-    selectedChars: ReadonlySet<KanaChar>,
-    row: KanaCell<C>[],
-  ) {
-    const result = {
-      partial: false,
-      fully: true,
-      chars: new Array<KanaCell<C> & { selected: boolean }>(),
-    };
-
-    for (const char of row) {
-      if (char.char === null) {
-        result.chars.push({ ...char, selected: true });
-        continue;
-      }
-      const selected = selectedChars.has(char.char);
-      result.chars.push({
-        ...char,
-        selected,
-      });
-      if (selected) result.partial = true;
-      else result.fully = false;
-    }
-
-    return result;
-  }
 }
 
 interface KanaCell<C extends KanaChar> {
@@ -157,13 +127,4 @@ interface KanaCell<C extends KanaChar> {
 interface KanaRow<C extends KanaChar> {
   i: number;
   row: KanaCell<C>[];
-}
-
-interface KanaRowSelection<C extends KanaChar> {
-  i: number;
-  row: {
-    partial: boolean;
-    fully: boolean;
-    chars: Array<KanaCell<C> & { selected: boolean }>;
-  };
 }

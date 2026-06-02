@@ -10,26 +10,27 @@
         options: romanizeTooltip,
       }"
     >
-      @for (kana of kanaGroups(); track kana.name) {
+      @for (kana of kanaGroups; track kana.name) {
         <section>
           <h3 [pTooltip]="kana.name | romanize" [tooltipOptions]="romanizeTooltip">
             {{ kana.name }}
           </h3>
           <fieldset class="char-table">
-            @for (selected of kana.selected; track selected.i) {
+            @for (row of kana.rows; track row.i) {
+              @let fullySelected = isRowFullySelected(row.row);
               <p-checkbox
                 [binary]="true"
-                [ngModel]="selected.row.fully"
-                [indeterminate]="selected.row.partial && !selected.row.fully"
-                (onChange)="toggleRow(selected.row.chars, selected.row.fully)"
+                [ngModel]="fullySelected"
+                [indeterminate]="isRowPartiallySelected(row.row) && !fullySelected"
+                (onChange)="toggleRow(row.row, fullySelected)"
               />
-              @for (char of selected.row.chars; track char.j) {
+              @for (char of row.row; track char.j) {
                 @if (char.char) {
                   <p-togglebutton
                     [ariaLabel]="char.romaji ? char.char + ' ' + char.romaji : char.char"
                     [onLabel]="char.char"
                     [offLabel]="char.char"
-                    [ngModel]="char.selected"
+                    [ngModel]="isSelected(char.char)"
                     (onChange)="toggleCharacter(char.char)"
                     [pTooltip]="char.romaji ?? undefined"
                     [tooltipOptions]="romanizeTooltip"

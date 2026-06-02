@@ -7,7 +7,9 @@ import { RouterOutlet } from "@angular/router";
   selector: "x-app",
   template: `
     <router-outlet />
-    <p-toast />
+    @defer (on idle) {
+      <p-toast />
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ToastModule, RouterOutlet],

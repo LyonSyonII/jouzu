@@ -6,12 +6,13 @@
   AI has been used to generate certain repetitive sections.
 */
 
+@use "noto-sans-jp-root";
+
 /* PrimeNG Classes */
 @import "primeicons/primeicons.css";
 
 /* Fonts */
 @import "@fontsource-variable/inter/wght.css";
-@import "@fontsource-variable/noto-sans-jp/wght.css";
 /* @import '@fontsource/noto-sans-jp'; */
 
 :root {

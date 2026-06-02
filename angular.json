@@ -28,6 +28,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "wght.css",
+                "input": "node_modules/@fontsource-variable/noto-sans-jp",
+                "output": "assets/noto-sans-jp"
+              },
+              {
+                "glob": "files/*.woff2",
+                "input": "node_modules/@fontsource-variable/noto-sans-jp",
+                "output": "assets/noto-sans-jp"
               }
             ],
             "styles": ["src/styles/styles.scss"],
@@ -68,7 +78,7 @@
                 },
                 "fonts": true
               },
-              "sourceMap": true
+              "sourceMap": false
             },
             "development": {
               "optimization": false,

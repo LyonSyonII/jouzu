@@ -1,6 +1,6 @@
 // string-payload.resolver.ts
 import { storage } from "@/libs/signals/storage.signal";
-import { ResolveFn } from "@angular/router";
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { kanaGameKeys } from "@shared/idb-keys";
 import {
   hiraganaDakutenChars,
@@ -12,7 +12,13 @@ import {
   katakanaYouonChars,
 } from "@shared/japanese";
 
-export const kanaGameResolver: ResolveFn<KanaChar[]> = async () => {
+export async function kanaGameResolver(
+  document: Document,
+  _route: ActivatedRouteSnapshot,
+  _state: RouterStateSnapshot,
+): Promise<KanaChar[]> {
+  await loadFullNotoSansJp(document);
+
   const selected = await storage.get(kanaGameKeys.selectedKana, new Set<KanaChar>(), {
     clone: true,
   });
@@ -42,4 +48,30 @@ export const kanaGameResolver: ResolveFn<KanaChar[]> = async () => {
   }
 
   return [...selected];
-};
+}
+
+let fullNotoSansJpLoad: Promise<void> | null = null;
+
+function loadFullNotoSansJp(document: Document): Promise<void> {
+  if (document.defaultView === null) return Promise.resolve();
+
+  if (fullNotoSansJpLoad) return fullNotoSansJpLoad;
+
+  fullNotoSansJpLoad = new Promise(resolve => {
+    const existing = document.getElementById("noto-sans-jp-full");
+    if (existing) {
+      resolve();
+      return;
+    }
+
+    const link = document.createElement("link");
+    link.id = "noto-sans-jp-full";
+    link.rel = "stylesheet";
+    link.href = "/assets/noto-sans-jp/wght.css";
+    link.onload = () => resolve();
+    link.onerror = () => resolve();
+    document.head.append(link);
+  });
+
+  return fullNotoSansJpLoad;
+}

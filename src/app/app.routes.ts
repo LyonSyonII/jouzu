@@ -1,17 +1,21 @@
-import { Routes } from "@angular/router";
-import { kanaGameResolver } from "./routes/kana-game/kana-game.resolver";
-import Root from "./routes/root/root.route";
+import { DOCUMENT } from "@angular/common";
+import { inject } from "@angular/core";
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from "@angular/router";
 
 export const routes: Routes = [
   {
     path: "",
-    component: Root,
+    loadComponent: () => import("./routes/root/root.route"),
   },
   {
     path: "kana",
     loadComponent: () => import("./routes/kana-game/kana-game.route"),
     resolve: {
-      selectedKana: kanaGameResolver,
+      selectedKana: async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+        const document = inject(DOCUMENT);
+        const { kanaGameResolver } = await import("./routes/kana-game/kana-game.resolver");
+        return kanaGameResolver(document, route, state);
+      },
     },
   },
 ];

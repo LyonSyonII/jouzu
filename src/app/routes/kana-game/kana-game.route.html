@@ -16,7 +16,7 @@
                     {{ char.value }}
                   </span>
                   <span class="kana-reading">
-                    @for (reading of char.readings; track $index) {
+                    @for (reading of char.readings; track reading) {
                       <span class="kana-stack">
                         @if (reading.inputIndex === null) {
                           <span class="kana-furigana kana--shown">

@@ -64,20 +64,22 @@ export default class KanaGame extends BaseComponent {
     }));
   });
 
-  protected readonly kanaInputValues = linkedSignal(() => {
-    const currentWordDisplay = this.currentWordDisplay();
-    if (currentWordDisplay === null) return [];
-    return pipe(
-      currentWordDisplay,
-      flatMap(group => group.chars),
-      flatMap(char => char.readings),
-      filter(reading => reading.inputIndex !== null),
-      map(_ => ""),
-    );
+  protected readonly kanaInputValues = linkedSignal({
+    source: this.currentWordDisplay,
+    computation: currentWordDisplay => {
+      if (currentWordDisplay === null) return [];
+      return pipe(
+        currentWordDisplay,
+        flatMap(group => group.chars),
+        flatMap(char => char.readings),
+        filter(reading => reading.inputIndex !== null),
+        map(_ => ""),
+      );
+    },
   });
-  protected readonly kanaInputFocusedIndex = linkedSignal(() => {
-    this.currentWordDisplay(); // Make it a dependency so it will update when word changes
-    return 0;
+  protected readonly kanaInputFocusedIndex = linkedSignal({
+    source: this.currentWord,
+    computation: () => 0,
   });
   protected readonly displayFocusedCharIndex = computed(() => {
     const currentWordDisplay = this.currentWordDisplay();
@@ -133,14 +135,13 @@ export default class KanaGame extends BaseComponent {
   }
 
   protected goNextInput() {
-    this.kanaInputFocusedIndex.update(i => {
-      const last = this.kanaInputValues().length - 1;
-      if (i >= last) {
-        this.validateAnswer();
-        return last;
-      }
-      return i + 1;
-    });
+    const index = this.kanaInputFocusedIndex();
+    const last = this.kanaInputValues().length - 1;
+    if (index >= last) {
+      this.validateAnswer();
+      return;
+    }
+    this.kanaInputFocusedIndex.set(index + 1);
   }
 
   protected validateAnswer() {
@@ -220,14 +221,17 @@ export default class KanaGame extends BaseComponent {
 
     for (; this.wordGroupStart < words.length; this.wordGroupStart += 3) {
       const wordGroups = words.slice(this.wordGroupStart, this.wordGroupStart + 3);
-      const hasUnusedWords = wordGroups.some(group => group.some(({ word }) => !this.usedWords.has(word)));
+      const hasUnusedWords = wordGroups.some(group =>
+        group.some(({ word }) => !this.usedWords.has(word)),
+      );
       if (!hasUnusedWords) continue;
 
       for (const group of wordGroups) {
-        const match = group.find(({ word }) => (
-          !this.usedWords.has(word) &&
-          word.chars.some(char => char.reading.some(kana => this.remainingKana.has(kana)))
-        ));
+        const match = group.find(
+          ({ word }) =>
+            !this.usedWords.has(word) &&
+            word.chars.some(char => char.reading.some(kana => this.remainingKana.has(kana))),
+        );
         if (match === undefined) continue;
 
         this.usedWords.add(match.word);

@@ -80,6 +80,15 @@
               },
               "sourceMap": false
             },
+            "github-pages": {
+              "baseHref": "/jouzu/",
+              "fileReplacements": [
+                {
+                  "replace": "src/config/app-base-href.ts",
+                  "with": "src/config/app-base-href.github-pages.ts"
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": true,

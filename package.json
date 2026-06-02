@@ -7,7 +7,7 @@
     "build": "ng build -c production",
     "watch": "ng build --watch --configuration development",
     "preview": "pnpm build && pnpx sirv-cli dist/jouzu/browser/ --single --etag --maxage 31536000 --immutable --port 4201 --gzip --brotli",
-    "release": "ng deploy --cname=garriga.dev --base-href=/jouzu/",
+    "release": "ng deploy --build-target=jouzu:build:production,github-pages --dir=dist/jouzu/browser",
     "serve:ssr:jouzu": "node dist/jouzu/server/server.mjs",
     "format": "prettier --check --write ."
   },

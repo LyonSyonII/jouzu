@@ -67,7 +67,7 @@ function loadFullNotoSansJp(document: Document): Promise<void> {
     const link = document.createElement("link");
     link.id = "noto-sans-jp-full";
     link.rel = "stylesheet";
-    link.href = "/assets/noto-sans-jp/wght.css";
+    link.href = "assets/noto-sans-jp/wght.css";
     link.onload = () => resolve();
     link.onerror = () => resolve();
     document.head.append(link);

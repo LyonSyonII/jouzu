@@ -164,7 +164,7 @@ export default class KanaGame extends BaseComponent {
     this.wordGroupStart = 0;
 
     return pipe(
-      await fetch("/assets/wordlist.zst").then(r => r.arrayBuffer()),
+      await fetch("assets/wordlist.zst").then(r => r.arrayBuffer()),
       b => new Uint8Array(b),
       decompress,
       d => new TextDecoder().decode(d),
@@ -210,9 +210,10 @@ export default class KanaGame extends BaseComponent {
       return null;
     }
     const words = this.words.value();
+    const selectedKana = this.selectedKana();
 
     if (this.remainingKana.size === 0) {
-      const kana = this.usedKana.size > 0 ? this.usedKana : this.selectedKana();
+      const kana = this.usedKana.size > 0 ? this.usedKana : selectedKana;
       for (const char of kana) {
         this.remainingKana.add(char);
       }
@@ -221,29 +222,53 @@ export default class KanaGame extends BaseComponent {
 
     for (; this.wordGroupStart < words.length; this.wordGroupStart += 3) {
       const wordGroups = words.slice(this.wordGroupStart, this.wordGroupStart + 3);
-      const hasUnusedWords = wordGroups.some(group =>
-        group.some(({ word }) => !this.usedWords.has(word)),
+      const candidates = wordGroups
+        .flat()
+        .filter(({ word }) => !this.usedWords.has(word))
+        .map(candidate => {
+          const kana = new Set(
+            candidate.word.chars.flatMap(char =>
+              char.reading.filter(kana => selectedKana.has(kana)),
+            ),
+          );
+
+          return {
+            ...candidate,
+            repeatedKana: kana.difference(this.remainingKana).size,
+            remainingKana: kana.intersection(this.remainingKana).size,
+          };
+        })
+        .filter(({ remainingKana }) => remainingKana > 0);
+      if (candidates.length === 0) continue;
+
+      const bestRepeatedKana = Math.min(...candidates.map(({ repeatedKana }) => repeatedKana));
+      const leastRepeatedCandidates = candidates.filter(
+        ({ repeatedKana }) => repeatedKana === bestRepeatedKana,
       );
-      if (!hasUnusedWords) continue;
+      const bestScore = Math.max(...leastRepeatedCandidates.map(({ score }) => score));
+      const bestScoreCandidates = leastRepeatedCandidates.filter(({ score }) => score === bestScore);
+      const bestRemainingKana = Math.max(
+        ...bestScoreCandidates.map(({ remainingKana }) => remainingKana),
+      );
+      const matches = bestScoreCandidates.filter(
+        ({ remainingKana }) => remainingKana === bestRemainingKana,
+      );
+      const match = matches[Math.floor(Math.random() * matches.length)];
 
-      for (const group of wordGroups) {
-        const match = group.find(
-          ({ word }) =>
-            !this.usedWords.has(word) &&
-            word.chars.some(char => char.reading.some(kana => this.remainingKana.has(kana))),
-        );
-        if (match === undefined) continue;
-
-        this.usedWords.add(match.word);
-        for (const char of match.word.chars) {
-          for (const kana of char.reading) {
-            if (!this.remainingKana.has(kana)) continue;
-            this.remainingKana.delete(kana);
-            this.usedKana.add(kana);
-          }
+      this.usedWords.add(match.word);
+      for (const char of match.word.chars) {
+        for (const kana of char.reading) {
+          if (!this.remainingKana.has(kana)) continue;
+          this.remainingKana.delete(kana);
+          this.usedKana.add(kana);
         }
-        return match.word;
       }
+
+      if (this.remainingKana.size === 0) {
+        this.wordGroupStart += 3;
+      }
+
+      return match.word;
     }
 
     return null;

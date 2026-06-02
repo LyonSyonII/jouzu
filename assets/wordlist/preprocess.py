@@ -21,6 +21,7 @@ REMOVE_KEYS: Final[frozenset[str]] = frozenset({
     'partsOfSpeech', 'wordListIndex', 'alphabeticalIndex', 'extraInfo',
 })
 SMALL: Final[frozenset[str]] = frozenset('ぁぃぅぇぉゃゅょゎァィゥェォャュョヮ')
+SMALL_YOON: Final[frozenset[str]] = frozenset('ゃゅょャュョ')
 SOKUON: Final[frozenset[str]] = frozenset('っッ')
 KANJI_RE: Final[re.Pattern[str]] = re.compile(r'[\u3400-\u4dbf\u4e00-\u9fff々〆ヶ]')
 
@@ -220,13 +221,27 @@ def segment_reading(value: object) -> list[str]:
 
 
 def output_chars(aligned: Sequence[AlignmentEntry]) -> list[ArrayReadingEntry]:
-    out: list[ArrayReadingEntry] = []
+    entries: list[StringReadingEntry] = []
     for e in aligned:
         if isinstance(e, str):
-            out.append({'word': e, 'reading': segment_reading(e)})
+            entries.append(object_entry(e, e))
         else:
-            out.append({'word': e['word'], 'reading': segment_reading(e['reading'])})
-    return out
+            entries.append(e.copy())
+
+    for i in range(1, len(entries)):
+        previous = entries[i - 1]
+        current = entries[i]
+        if not previous['reading'] or not current['reading']:
+            continue
+        if current['reading'][0] not in SMALL_YOON:
+            continue
+        if not is_kana_char(previous['reading'][-1]) or previous['reading'][-1] in SMALL:
+            continue
+
+        previous['reading'] += current['reading'][0]
+        current['reading'] = current['reading'][1:]
+
+    return [{'word': e['word'], 'reading': segment_reading(e['reading'])} for e in entries]
 
 
 def romanize_reading(reading: object) -> str:

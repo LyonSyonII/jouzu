@@ -7,6 +7,7 @@ import {
   inject,
 } from "@angular/core";
 import { provideRouter, withComponentInputBinding, withPreloading } from "@angular/router";
+import { APP_BASE_HREF } from "@angular/common";
 import { providePrimeNG } from "primeng/config";
 import { definePreset } from "@primeuix/themes";
 import AuraBase from "@primeuix/themes/aura/base";
@@ -107,10 +108,12 @@ import { Preset } from "@primeuix/themes/types";
 import { QuicklinkStrategy, quicklinkProviders } from "ngx-quicklink";
 import { provideHttpClient, withFetch } from "@angular/common/http";
 import { GlobalErrorHandler } from "@services/error.service";
+import { appBaseHref } from "./app-base-href";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    { provide: APP_BASE_HREF, useValue: appBaseHref },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     quicklinkProviders,
     provideRouter(routes, withPreloading(QuicklinkStrategy), withComponentInputBinding()),

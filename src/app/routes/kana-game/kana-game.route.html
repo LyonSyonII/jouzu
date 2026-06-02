@@ -7,15 +7,15 @@
         <h1 class="kana-word">
           @for (group of current; track $index) {
             <span class="kana-group">
-              @for (char of group.chars; track char.charIdx) {
+              @for (char of group.chars; track char.index) {
                 <span class="kana-char">
-                  <span class="kana-base" [style.color]="char.charIdx === focusedCharIdx() ? 'var(--primary)' : undefined">
-                    {{ char.char }}
+                  <span class="kana-base" [style.color]="char.index === focusedCharIdx() ? 'var(--primary)' : undefined">
+                    {{ char.value }}
                   </span>
                   <span class="kana-reading">
-                    @for (reading of char.reading; track $index) {
+                    @for (reading of char.readings; track $index) {
                       <span class="kana-stack">
-                        @if (reading.selectedValueIdx === null) {
+                        @if (reading.inputIndex === null) {
                           <span class="kana-furigana kana--shown">
                             {{ reading.kana }}
                           </span>
@@ -23,20 +23,20 @@
                             {{ reading.romaji }}
                           </span>
                         } @else {
-                          @let i = reading.selectedValueIdx;
-                          @let focused = selectedKanaInputFocused() === i;
+                          @let inputIndex = reading.inputIndex;
+                          @let focused = selectedKanaInputFocused() === inputIndex;
                           @let color = focused ? "var(--primary)" : undefined;
                           <span class="kana-furigana" [style.color]="color">
                             {{ reading.kana }}
                           </span>
                           <x-kana-game-input
                             #kanaInput
-                            [(value)]="selectedKanaValues()[i]"
+                            [(value)]="selectedKanaValues()[inputIndex]"
                             [expectedValue]="reading.romaji"
                             [focused]="focused"
                             [color]="color"
                             (back)="goPrevInput()"
-                            (focusRequested)="selectedKanaInputFocused.set(i)"
+                            (focusRequested)="selectedKanaInputFocused.set(inputIndex)"
                             (next)="goNextInput()"
                             (submit)="validateAnswer()"
                           />

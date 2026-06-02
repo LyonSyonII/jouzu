@@ -3,13 +3,11 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
   input,
   linkedSignal,
   resource,
   signal,
   viewChildren,
-  ViewChildren,
 } from "@angular/core";
 import BaseComponent from "@components/base.component";
 import { Card } from "@components/card/card.component";
@@ -42,7 +40,6 @@ export default class KanaGame extends BaseComponent {
 
   protected readonly currentWord = linkedSignal<CurrentWord>(() => {
     if (!this.words.hasValue()) return null;
-    console.log(this.words.value());
     return this.getNextWord();
   });
 
@@ -51,17 +48,17 @@ export default class KanaGame extends BaseComponent {
     if (currentWord === null) return null;
     const selectedKana = this.selectedKana();
 
-    let selectedValueIdx = 0;
-    let charIdx = 0;
+    let inputIndex = 0;
+    let charIndex = 0;
 
-    return currentWord.charGroups.map(group => ({
-      chars: group.map(({ word: char, reading }) => ({
-        char,
-        charIdx: charIdx++,
-        reading: reading.map(kana => ({
+    return currentWord.charGroups.map(chars => ({
+      chars: chars.map(({ word: value, reading }) => ({
+        value,
+        index: charIndex++,
+        readings: reading.map(kana => ({
           kana,
           romaji: romanize(kana),
-          selectedValueIdx: selectedKana.has(kana) ? selectedValueIdx++ : null,
+          inputIndex: selectedKana.has(kana) ? inputIndex++ : null,
         })),
       })),
     }));
@@ -73,8 +70,8 @@ export default class KanaGame extends BaseComponent {
     return pipe(
       currentWordDisplay,
       flatMap(group => group.chars),
-      flatMap(char => char.reading),
-      filter(kana => kana.selectedValueIdx !== null),
+      flatMap(char => char.readings),
+      filter(reading => reading.inputIndex !== null),
       map(_ => ""),
     );
   });
@@ -88,8 +85,8 @@ export default class KanaGame extends BaseComponent {
       pipe(
         currentWordDisplay,
         flatMap(group => group.chars),
-      ).find(char => char.reading.some(reading => reading.selectedValueIdx === selectedInputIdx))
-        ?.charIdx ?? -1
+      ).find(char => char.readings.some(reading => reading.inputIndex === selectedInputIdx))
+        ?.index ?? -1
     );
   });
 
@@ -266,14 +263,17 @@ type ScoredWord = {
 };
 type Words = ScoredWord[][];
 type CurrentWord = SegmentedWord | null;
-type CurrentWordDisplay = Array<{
-  chars: Array<{
-    char: string;
-    charIdx: number;
-    reading: Array<{
-      kana: KanaChar;
-      romaji: string;
-      selectedValueIdx: number | null;
-    }>;
-  }>;
-}>;
+type CurrentWordDisplay = WordDisplayGroup[];
+type WordDisplayGroup = {
+  chars: WordDisplayChar[];
+};
+type WordDisplayChar = {
+  value: string;
+  index: number;
+  readings: WordDisplayReading[];
+};
+type WordDisplayReading = {
+  kana: KanaChar;
+  romaji: string;
+  inputIndex: number | null;
+};

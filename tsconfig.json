@@ -15,15 +15,14 @@
     "target": "ESNext",
     "lib": ["ES2022", "dom", "ESNext"],
     "module": "preserve",
-    "baseUrl": "./src",
     "paths": {
-      "@app/*": ["app/*"],
-      "@services/*": ["libs/services/*"],
-      "@components/*": ["libs/components/*"],
-      "@shared/*": ["libs/shared/*"],
-      "@config/*": ["config/*"],
-      "@styles/*": ["styles/*"],
-      "@/*": ["*"]
+      "@app/*": ["./src/app/*"],
+      "@services/*": ["./src/libs/services/*"],
+      "@components/*": ["./src/libs/components/*"],
+      "@shared/*": ["./src/libs/shared/*"],
+      "@config/*": ["./src/config/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@/*": ["./src/*"]
     }
   },
   "angularCompilerOptions": {
